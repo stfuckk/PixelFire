@@ -23,14 +23,4 @@ public class MyGame extends Game {
 		this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
 		setScreen(new GameScreen(orthographicCamera));
 	}
-
-	@Override
-	public void render () {
-
-	}
-	
-	@Override
-	public void dispose () {
-
-	}
 }
