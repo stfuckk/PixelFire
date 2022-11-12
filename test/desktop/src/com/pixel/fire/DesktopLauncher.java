@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		config.setIdleFPS(60);
 		config.useVsync(true);
 		config.setTitle("Pixel Fire");
-
+		config.setResizable(false);
 		config.setWindowedMode(960,640);
 
 

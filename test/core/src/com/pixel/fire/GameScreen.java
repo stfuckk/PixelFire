@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.pixel.fire.Helper.TileMapHelper;
+import com.pixel.fire.Objects.Player.Player;
 
 import static com.pixel.fire.Helper.Constants.PPM;
 
@@ -25,13 +26,16 @@ public class GameScreen extends ScreenAdapter {
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private TileMapHelper tileMapHelper;
 
+    //game objects
+    private Player player;
+
     public GameScreen(OrthographicCamera camera){
         this.camera = camera;
         this.batch = new SpriteBatch();
-        this.world = new World(new Vector2(0,0), false);
+        this.world = new World(new Vector2(0,-10f), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
-        this.tileMapHelper = new TileMapHelper();
+        this.tileMapHelper = new TileMapHelper(this);
         this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
     }
 
@@ -48,7 +52,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void cameraUpdate(){
-        camera.position.set(new Vector3(0,0,0));
+        Vector3 position = camera.position;
+        position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
+        position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
+        camera.position.set(position);
         camera.update();
     }
 
@@ -60,11 +67,18 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         orthogonalTiledMapRenderer.render();
-
         batch.begin();
         //render objects
-
+        player.render(batch);
         batch.end();
         box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setPlayer(Player player){
+        this.player = player;
     }
 }
