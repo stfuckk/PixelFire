@@ -19,8 +19,8 @@ public class GameScreen extends ScreenAdapter {
 
     private OrthographicCamera camera;
     private SpriteBatch batch; //render sprites
-    private World world;
-    private Box2DDebugRenderer box2DDebugRenderer;
+    private World world; //store box2d bodies
+    private Box2DDebugRenderer box2DDebugRenderer; //see box2d without using textures
 
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private TileMapHelper tileMapHelper;
@@ -42,9 +42,17 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
 
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
-        }
+        // to move the camera
+        if(Gdx.input.isKeyPressed(Input.Keys.A))
+            camera.position.x -=2;
+        if(Gdx.input.isKeyPressed(Input.Keys.D))
+            camera.position.x +=2;
+        if(Gdx.input.isKeyPressed(Input.Keys.W))
+            camera.position.y +=2;
+        if(Gdx.input.isKeyPressed(Input.Keys.S))
+            camera.position.y -=2;
     }
 
     private void cameraUpdate(){
