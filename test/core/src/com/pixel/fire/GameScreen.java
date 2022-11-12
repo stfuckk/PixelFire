@@ -44,15 +44,7 @@ public class GameScreen extends ScreenAdapter {
 
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
-        // to move the camera
-        if(Gdx.input.isKeyPressed(Input.Keys.A))
-            camera.position.x -=2;
-        if(Gdx.input.isKeyPressed(Input.Keys.D))
-            camera.position.x +=2;
-        if(Gdx.input.isKeyPressed(Input.Keys.W))
-            camera.position.y +=2;
-        if(Gdx.input.isKeyPressed(Input.Keys.S))
-            camera.position.y -=2;
+
     }
 
     private void cameraUpdate(){
