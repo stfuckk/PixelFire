@@ -46,7 +46,7 @@ public class Client extends Thread {
                             System.out.println(input);
                         }
                         //Quit after reading data from server
-                        this.interrupt();
+                        //this.interrupt();
 
                         //Checks server output
                         if(dis.read() > -1) {
@@ -62,14 +62,11 @@ public class Client extends Thread {
                             "and start waiting for data from server...");
                 }
             }
-
+            System.out.println("Closing connections and channels on client's side - DONE.");
             dos.close();
             dis.close();
             bufferedReader.close();
             socket.close();
-
-            System.out.println("Closing connections and channels on client's side - DONE.");
-
         } catch (IOException e){System.out.println("An error has happened!");}
         catch (InterruptedException ie) {};
     }
