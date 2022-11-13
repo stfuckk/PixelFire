@@ -49,6 +49,7 @@ public class GameScreen extends ScreenAdapter {
 
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
+
     }
 
     private void cameraUpdate(){

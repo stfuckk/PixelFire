@@ -39,7 +39,7 @@ public class Player extends GameEntity{
         if(Gdx.input.isKeyPressed(Input.Keys.A))
             velX = -1;
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && jumpCounter < 2){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W) && jumpCounter < 2){
             float force = body.getMass() * 18;
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(), true);
