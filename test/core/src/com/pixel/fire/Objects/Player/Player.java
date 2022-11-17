@@ -16,7 +16,6 @@ public class Player extends GameEntity{
     //
     private static int FRAME_COLS = 8, FRAME_ROWS = 1;
     //
-    //private int jumpCounter;
     private boolean left = false;
     private boolean isGrounded = false;
     private boolean isFalling = false;
@@ -33,9 +32,13 @@ public class Player extends GameEntity{
         Texture runSheet = new Texture("sprites/run.png");
         Texture jumpSheet = new Texture("sprites/jump.png");
         Texture fallSheet = new Texture("sprites/fall.png");
-        //this.jumpCounter = 0;
+        Texture idleSheet = new Texture("sprites/idle.png");
         //
         TextureRegion[][] tmp;
+        //IDLE//
+        tmp = TextureRegion.split(idleSheet,
+                idleSheet.getWidth() / FRAME_COLS,
+                idleSheet.getHeight() / FRAME_ROWS);
         //JUMPING//
         FRAME_COLS = 5;
         tmp = TextureRegion.split(jumpSheet,
@@ -51,8 +54,6 @@ public class Player extends GameEntity{
                 runSheet.getHeight() / FRAME_ROWS);
         TextureRegion[] runFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         runningAnimation = new Animation<TextureRegion>(0.064f, FramesCycle(tmp, runFrames));
-
-
 
         //FALLING//
         FRAME_COLS = 4;
@@ -95,6 +96,7 @@ public class Player extends GameEntity{
     @Override
     public void render(SpriteBatch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
+
         if (isFalling)
             currentFrame = fallingAnimation.getKeyFrame(stateTime, true);
         if (!isGrounded && !isFalling)
@@ -125,14 +127,14 @@ public class Player extends GameEntity{
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.W) && isGrounded){
-            float force = body.getMass() * 30;
+            float force = body.getMass() * 23;
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(), true);
             isGrounded = false;
         }
 
-        body.setLinearVelocity(velX * speed, body.getLinearVelocity().y < 30 ?
-                body.getLinearVelocity().y : 30);
+        body.setLinearVelocity(velX * speed, body.getLinearVelocity().y < 25 ?
+                body.getLinearVelocity().y : 25);
     }
 
 }
