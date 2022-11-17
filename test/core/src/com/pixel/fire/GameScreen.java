@@ -32,7 +32,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(OrthographicCamera camera){
         this.camera = camera;
         this.batch = new SpriteBatch();
-        this.world = new World(new Vector2(0,-25f), false);
+        this.world = new World(new Vector2(0,-60f), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
         this.tileMapHelper = new TileMapHelper(this);
@@ -66,11 +66,11 @@ public class GameScreen extends ScreenAdapter {
 
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        player.render(batch);
         orthogonalTiledMapRenderer.render();
         batch.begin();
         //render objects
-        player.render(batch);
+        //player.render(batch);
         batch.end();
         box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }

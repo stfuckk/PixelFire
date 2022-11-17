@@ -22,6 +22,7 @@ public class MyGame extends Game {
 		this.heightScreen = Gdx.graphics.getHeight();
 		this.orthographicCamera = new OrthographicCamera();
 		this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
+		this.orthographicCamera.zoom -= 0.25f;
 		setScreen(new GameScreen(orthographicCamera));
 		Client clientThread = new Client();
 		clientThread.StartClient();
