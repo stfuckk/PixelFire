@@ -11,7 +11,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 import static com.pixel.fire.Helper.Constants.PPM;
 
-public class Player extends GameEntity{
+public class Player extends GameEntity
+{
     //Texture playerTexture = new Texture("sprites/Amogus.png");
     //
     private static int FRAME_COLS = 8, FRAME_ROWS = 1;
