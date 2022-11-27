@@ -13,7 +13,7 @@ public class Client extends Thread {
     }
     @Override
     public void run() {
-        try(Socket socket = new Socket("127.0.0.1", 2828);
+        try(Socket socket = new Socket("95.181.105.21", 2828);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
             DataInputStream dis = new DataInputStream(socket.getInputStream()); )
@@ -67,7 +67,8 @@ public class Client extends Thread {
             dis.close();
             bufferedReader.close();
             socket.close();
-        } catch (IOException e){System.out.println("An error has happened!");}
+        }
+        catch (IOException e){System.out.println("An error has happened!");}
         catch (InterruptedException ie) {};
     }
 }
