@@ -10,7 +10,7 @@ public class Assets
 {
     private AssetManager assetManager = new AssetManager();
 
-    public static final AssetDescriptor<Skin> SKIN = new AssetDescriptor<Skin>(Gdx.files.internal("skin/uiskin.json"), Skin.class, new SkinLoader.SkinParameter("uiskin.json"));
+    public static final AssetDescriptor<Skin> SKIN = new AssetDescriptor<>("skin/uiskin.json", Skin.class, new SkinLoader.SkinParameter("skin/uiskin.atlas"));
 
     public void loadAll()
     {

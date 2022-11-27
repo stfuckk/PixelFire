@@ -20,14 +20,16 @@ public class MyGame extends Game {
 
 	@Override
 	public void create () {
-		Assets assets = new Assets();
-		assets.loadAll();
-		assets.getAssetManager().finishLoading();
 		this.widthScreen = Gdx.graphics.getWidth();
 		this.heightScreen = Gdx.graphics.getHeight();
 		this.orthographicCamera = new OrthographicCamera();
 		this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
 		this.orthographicCamera.zoom -= 0.25f;
+
+		Assets assets = new Assets();
+		assets.loadAll();
+		assets.getAssetManager().finishLoading();
+
 		setScreen(new MenuScreen(assets.getAssetManager()));
 		//setScreen(new GameScreen(orthographicCamera));
 		Client clientThread = new Client();

@@ -6,20 +6,24 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import org.w3c.dom.Text;
 
-public class MenuScreen extends ScreenAdapter {
+public class MenuScreen extends ScreenAdapter
+{
     private Stage stage;
     private Viewport viewport;
     private AssetManager assetManager;
-    private final Skin skin;
+    private Skin skin;
     private Table mainTable;
-
 
     public MenuScreen(AssetManager assetManager)
     {
