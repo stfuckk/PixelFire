@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.pixel.fire.client.Client;
 
+import java.awt.*;
+
 public class MyGame extends Game {
 
 	public static MyGame INSTANCE;
@@ -23,8 +25,19 @@ public class MyGame extends Game {
 		this.orthographicCamera = new OrthographicCamera();
 		this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
 		this.orthographicCamera.zoom -= 0.25f;
-		setScreen(new GameScreen(orthographicCamera));
+
+		Assets assets = new Assets();
+		assets.loadAll();
+		assets.getAssetManager().finishLoading();
+
+		setScreen(new MenuScreen(assets.getAssetManager(), INSTANCE));
+		//setScreen(new GameScreen(orthographicCamera));
 		Client clientThread = new Client();
 		clientThread.StartClient();
+	}
+
+	public OrthographicCamera getCamera()
+	{
+		return orthographicCamera;
 	}
 }
