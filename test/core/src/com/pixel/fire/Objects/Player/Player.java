@@ -20,19 +20,21 @@ public class Player extends GameEntity
     private boolean left = false;
     private boolean isGrounded = false;
     private boolean isIdle = true;
+    private boolean isJumping = false;
+
+    private int counter = 0;
     //
     private TextureRegion currentFrame;
     Animation<TextureRegion> runningAnimation;
-    Animation<TextureRegion> jumpingAnimation;
-    Animation<TextureRegion> fallingAnimation;
     Animation<TextureRegion> idleAnimation;
+    Animation<TextureRegion> jumpingAnimation;
     float stateTime;
     //
     public Player(float width, float height, Body body) {
         super(width, height, body); //super - parent class
         this.speed = 20f;
         Texture runSheet = new Texture("sprites/run.png");
-        Texture jumpSheet = new Texture("sprites/jump.png");
+        Texture jumpTexture = new Texture("sprites/jump.png");
         Texture idleSheet = new Texture("sprites/idle.png");
         //
         TextureRegion[][] tmp;
@@ -45,14 +47,12 @@ public class Player extends GameEntity
         idleAnimation = new Animation<TextureRegion>(0.064f, FramesCycle(tmp, idleFrames));
 
         //JUMPING//
-         /*
-        FRAME_COLS = 5;
-        tmp = TextureRegion.split(jumpSheet,
-                jumpSheet.getWidth() / FRAME_COLS,
-                jumpSheet.getHeight() / FRAME_ROWS);
+        FRAME_COLS = 1;
+        tmp = TextureRegion.split(jumpTexture,
+                jumpTexture.getWidth() / FRAME_COLS,
+                jumpTexture.getHeight() / FRAME_ROWS);
         TextureRegion[] jumpFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         jumpingAnimation = new Animation<TextureRegion>(0.064f, FramesCycle(tmp, jumpFrames));
-         */
 
         //RUNNING//
         FRAME_COLS = 8;
@@ -62,15 +62,6 @@ public class Player extends GameEntity
         TextureRegion[] runFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         runningAnimation = new Animation<TextureRegion>(0.064f, FramesCycle(tmp, runFrames));
 
-        //FALLING//
-        /*
-        FRAME_COLS = 4;
-        tmp = TextureRegion.split(fallSheet,
-                fallSheet.getWidth() / FRAME_COLS,
-                fallSheet.getHeight() / FRAME_ROWS);
-        TextureRegion[] fallFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-        fallingAnimation = new Animation<TextureRegion>(0.064f, FramesCycle(tmp, fallFrames));
-        */
         stateTime = 0f;
         currentFrame = idleAnimation.getKeyFrame(stateTime, true);
     }
@@ -100,19 +91,15 @@ public class Player extends GameEntity
                 (y >= 528  && y <= 528.5) && (x >= 1008 && x <= 1232) ||
                 (y >= 528  && y <= 528.5) && (x >= 48 && x <= 272))
             isGrounded = true;
-        //System.out.println("idle: " + isIdle + " grounded: " + isGrounded + " fall: " + isFalling);
     }
 
     @Override
     public void render(SpriteBatch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
-
+        System.out.println(counter);
         //idle
-        if (isGrounded && isIdle)
+        if (isGrounded && isIdle && !isJumping)
             currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-        //jump
-        if (!isGrounded)
-            currentFrame = jumpingAnimation.getKeyFrame(stateTime, false);
         //run
         if(!isIdle && isGrounded && body.getLinearVelocity().y == 0)
             currentFrame = runningAnimation.getKeyFrame(stateTime, true);
@@ -132,9 +119,18 @@ public class Player extends GameEntity
     private void checkUserInput(){
         velX = 0;
 
+        if(body.getLinearVelocity().y == 0 && isGrounded)
+        {
+            isJumping = false;
+            counter = 0;
+        }
 
         if(isGrounded && body.getLinearVelocity().x == 0)
             isIdle = true;
+
+        if(isGrounded && body.getLinearVelocity().y > 0)
+            isGrounded = false;
+
         if(Gdx.input.isKeyPressed(Input.Keys.D)){
             velX = 1;
             left = false;
@@ -146,13 +142,15 @@ public class Player extends GameEntity
             isIdle = false;
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W) && isGrounded){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W) && counter <= 1){
             float force = body.getMass() * 23;
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(), true);
             isGrounded = false;
             isIdle = false;
-            //currentFrame = jumpingAnimation.getKeyFrame(stateTime, false);
+            currentFrame = jumpingAnimation.getKeyFrame(stateTime, false);
+            isJumping = true;
+            counter++;
         }
 
         body.setLinearVelocity(velX * speed, body.getLinearVelocity().y < 25 ?
