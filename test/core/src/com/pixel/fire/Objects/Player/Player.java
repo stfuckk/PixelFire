@@ -119,7 +119,7 @@ public class Player extends GameEntity
 
         //jump
         if(isJumping || isFalling)
-            currentFrame = jumpingAnimation.getKeyFrame(stateTime, false);
+            currentFrame = jumpingAnimation.getKeyFrame(stateTime, true);
 
 
         //flip sprite
