@@ -1,4 +1,4 @@
-package serverCode;
+package com.pixel.fire.server;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -17,6 +17,7 @@ public class Server {
     public static void main (String[] args) throws InterruptedException {
 
         try(ServerSocket serverSocket = new ServerSocket(2828)) {
+
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             logger.log(Level.INFO,"Server socket created, command console reader created");
 

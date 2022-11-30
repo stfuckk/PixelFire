@@ -32,8 +32,6 @@ public class MyGame extends Game {
 
 		setScreen(new MenuScreen(assets.getAssetManager(), INSTANCE));
 		//setScreen(new GameScreen(orthographicCamera));
-		Client clientThread = new Client();
-		clientThread.StartClient();
 	}
 
 	public OrthographicCamera getCamera()

@@ -5,19 +5,31 @@ import java.net.Socket;
 
 public class Client extends Thread {
 
+    private static boolean isServerStarted = false;
+
+    private Socket socket;
+
     public void StartClient() {
         System.out.println("Starting client...");
         this.start();
         if(this.isAlive()) System.out.println("Client started!");
         else System.out.println("An error has occurred");
     }
+
+    public boolean isServerStarted()
+    {
+        return isServerStarted;
+    }
+
     @Override
     public void run() {
-        try(Socket socket = new Socket("95.181.105.21", 2828);
+        try
+        {
+            Socket socket = new Socket("127.0.0.1", 2828);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-            DataInputStream dis = new DataInputStream(socket.getInputStream()); )
-        {
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            isServerStarted = true;
             System.out.println("Client connected to socket");
             System.out.println("Client writing channel = dos, reading channel = dis initialized.");
 
@@ -68,7 +80,7 @@ public class Client extends Thread {
             bufferedReader.close();
             socket.close();
         }
-        catch (IOException e){System.out.println("An error has happened!");}
+        catch (IOException e) {this.interrupt();}
         catch (InterruptedException ie) {};
     }
 }

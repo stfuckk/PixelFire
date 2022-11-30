@@ -1,4 +1,4 @@
-package serverCode;
+package com.pixel.fire.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

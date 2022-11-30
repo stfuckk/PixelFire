@@ -6,12 +6,15 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.pixel.fire.client.Client;
+import com.pixel.fire.server.Server;
 
 public class MenuScreen extends ScreenAdapter
 {
@@ -20,6 +23,8 @@ public class MenuScreen extends ScreenAdapter
     private AssetManager assetManager;
     private Skin skin;
     private Table mainTable;
+    private Table playTable;
+    private Table settingsTable;
     private MyGame game;
 
     public MenuScreen(AssetManager assetManager, MyGame game)
@@ -39,17 +44,27 @@ public class MenuScreen extends ScreenAdapter
         mainTable = new Table();
         mainTable.setFillParent(true);
 
-        stage.addActor(mainTable);
+        playTable = new Table();
+        playTable.setFillParent(true);
+        playTable.setVisible(false);
 
-        addButton("Play").addListener(new ClickListener()
+        settingsTable = new Table();
+        settingsTable.setFillParent(true);
+        settingsTable.setVisible(false);
+
+        stage.addActor(mainTable);
+        stage.addActor(playTable);
+
+        addButton("Play", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                game.setScreen(new GameScreen(game.getCamera()));
+                mainTable.setVisible(false);
+                playTable.setVisible(true);
             }
         });
-        addButton("Options").addListener(new ClickListener()
+        addButton("Options", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
@@ -57,7 +72,7 @@ public class MenuScreen extends ScreenAdapter
                 System.out.println("Options click");
             }
         });
-        addButton("Credits").addListener(new ClickListener()
+        addButton("Credits", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
@@ -65,7 +80,7 @@ public class MenuScreen extends ScreenAdapter
                 System.out.println("Credits click");
             }
         });
-        addButton("Quit").addListener(new ClickListener()
+        addButton("Quit", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
@@ -73,7 +88,73 @@ public class MenuScreen extends ScreenAdapter
                 Gdx.app.exit();
             }
         });
-
+        addButton("Test", mainTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                game.setScreen(new GameScreen(game.getCamera()));
+            }
+        });
+        addButton("Connect", playTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                Client clientThread = new Client();
+                clientThread.StartClient();
+                try
+                {
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException e)
+                {
+                    throw new RuntimeException(e);
+                }
+                if (!clientThread.isServerStarted())
+                {
+                    Dialog d = new Dialog("Connection error", skin)
+                    {
+                        {
+                            text("Server is not created!");
+                            button("OK");
+                        }
+                    };
+                    d.show(stage);
+                }
+                else
+                {
+                    game.setScreen(new GameScreen(game.getCamera()));
+                }
+            }
+        });
+        addButton("Create server", playTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                /*
+                    new Thread(){@Override public void run(){
+                        try
+                        {
+                            Server.baby();
+                        } catch (InterruptedException e)
+                        {
+                            throw new RuntimeException(e);
+                        }
+                    }}.start();
+                 */
+            }
+        });
+        addButton("Return", playTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                playTable.setVisible(false);
+                mainTable.setVisible(true);
+            }
+        });
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -93,11 +174,11 @@ public class MenuScreen extends ScreenAdapter
         viewport.update(width, height);
     }
 
-    private TextButton addButton(String name)
+    private TextButton addButton(String name, Table table)
     {
         TextButton button = new TextButton(name, skin);
-        mainTable.add(button).width(700).height(120).padBottom(60);
-        mainTable.row();
+        table.add(button).width(700).height(120).padBottom(60);
+        table.row();
         return button;
     }
 }

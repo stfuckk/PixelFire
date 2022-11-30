@@ -3,7 +3,6 @@ package com.pixel.fire;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
-
 public class DesktopLauncher
 {
 
@@ -14,7 +13,7 @@ public class DesktopLauncher
 		config.useVsync(false);
 		config.setTitle("Pixel Fire");
 		config.setResizable(false);
-		config.setWindowedMode(960,640);
+		config.setWindowedMode(1920,1080);
 
 		new Lwjgl3Application(new MyGame(), config);
 

@@ -105,7 +105,6 @@ public class Player extends GameEntity
                 (y >= 1168  && y <= 1168.5) && (x >= 1071 && x <= 1424) )
 
             isGrounded = true;
-        System.out.println(x + "   " + y);
     }
 
     @Override
