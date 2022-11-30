@@ -68,15 +68,15 @@ public class TileMapHelper {
 
     private Shape createPolygonShape(PolygonMapObject polygonMapObject) {
         float[] vertices = polygonMapObject.getPolygon().getTransformedVertices();
-        Vector2[] worldVerticices = new Vector2[vertices.length / 2];
+        Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
         for(int i = 0; i<vertices.length / 2; i++){
             Vector2 current = new Vector2(vertices[i*2]/PPM, vertices[i*2+1] / PPM);
-            worldVerticices[i] = current;
+            worldVertices[i] = current;
         }
 
         PolygonShape shape = new PolygonShape();
-        shape.set(worldVerticices);
+        shape.set(worldVertices);
         return shape;
     }
 }

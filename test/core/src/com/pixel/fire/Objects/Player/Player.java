@@ -13,7 +13,6 @@ import static com.pixel.fire.Helper.Constants.PPM;
 
 public class Player extends GameEntity
 {
-    //Texture playerTexture = new Texture("sprites/Amogus.png");
     //
     private static int FRAME_COLS = 8, FRAME_ROWS = 1;
     //
@@ -21,6 +20,7 @@ public class Player extends GameEntity
     private boolean isGrounded = false;
     private boolean isIdle = true;
     private boolean isJumping = false;
+    private boolean isFalling = false;
 
     private int counter = 0;
     //
@@ -83,26 +83,45 @@ public class Player extends GameEntity
 
         checkUserInput();
 
-        //////////////
-        if ((y >= 272 && y <= 272.5) && (x >= 110 && x <= 464) ||
-                (y >= 208 && y <= 208.5) && (x >= 495 && x <= 848) ||
-                (y >= 272 && y <= 272.5) && (x >= 879 && x <= 1232) ||
-                (y >= 464 && y <= 464.5) && (x >= 560 && x <= 785) ||
-                (y >= 528  && y <= 528.5) && (x >= 1008 && x <= 1232) ||
-                (y >= 528  && y <= 528.5) && (x >= 48 && x <= 272))
+        //////////////GROUND CHECK///////////////
+        if
+                ((y >= 400 && y <= 400.5) && (x >= 111 && x <= 656) ||
+                (y >= 528 && y <= 528.5) && (x >= 751 && x <= 1168) ||          //1
+                (y >= 592 && y <= 592.5) && (x >= 815 && x <= 1104) ||
+                (y >= 400 && y <= 400.5) && (x >= 1263 && x <= 1808) ||
+
+                (y >= 784 && y <= 784.5) && (x >= 496 && x <= 720) ||
+                (y >= 848  && y <= 848.5) && (x >= 367 && x <= 528) ||        //2
+                (y >= 848  && y <= 848.5) && (x >= 879 && x <= 1040) ||
+                (y >= 784 && y <= 784.5) && (x >= 1199 && x <= 1423) ||
+                (y >= 848  && y <= 848.5) && (x >= 1391 && x <= 1552) ||
+
+                (y >= 976  && y <= 976.5) && (x >= 111 && x <= 272) ||
+                (y >= 976  && y <= 976.5) && (x >= 1647 && x <= 1808) ||    //3
+
+                (y >= 1104  && y <= 1104.5) && (x >= 431 && x <= 527) ||
+                (y >= 1168  && y <= 1168.5) && (x >= 495 && x <= 848) ||    //4
+                (y >= 1104  && y <= 1104.5) && (x >= 1392 && x <= 1488) ||
+                (y >= 1168  && y <= 1168.5) && (x >= 1071 && x <= 1424) )
+
             isGrounded = true;
+        System.out.println(x + "   " + y);
     }
 
     @Override
     public void render(SpriteBatch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
-        System.out.println(counter);
         //idle
         if (isGrounded && isIdle && !isJumping)
             currentFrame = idleAnimation.getKeyFrame(stateTime, true);
         //run
         if(!isIdle && isGrounded && body.getLinearVelocity().y == 0)
             currentFrame = runningAnimation.getKeyFrame(stateTime, true);
+
+        //jump
+        if(isJumping || isFalling)
+            currentFrame = jumpingAnimation.getKeyFrame(stateTime, false);
+
 
         //flip sprite
         if(!currentFrame.isFlipX() && left)
@@ -122,8 +141,12 @@ public class Player extends GameEntity
         if(body.getLinearVelocity().y == 0 && isGrounded)
         {
             isJumping = false;
+            isFalling = false;
             counter = 0;
         }
+
+        if(isGrounded && body.getLinearVelocity().y < 0)
+            isFalling = true;
 
         if(isGrounded && body.getLinearVelocity().x == 0)
             isIdle = true;
@@ -148,7 +171,6 @@ public class Player extends GameEntity
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(), true);
             isGrounded = false;
             isIdle = false;
-            currentFrame = jumpingAnimation.getKeyFrame(stateTime, false);
             isJumping = true;
             counter++;
         }
