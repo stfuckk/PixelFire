@@ -4,13 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets
 {
     private AssetManager assetManager = new AssetManager();
-
     public static final AssetDescriptor<Skin> SKIN = new AssetDescriptor<>("skin/uiskin.json", Skin.class, new SkinLoader.SkinParameter("skin/uiskin.atlas"));
+    public static final Texture texture_pause = new Texture(Gdx.files.internal("Sprites/background.png"));
+    public static final Sprite pause = new Sprite(texture_pause);
+    public static final Texture texture_gray = new Texture(Gdx.files.internal("Sprites/background1.png"));
+    public static final Sprite gray = new Sprite(texture_gray);
 
     public void loadAll()
     {

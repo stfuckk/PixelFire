@@ -3,6 +3,7 @@ package com.pixel.fire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,13 +12,25 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pixel.fire.Helper.TileMapHelper;
 import com.pixel.fire.Objects.Player.Player;
+import com.pixel.fire.client.Client;
+import com.pixel.fire.server.Server;
 
 import static com.pixel.fire.Helper.Constants.PPM;
 
-public class GameScreen extends ScreenAdapter {
-
+public class GameScreen extends ScreenAdapter
+{
+    private MyGame game;
     private OrthographicCamera camera;
     private SpriteBatch batch; //render sprites
     private World world; //store box2d bodies
@@ -25,30 +38,39 @@ public class GameScreen extends ScreenAdapter {
 
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private TileMapHelper tileMapHelper;
-
+    private AssetManager assetManager;
+    private PauseScreen pausescreen;
+    private MenuScreen menuScreen;
     //game objects
     private Player player;
+    private boolean paused = false;
 
-    public GameScreen(OrthographicCamera camera){
-        this.camera = camera;
+    public GameScreen(MyGame game, AssetManager assetManager){
+        this.game = game;
+        this.camera = game.getCamera();
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0,-60f), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-
+        this.assetManager = assetManager;
         this.tileMapHelper = new TileMapHelper(this);
         this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
+        this.menuScreen = new MenuScreen(assetManager, game);
+        this.pausescreen = new PauseScreen(assetManager, this, menuScreen);
     }
 
-    private void update(){
+    private void update()
+    {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        {
+            game.setScreen(pausescreen);
+            paused = true;
+        }
         world.step(1/60f, 6, 2);
         cameraUpdate();
         player.update();
 
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
-
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
-            Gdx.app.exit();
 
     }
 
@@ -61,9 +83,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-    public void render(float delta){
-        this.update();
-
+    public void render(float delta)
+    {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         player.render(batch);
@@ -73,10 +94,21 @@ public class GameScreen extends ScreenAdapter {
         //player.render(batch);
         batch.end();
         box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        this.update();
     }
 
     public World getWorld() {
         return world;
+    }
+
+    public MyGame getGame()
+    {
+        return game;
+    }
+
+    public void setUnpaused()
+    {
+        paused = false;
     }
 
     public void setPlayer(Player player){

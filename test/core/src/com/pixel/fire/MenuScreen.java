@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pixel.fire.client.Client;
 import com.pixel.fire.server.Server;
 
+import java.awt.*;
+
 public class MenuScreen extends ScreenAdapter
 {
     private Stage stage;
@@ -94,7 +96,7 @@ public class MenuScreen extends ScreenAdapter
             public void clicked(InputEvent event, float x, float y)
             {
                 mainTable.setVisible(false);
-                game.setScreen(new GameScreen(game.getCamera()));
+                game.setScreen(new GameScreen(game, assetManager));
             }
         });
         addButton("Connect", playTable).addListener(new ClickListener()
@@ -126,7 +128,7 @@ public class MenuScreen extends ScreenAdapter
                 else
                 {
                     playTable.setVisible(false);
-                    game.setScreen(new GameScreen(game.getCamera()));
+                    game.setScreen(new GameScreen(game, assetManager));
                 }
             }
         });
@@ -145,8 +147,10 @@ public class MenuScreen extends ScreenAdapter
                             throw new RuntimeException(e);
                         }
                     }}.start();
+                    Client clientThread = new Client();
+                    clientThread.StartClient();
                     playTable.setVisible(false);
-                    game.setScreen(new GameScreen(game.getCamera()));
+                    game.setScreen(new GameScreen(game, assetManager));
             }
         });
         addButton("Return", playTable).addListener(new ClickListener()
