@@ -11,10 +11,13 @@ public class ServerHandler implements  Runnable {
 
     private static Socket clientDialog;
 
+    private int playerPositionInQueue;
+
     protected static final Logger log = Logger.getLogger("log");
 
-    public ServerHandler(Socket clientSocket) {
+    public ServerHandler(Socket clientSocket, int queuePosition) {
         ServerHandler.clientDialog = clientSocket;
+        playerPositionInQueue = queuePosition;
     }
 
     @Override
@@ -38,10 +41,9 @@ public class ServerHandler implements  Runnable {
                     Thread.sleep(1000);
                     break;
                 }
-                log.log(Level.INFO, "Server try writing to channel...");
-                dos.writeUTF("Server reply - " + entry + " - OK");
-                log.log(Level.INFO, "Server wrote message to clientDialog.");
-
+                if(entry.equals("Send queue number")) {
+                    dos.write(playerPositionInQueue); dos.flush();
+                }
                 dos.flush();
             }
             log.log(Level.INFO, "Client disconnected." +

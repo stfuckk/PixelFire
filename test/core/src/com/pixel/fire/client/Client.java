@@ -6,8 +6,12 @@ import java.net.Socket;
 public class Client extends Thread {
 
     private static boolean isServerStarted = false;
+    private int queueNumber;
 
     private Socket socket;
+    private BufferedReader bufferedReader;
+    private DataOutputStream dos;
+    private DataInputStream dis;
 
     public void StartClient() {
         System.out.println("Starting client...");
@@ -25,13 +29,20 @@ public class Client extends Thread {
     public void run() {
         try
         {
-            Socket socket = new Socket("127.0.0.1", 2828);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            Socket s = new Socket("127.0.0.1", 2828);
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            DataInputStream in = new DataInputStream(socket.getInputStream());
             isServerStarted = true;
             System.out.println("Client connected to socket");
             System.out.println("Client writing channel = dos, reading channel = dis initialized.");
+
+            socket = s; bufferedReader = br; dos = out; dis = in;
+
+            if(br.ready()) {
+                dos.writeUTF("Send queue number"); dos.flush();
+                queueNumber = dis.read();
+            }
 
             //Check if channel works and if its alive
             while(!socket.isOutputShutdown()) {
@@ -82,5 +93,10 @@ public class Client extends Thread {
         }
         catch (IOException e) {this.interrupt();}
         catch (InterruptedException ie) {};
+    }
+
+    public void SendPlayerInfo(float x, float y, boolean left, boolean isGrounded, boolean isIdle,
+                               boolean isJumping, boolean isFalling) {
+
     }
 }

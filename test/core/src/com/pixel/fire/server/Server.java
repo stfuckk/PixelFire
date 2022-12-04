@@ -1,8 +1,12 @@
 package com.pixel.fire.server;
 
+import com.pixel.fire.client.Client;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -12,11 +16,14 @@ public class Server {
 
     protected static final Logger logger = Logger.getLogger("log");
 
-    protected static ExecutorService executeIt = Executors.newFixedThreadPool(2);
+    protected static ExecutorService executeIt = Executors.newFixedThreadPool(4);
+
+    protected static int clients = 0;
+
 
     public static void start () throws InterruptedException {
 
-        try(ServerSocket serverSocket = new ServerSocket(2828)) {
+        try(final ServerSocket serverSocket = new ServerSocket(2828)) {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             logger.log(Level.INFO,"Server socket created, command console reader created");
@@ -33,8 +40,9 @@ public class Server {
                     }
                 }
                 Socket clientSocket = serverSocket.accept();
-                executeIt.execute(new ServerHandler(clientSocket));
+                executeIt.execute(new ServerHandler(clientSocket, clients));
                 logger.log(Level.INFO,"Connection accepted...");
+                clients++;
             }
             executeIt.shutdown();
         }
