@@ -93,6 +93,7 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
+                mainTable.setVisible(false);
                 game.setScreen(new GameScreen(game.getCamera()));
             }
         });
@@ -124,6 +125,7 @@ public class MenuScreen extends ScreenAdapter
                 }
                 else
                 {
+                    playTable.setVisible(false);
                     game.setScreen(new GameScreen(game.getCamera()));
                 }
             }
