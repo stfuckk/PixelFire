@@ -13,7 +13,7 @@ public class DesktopLauncher
 		config.useVsync(false);
 		config.setTitle("Pixel Fire");
 		config.setResizable(false);
-		config.setWindowedMode(1920,1080);
+		config.setWindowedMode(1280,720);
 
 		new Lwjgl3Application(new MyGame(), config);
 

@@ -14,7 +14,7 @@ public class Server {
 
     protected static ExecutorService executeIt = Executors.newFixedThreadPool(2);
 
-    public static void main (String[] args) throws InterruptedException {
+    public static void start () throws InterruptedException {
 
         try(ServerSocket serverSocket = new ServerSocket(2828)) {
 

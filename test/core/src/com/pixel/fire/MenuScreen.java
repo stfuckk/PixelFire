@@ -93,6 +93,7 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
+                mainTable.setVisible(false);
                 game.setScreen(new GameScreen(game.getCamera()));
             }
         });
@@ -124,6 +125,7 @@ public class MenuScreen extends ScreenAdapter
                 }
                 else
                 {
+                    playTable.setVisible(false);
                     game.setScreen(new GameScreen(game.getCamera()));
                 }
             }
@@ -133,17 +135,18 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                /*
-                    new Thread(){@Override public void run(){
+                    new Thread(){@Override public void run()
+                    {
                         try
                         {
-                            Server.baby();
+                            Server.start();
                         } catch (InterruptedException e)
                         {
                             throw new RuntimeException(e);
                         }
                     }}.start();
-                 */
+                    playTable.setVisible(false);
+                    game.setScreen(new GameScreen(game.getCamera()));
             }
         });
         addButton("Return", playTable).addListener(new ClickListener()
