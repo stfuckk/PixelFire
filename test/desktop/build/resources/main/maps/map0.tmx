@@ -3,7 +3,7 @@
  <tileset firstgid="1" source="tiles.tsx"/>
  <layer id="4" name="Background" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMAowgRQaHgWjYBQQDwBY/wBp
+   eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
   </data>
  </layer>
  <objectgroup id="2" name="objects">
@@ -56,7 +56,7 @@
  </objectgroup>
  <layer id="1" name="Platforms" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztVMsKwzAMc7sGxsZeDLr//9MlkIIwUuYsPewwgU52ZSVxZfabWICpUvWkRk/vzClzBh5IH+sZmV30HpmnzGvljfRdoH7OvAt/DNs9Mb0y6wn0wBp+80m/YCIeW7MU1DdM36pP9Kj8fVv3+t6n94e7aqTOZiVSj95b8bea3mPmH/f6ReoR4I6wPWH+fX/PXjBtP0PliOrfAz5LRjMiii1LjpU9GcGwGM9if5f4huztozp4jlmQ/Q/qLaM6rXO0MlmhV0edYyQnR3T+2Adv9osITA==
+   eJztVMsKAjEM7K5bEV3foP//pybQwhAmJbV78ODAnJJOpmmalH4Ti/Ah3AtXYf4yp7fmJJyBO5LHckZqq95deBReCq8k7wzxk/Dm+GPQPq2OntZ6Ai0whmcQ2jvWg4l4bNXy4J1h+qn4RI+evwrWH4Q9b/WtT+tvcTww/zUvk3i0b+rvlfw5Zv5xrt8kHgHOCJsT5t/m98wF07Y1sPc5kL8F7C4Z3RFR1F1yKOzZEQz1X9ge2v+Cb8jePqqD95gdsv/gvWVUp3WP1k720Kvj3WNkT47o/LENPqB3CPc=
   </data>
  </layer>
 </map>

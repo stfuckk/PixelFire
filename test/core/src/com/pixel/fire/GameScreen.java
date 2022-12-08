@@ -67,8 +67,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        orthogonalTiledMapRenderer.render();
         player.render(batch);
+        orthogonalTiledMapRenderer.render();
         batch.begin();
         //render objects
 
