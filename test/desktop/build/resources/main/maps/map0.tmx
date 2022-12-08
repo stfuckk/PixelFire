@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="4" nextobjectid="77">
  <tileset firstgid="1" source="tiles.tsx"/>
- <layer id="1" name="background" width="30" height="20">
+ <layer id="1" name="Platforms" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztVEEKwCAMcxts+/+LpwchlMhM6waCgZ6sSVNrU1pAbDl2iMOZo2qeOS6Im+SxnIh25WNao+4Ub9H+ePhLnYovFb38b/6j5y3Ud2rNKKsf51qdC6bdy6HmzwLs55d/wGrafv6hbXdT9C3tjvXuW5WH+fD4GcWzMDce0aMCCQ==
-  </data>
- </layer>
- <layer id="3" name="grass" width="30" height="20">
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
+   eJztVMsKgDAMmzpBFF8X/f8/dYMNwkjVbh4UDOTUmGa11Jh3wga2QEljTzTanpVjDWyIjmlKenu/1bF3nAJnohuhPjguQj6GOCPmx3pJkL5h/h6VImMOJH+fEzNK+XLrqf9VPtxTVk97RW3u/Hy+zch7zPLjXu+krul9tselei2evBGanjjP0htxF/GWdIGaG8FgDb+z6SzxH7J/edcH31EL1LxH68PekbObT/n8+DYOtJIElQ==
   </data>
  </layer>
  <objectgroup id="2" name="objects">

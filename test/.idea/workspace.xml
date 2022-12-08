@@ -4,7 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b40501c0-ccda-4084-b8d8-1413e1d7a4d9" name="Changes" comment="" />
+    <list default="true" id="b40501c0-ccda-4084-b8d8-1413e1d7a4d9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/GameScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/GameScreen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Helper/BodyHelperService.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Helper/BodyHelperService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Helper/Constants.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Helper/Constants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Helper/TileMapHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Helper/TileMapHelper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/MyGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/MyGame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Objects/Player/GameEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Objects/Player/GameEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Objects/Player/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Objects/Player/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build/libs/core-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/libs/core-1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/pixel/fire/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/pixel/fire/GameScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/desktop/build/classes/java/main/com/pixel/fire/DesktopLauncher.class" beforeDir="false" afterPath="$PROJECT_DIR$/desktop/build/classes/java/main/com/pixel/fire/DesktopLauncher.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/desktop/build/resources/main/maps/map0.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/desktop/build/resources/main/maps/map0.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/desktop/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/desktop/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,12 +46,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="test" type="f1a62948:ProjectNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -65,7 +83,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "last_opened_file_path": "C:/Users/Denio/Documents/GitHub/PixelFire/test",
-    "settings.editor.selected.configurable": "configurable.group.build"
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -73,7 +91,7 @@
       <recent name="C:\Users\Denis\Desktop\test\assets\maps" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.DesktopLauncher">
+  <component name="RunManager" selected="Gradle.test:desktop [run]">
     <configuration name="DesktopLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.pixel.fire.DesktopLauncher" />
       <module name="test.desktop.main" />
@@ -105,7 +123,7 @@
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/desktop" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -121,6 +139,11 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.DesktopLauncher" />
+      <item itemvalue="Application.Server" />
+      <item itemvalue="Gradle.test:desktop [run]" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.DesktopLauncher" />
