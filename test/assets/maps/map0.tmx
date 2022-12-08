@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="4" nextobjectid="77">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="6" nextobjectid="78">
  <tileset firstgid="1" source="tiles.tsx"/>
- <layer id="1" name="Platforms" width="30" height="20">
+ <layer id="4" name="Background" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztVMsKgDAMmzpBFF8X/f8/dYMNwkjVbh4UDOTUmGa11Jh3wga2QEljTzTanpVjDWyIjmlKenu/1bF3nAJnohuhPjguQj6GOCPmx3pJkL5h/h6VImMOJH+fEzNK+XLrqf9VPtxTVk97RW3u/Hy+zch7zPLjXu+krul9tselei2evBGanjjP0htxF/GWdIGaG8FgDb+z6SzxH7J/edcH31EL1LxH68PekbObT/n8+DYOtJIElQ==
+   eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
   </data>
  </layer>
  <objectgroup id="2" name="objects">
@@ -13,7 +13,6 @@
   <object id="50" x="1280" y="896">
    <polygon points="0,0 512,0 512,128 0,128"/>
   </object>
-  <object id="42" name="player" x="256" y="768" width="32" height="32"/>
   <object id="51" x="128" y="320">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
@@ -53,5 +52,11 @@
   <object id="76" x="384" y="448">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
+  <object id="42" name="player" x="256" y="768" width="32" height="32"/>
  </objectgroup>
+ <layer id="1" name="Platforms" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztVMsKAjEM7K5bEV3foP//pybQwhAmJbV78ODAnJJOpmmalH4Ti/Ah3AtXYf4yp7fmJJyBO5LHckZqq95deBReCq8k7wzxk/Dm+GPQPq2OntZ6Ai0whmcQ2jvWg4l4bNXy4J1h+qn4RI+evwrWH4Q9b/WtT+tvcTww/zUvk3i0b+rvlfw5Zv5xrt8kHgHOCJsT5t/m98wF07Y1sPc5kL8F7C4Z3RFR1F1yKOzZEQz1X9ge2v+Cb8jePqqD95gdsv/gvWVUp3WP1k720Kvj3WNkT47o/LENPqB3CPc=
+  </data>
+ </layer>
 </map>

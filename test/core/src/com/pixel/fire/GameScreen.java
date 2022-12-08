@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -34,7 +35,6 @@ public class GameScreen extends ScreenAdapter {
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0,-60f), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-
         this.tileMapHelper = new TileMapHelper(this);
         this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
     }
@@ -66,11 +66,12 @@ public class GameScreen extends ScreenAdapter {
 
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        player.render(batch);
+
         orthogonalTiledMapRenderer.render();
+        player.render(batch);
         batch.begin();
         //render objects
-        //player.render(batch);
+
         batch.end();
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
