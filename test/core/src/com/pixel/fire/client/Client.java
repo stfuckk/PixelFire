@@ -7,8 +7,6 @@ public class Client extends Thread {
 
     private static boolean isServerStarted = false;
 
-    private Socket socket;
-
     public void StartClient() {
         System.out.println("Starting client...");
         this.start();

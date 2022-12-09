@@ -2,6 +2,7 @@ package com.pixel.fire;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,7 +19,6 @@ public class PauseScreen extends ScreenAdapter
 {
     private Stage stage;
     private Viewport viewport;
-    private AssetManager assetManager;
     private Skin skin;
     private Table mainTable;
     private GameScreen gameScreen;
@@ -28,7 +28,6 @@ public class PauseScreen extends ScreenAdapter
 
     public PauseScreen(AssetManager assetManager, GameScreen gameScreen, MenuScreen menuScreen)
     {
-        this.assetManager = assetManager;
         skin = assetManager.get(Assets.SKIN);
 
         this.gameScreen = gameScreen;
@@ -48,7 +47,7 @@ public class PauseScreen extends ScreenAdapter
 
         stage.addActor(mainTable);
 
-        addButton("Resume", mainTable).addListener(new ClickListener()
+        menuScreen.addButton("Resume", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
@@ -57,7 +56,7 @@ public class PauseScreen extends ScreenAdapter
                 game.setScreen(gameScreen);
             }
         });
-        addButton("Options", mainTable).addListener(new ClickListener()
+        menuScreen.addButton("Options", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
@@ -65,7 +64,7 @@ public class PauseScreen extends ScreenAdapter
                 System.out.println("Options click");
             }
         });
-        addButton("Disconnect", mainTable).addListener(new ClickListener()
+        menuScreen.addButton("Disconnect", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
@@ -73,7 +72,7 @@ public class PauseScreen extends ScreenAdapter
                 game.setScreen(menuScreen);
             }
         });
-        addButton("Quit", mainTable).addListener(new ClickListener()
+        menuScreen.addButton("Quit", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
@@ -101,14 +100,13 @@ public class PauseScreen extends ScreenAdapter
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             mainTable.setVisible(false);
-            gameScreen.setUnpaused();
+            gameScreen.pause();
             game.setScreen(gameScreen);
         }
     }
 
     @Override
-    public void resize (int width, int height)
-    {
+    public void resize (int width, int height) {
         viewport.update(width, height);
     }
 

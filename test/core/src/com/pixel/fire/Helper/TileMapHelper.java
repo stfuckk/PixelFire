@@ -21,6 +21,7 @@ import static com.pixel.fire.Helper.Constants.PPM;
 
 public class TileMapHelper {
     private TiledMap tiledMap;
+    private TiledMap tiledMapBackground;
     private GameScreen gameScreen;
 
     public TileMapHelper(GameScreen gameScreen){
@@ -32,6 +33,12 @@ public class TileMapHelper {
         tiledMap = new TmxMapLoader().load("maps/map0.tmx");
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
         return new OrthogonalTiledMapRenderer(tiledMap);
+    }
+
+    public OrthogonalTiledMapRenderer setupBackground(){
+
+        tiledMapBackground = new TmxMapLoader().load("maps/map1_background.tmx");
+        return new OrthogonalTiledMapRenderer(tiledMapBackground);
     }
 
     public void parseMapObjects(MapObjects mapObjects){

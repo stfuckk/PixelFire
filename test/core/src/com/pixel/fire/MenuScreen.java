@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -22,8 +23,8 @@ public class MenuScreen extends ScreenAdapter
 {
     private Stage stage;
     private Viewport viewport;
-    private AssetManager assetManager;
     private Skin skin;
+    private GameScreen gameScreen;
     private Table mainTable;
     private Table playTable;
     private Table settingsTable;
@@ -31,10 +32,11 @@ public class MenuScreen extends ScreenAdapter
 
     public MenuScreen(AssetManager assetManager, MyGame game)
     {
-        this.assetManager = assetManager;
         skin = assetManager.get(Assets.SKIN);
 
         this.game = game;
+
+        gameScreen = new GameScreen(game, assetManager, this);
     }
 
     @Override
@@ -79,7 +81,15 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                System.out.println("Credits click");
+                Dialog d = new Dialog("Credits", skin)
+                {
+                    {
+                        text("This beatiful game was created by these dudes:\nKolmogorov Danil Pavlovich aka Denio1337\nKozlov Denis Valeryevich aka PIDOR\nStepanyuk Dmitriy Aleksandrovich aka X3");
+                        button("OK");
+                    }
+                };
+                d.show(stage);
+                //System.out.println("Credits click");
             }
         });
         addButton("Quit", mainTable).addListener(new ClickListener()
@@ -96,7 +106,7 @@ public class MenuScreen extends ScreenAdapter
             public void clicked(InputEvent event, float x, float y)
             {
                 mainTable.setVisible(false);
-                game.setScreen(new GameScreen(game, assetManager));
+                game.setScreen(gameScreen);
             }
         });
         addButton("Connect", playTable).addListener(new ClickListener()
@@ -128,7 +138,7 @@ public class MenuScreen extends ScreenAdapter
                 else
                 {
                     playTable.setVisible(false);
-                    game.setScreen(new GameScreen(game, assetManager));
+                    game.setScreen(gameScreen);
                 }
             }
         });
@@ -150,7 +160,7 @@ public class MenuScreen extends ScreenAdapter
                     Client clientThread = new Client();
                     clientThread.StartClient();
                     playTable.setVisible(false);
-                    game.setScreen(new GameScreen(game, assetManager));
+                    game.setScreen(gameScreen);
             }
         });
         addButton("Return", playTable).addListener(new ClickListener()
@@ -181,7 +191,7 @@ public class MenuScreen extends ScreenAdapter
         viewport.update(width, height);
     }
 
-    private TextButton addButton(String name, Table table)
+    public TextButton addButton(String name, Table table)
     {
         TextButton button = new TextButton(name, skin);
         table.add(button).width(700).height(120).padBottom(60);

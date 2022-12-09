@@ -12,10 +12,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -35,35 +37,41 @@ public class GameScreen extends ScreenAdapter
     private SpriteBatch batch; //render sprites
     private World world; //store box2d bodies
     private Box2DDebugRenderer box2DDebugRenderer; //see box2d without using textures
-
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+    private OrthogonalTiledMapRenderer orthogonalBackgroundRenderer;
     private TileMapHelper tileMapHelper;
     private AssetManager assetManager;
-    private PauseScreen pausescreen;
+    private Skin skin;
+    private Table mainTable;
+    private Stage stage;
+    private Viewport viewport;
     private MenuScreen menuScreen;
     //game objects
     private Player player;
     private boolean paused = false;
 
-    public GameScreen(MyGame game, AssetManager assetManager){
+    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen)
+    {
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
-        this.world = new World(new Vector2(0,-60f), false);
+        this.world = new World(new Vector2(0, -60f), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.assetManager = assetManager;
         this.tileMapHelper = new TileMapHelper(this);
         this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
-        this.menuScreen = new MenuScreen(assetManager, game);
-        this.pausescreen = new PauseScreen(assetManager, this, menuScreen);
+        this.orthogonalBackgroundRenderer = tileMapHelper.setupBackground();
+
+        this.assetManager = assetManager;
+        this.menuScreen = menuScreen;
+
+        this.skin = assetManager.get(Assets.SKIN);
     }
 
     private void update()
     {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
-            game.setScreen(pausescreen);
-            paused = true;
+            pause();
         }
         world.step(1/60f, 6, 2);
         cameraUpdate();
@@ -71,6 +79,7 @@ public class GameScreen extends ScreenAdapter
 
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
+        orthogonalBackgroundRenderer.setView(camera);
 
     }
 
@@ -87,17 +96,89 @@ public class GameScreen extends ScreenAdapter
     {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        orthogonalBackgroundRenderer.render();
         player.render(batch);
         orthogonalTiledMapRenderer.render();
         batch.begin();
         //render objects
         //player.render(batch);
         batch.end();
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        if (paused)
+        {
+            stage.act();
+            stage.draw();
+        }
         this.update();
     }
 
-    public World getWorld() {
+    @Override
+    public void show()
+    {
+        viewport = new ExtendViewport(700,800);
+        stage = new Stage(viewport);
+
+        mainTable = new Table();
+        mainTable.setFillParent(true);
+
+        stage.addActor(mainTable);
+        mainTable.setVisible(false);
+
+        menuScreen.addButton("Resume", mainTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                pause();
+                mainTable.setVisible(false);
+            }
+        });
+        menuScreen.addButton("Options", mainTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                System.out.println("Options click");
+            }
+        });
+        menuScreen.addButton("Disconnect", mainTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                pause();
+                player.setPosition();
+                player.update();
+                game.setScreen(menuScreen);
+            }
+        });
+        menuScreen.addButton("Quit", mainTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                new Dialog("", skin)
+                {
+                    {
+                        text("Are you sure?");
+                        button("Yes", "Yes");
+                        button("No", "No");
+                    }
+
+                    @Override
+                    protected void result(final Object object)
+                    {
+                        if (object.toString().equals("Yes")) Gdx.app.exit();
+                    }
+                }.show(stage);
+            }
+        });
+
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    public World getWorld()
+    {
         return world;
     }
 
@@ -106,12 +187,25 @@ public class GameScreen extends ScreenAdapter
         return game;
     }
 
-    public void setUnpaused()
+    public void pause()
     {
-        paused = false;
+        if (paused == false)
+        {
+            mainTable.setVisible(true);
+            paused = true;
+            player.pause(true);
+            return;
+        }
+        else
+        {
+            mainTable.setVisible(false);
+            paused = false;
+            player.pause(false);
+        }
     }
 
-    public void setPlayer(Player player){
+    public void setPlayer(Player player)
+    {
         this.player = player;
     }
 }

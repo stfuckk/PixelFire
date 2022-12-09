@@ -31,7 +31,6 @@ public class MyGame extends Game {
 		assets.getAssetManager().finishLoading();
 
 		setScreen(new MenuScreen(assets.getAssetManager(), INSTANCE));
-		//setScreen(new GameScreen(orthographicCamera));
 	}
 
 	public OrthographicCamera getCamera()
