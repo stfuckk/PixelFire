@@ -8,19 +8,18 @@ public class Client extends Thread {
     private static boolean isServerStarted = false;
     private int queueNumber;
 
-<<<<<<< HEAD
+
     private Socket socket;
     private BufferedReader bufferedReader;
     private DataOutputStream dos;
     private DataInputStream dis;
 
-=======
->>>>>>> origin/Danil
+
     public void StartClient() {
-        System.out.println("Starting client...");
+        Log("Starting client...");
         this.start();
-        if(this.isAlive()) System.out.println("Client started!");
-        else System.out.println("An error has occurred");
+        if(this.isAlive()) Log("Client started!");
+        else Log("An error has occurred");
     }
 
     public boolean isServerStarted()
@@ -37,13 +36,12 @@ public class Client extends Thread {
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             DataInputStream in = new DataInputStream(socket.getInputStream());
             isServerStarted = true;
-            System.out.println("Client connected to socket");
-            System.out.println("Client writing channel = dos, reading channel = dis initialized.");
+            Log("Client connected to socket!\nClient writing-reading channels initialized.");
 
             socket = s; bufferedReader = br; dos = out; dis = in;
 
             if(br.ready()) {
-                dos.writeUTF("Send queue number"); dos.flush();
+                dos.writeUTF("00"); dos.flush();
                 queueNumber = dis.read();
             }
 
@@ -51,44 +49,32 @@ public class Client extends Thread {
             while(!socket.isOutputShutdown()) {
                 //Wait for client data
                 if(bufferedReader.ready()) {
-                    System.out.println("Client starts writing in channel...");
+                    Log("Client starts writing in channel...");
                     //Thread.sleep(1000);
                     String clientCommand = bufferedReader.readLine();
 
                     //Writing data from client to channel's socket for server
                     dos.writeUTF(clientCommand);
                     dos.flush();
-                    System.out.println("Client sent message " + clientCommand + " to server.");
-                    //Thread.sleep(1000);
+                    Log("Client sent message " + clientCommand + " to server.");
 
-                    //Checks if client is willing to quiter
                     if(clientCommand.equalsIgnoreCase("quit")) {
-                        System.out.println("Client killed connection");
+                        Log("Client killed connection");
                         Thread.sleep(2000);
-
-                        if(dis.read() > -1) {
-                            System.out.println("reading...");
-                            String input = dis.readUTF();
-                            System.out.println(input);
-                        }
-                        //Quit after reading data from server
-                        //this.interrupt();
-
                         //Checks server output
                         if(dis.read() > -1) {
                             //If there is output from server, save it in dis and read it
-                            System.out.println("reading...");
+                            Log("reading...");
                             String input = dis.readUTF();
-                            System.out.println(input);
+                            Log(input);
                         }
                         break;
                     }
                     //If closing connection was not reached continue:
-                    System.out.println("Client sent message" +
-                            "and start waiting for data from server...");
+                    Log("Client sent message and start waiting for data from server...");
                 }
             }
-            System.out.println("Closing connections and channels on client's side - DONE.");
+            Log("Closing connections and channels on client's side - DONE.");
             dos.close();
             dis.close();
             bufferedReader.close();
@@ -98,8 +84,14 @@ public class Client extends Thread {
         catch (InterruptedException ie) {};
     }
 
-    public void SendPlayerInfo(float x, float y, boolean left, boolean isGrounded, boolean isIdle,
-                               boolean isJumping, boolean isFalling) {
+    private void SendPlayerInfo(float x, float y, boolean left, boolean isGrounded, boolean isIdle,
+                               boolean isJumping, boolean isFalling) throws IOException {
+        dos.writeUTF("Sending player info to server..."); dos.flush();
+        dos.writeUTF(x +" "+ y +" "+ left +" "+ isGrounded +" "+ isIdle + " "+ isJumping +" "+ isFalling +" ");
+        dos.flush();
+    }
 
+    private void Log(String text) {
+        System.out.println(text);
     }
 }
