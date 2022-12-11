@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="4" nextobjectid="77">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="6" nextobjectid="78">
  <tileset firstgid="1" source="tiles.tsx"/>
- <layer id="1" name="background" width="30" height="20">
-  <data encoding="base64" compression="zlib">
-   eJztVEEKwCAMcxts+/+LpwchlMhM6waCgZ6sSVNrU1pAbDl2iMOZo2qeOS6Im+SxnIh25WNao+4Ub9H+ePhLnYovFb38b/6j5y3Ud2rNKKsf51qdC6bdy6HmzwLs55d/wGrafv6hbXdT9C3tjvXuW5WH+fD4GcWzMDce0aMCCQ==
-  </data>
- </layer>
- <layer id="3" name="grass" width="30" height="20">
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
-  </data>
- </layer>
  <objectgroup id="2" name="objects">
   <object id="13" x="128" y="896">
    <polygon points="0,0 512,0 512,128 0,128"/>
@@ -18,7 +8,6 @@
   <object id="50" x="1280" y="896">
    <polygon points="0,0 512,0 512,128 0,128"/>
   </object>
-  <object id="42" name="player" x="256" y="768" width="32" height="32"/>
   <object id="51" x="128" y="320">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
@@ -58,5 +47,11 @@
   <object id="76" x="384" y="448">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
+  <object id="42" name="player" x="256" y="768" width="32" height="32"/>
  </objectgroup>
+ <layer id="1" name="Platforms" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztVMsKAjEM7K6tILr4WBH0/z/UFFoYwqSmdg8eHJhT0smkTRPCbyIK78K9cBGmL3N6a07CGbgjeSxnpHbWW4VH4aXwSvLOED8Jb4Y/hkg8Vr1c6wHUwBie+aSfMRGPrVoWrDNMPxSf6NHyV5HnaGnE9Xmtr31qf9HwwPzXvETi3nvL/p7BnmPmH+f6ReIe4IywOWH+dX7PXDBtXQPvPjnyt4DeJaM7wou6Sw6FPTuCof4LfYf6v+Absrf36mAfs0H2H6y39Oq0+mjtZAu9OlYfI3tyROePbfAGBN4KAw==
+  </data>
+ </layer>
 </map>
