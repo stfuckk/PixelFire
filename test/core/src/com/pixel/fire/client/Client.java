@@ -8,11 +8,14 @@ public class Client extends Thread {
     private static boolean isServerStarted = false;
     private int queueNumber;
 
+<<<<<<< HEAD
     private Socket socket;
     private BufferedReader bufferedReader;
     private DataOutputStream dos;
     private DataInputStream dis;
 
+=======
+>>>>>>> origin/Danil
     public void StartClient() {
         System.out.println("Starting client...");
         this.start();
