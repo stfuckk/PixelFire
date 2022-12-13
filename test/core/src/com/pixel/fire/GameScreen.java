@@ -28,6 +28,9 @@ import com.pixel.fire.Objects.Player.Player;
 import com.pixel.fire.client.Client;
 import com.pixel.fire.server.Server;
 
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import static com.pixel.fire.Helper.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter
@@ -48,6 +51,7 @@ public class GameScreen extends ScreenAdapter
     private MenuScreen menuScreen;
     //game objects
     private Player player;
+    private ArrayList<Bullet> bullets;
     private boolean paused = false;
 
     public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen)
@@ -65,6 +69,8 @@ public class GameScreen extends ScreenAdapter
         this.menuScreen = menuScreen;
 
         this.skin = assetManager.get(Assets.SKIN);
+
+        bullets = new ArrayList<Bullet>();
     }
 
     private void update()
@@ -72,6 +78,10 @@ public class GameScreen extends ScreenAdapter
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             pause();
+        }
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused)
+        {
+            bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft()));
         }
         world.step(1/60f, 6, 2);
         cameraUpdate();
@@ -99,11 +109,28 @@ public class GameScreen extends ScreenAdapter
         orthogonalBackgroundRenderer.render();
         player.render(batch);
         orthogonalTiledMapRenderer.render();
+
+        ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+        for (Bullet bullet : bullets)
+        {
+            bullet.update(delta);
+            if (bullet.remove)
+            {
+                bulletsToRemove.add(bullet);
+            }
+        }
+        bullets.removeAll(bulletsToRemove);
+
         batch.begin();
+        for (Bullet bullet : bullets)
+        {
+            bullet.render(batch);
+        }
+        batch.end();
         //render objects
         //player.render(batch);
-        batch.end();
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+
         if (paused)
         {
             stage.act();
@@ -130,7 +157,6 @@ public class GameScreen extends ScreenAdapter
             public void clicked(InputEvent event, float x, float y)
             {
                 pause();
-                mainTable.setVisible(false);
             }
         });
         menuScreen.addButton("Options", mainTable).addListener(new ClickListener()

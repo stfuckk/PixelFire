@@ -189,4 +189,9 @@ public class Player extends GameEntity
     {
         body.setTransform(10, 15, 0);
     }
+
+    public boolean isLeft()
+    {
+        return left;
+    }
 }
