@@ -79,7 +79,7 @@ public class GameScreen extends ScreenAdapter
         {
             pause();
         }
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused)
+        if ((Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))&& !paused)
         {
             bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft()));
         }
