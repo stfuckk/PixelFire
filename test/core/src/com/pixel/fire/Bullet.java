@@ -10,7 +10,7 @@ import static com.pixel.fire.Helper.Constants.PPM;
 
 public class Bullet
 {
-    private static final int SPEED = 1000;
+    private static final int SPEED = 900;
     private static Texture texture;
     private float x;
     private final float y;
@@ -45,10 +45,10 @@ public class Bullet
         int index = 0;
             for (int j = 0; j < 5; j++){
                 bulletFrames[index++] = tmp[0][j];
-                bulletAnimation = new Animation<TextureRegion>(0.025f, bulletFrames);
+                bulletAnimation = new Animation<TextureRegion>(0.03f, bulletFrames);
             }
         stateTime = 0f;
-        currentFrame = bulletAnimation.getKeyFrame(stateTime, true);
+        currentFrame = bulletAnimation.getKeyFrame(stateTime, false);
         //
     }
 

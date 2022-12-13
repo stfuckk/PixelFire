@@ -11,19 +11,13 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/Sprites/bullet.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/Sprites/bullet.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/GameScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/GameScreen.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Helper/TileMapHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Helper/TileMapHelper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/MyGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/MyGame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Objects/Player/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/classes/java/main/com/pixel/fire/Objects/Player/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/maps/map1_background.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/assets/maps/map1_background.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/maps/tiles.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/maps/tiles.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/build/libs/core-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/libs/core-1.0.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/core/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/src/com/pixel/fire/Bullet.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/pixel/fire/Bullet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/com/pixel/fire/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/pixel/fire/GameScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/desktop/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/desktop/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
