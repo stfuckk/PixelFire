@@ -2,49 +2,49 @@
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="6" nextobjectid="78">
  <tileset firstgid="1" source="tiles.tsx"/>
  <objectgroup id="2" name="objects">
-  <object id="13" x="128" y="896">
+  <object id="13" name="platform" x="128" y="896">
    <polygon points="0,0 512,0 512,128 0,128"/>
   </object>
-  <object id="50" x="1280" y="896">
+  <object id="50" name="platform" x="1280" y="896">
    <polygon points="0,0 512,0 512,128 0,128"/>
   </object>
-  <object id="51" x="128" y="320">
+  <object id="51" name="platform" x="128" y="320">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
-  <object id="52" x="1664" y="320">
+  <object id="52" name="platform" x="1664" y="320">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
-  <object id="53" x="896" y="448">
+  <object id="53" name="platform" x="896" y="448">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
-  <object id="67" x="768" y="768">
+  <object id="67" name="platform" x="770" y="768">
    <polygon points="0,0 384,0 384,128 0,128"/>
   </object>
-  <object id="68" x="832" y="704">
+  <object id="68" name="platform" x="832" y="704">
    <polygon points="0,0 256,0 256,64 0,64"/>
   </object>
-  <object id="69" x="1088" y="128">
+  <object id="69" name="platform" x="1088" y="128">
    <polygon points="0,0 320,0 320,128 0,128"/>
   </object>
-  <object id="70" x="512" y="128">
+  <object id="70" name="platform" x="512" y="128">
    <polygon points="0,0 320,0 320,128 0,128"/>
   </object>
-  <object id="71" x="1216" y="512">
+  <object id="71" name="platform" x="1216" y="512">
    <polygon points="0,0 256,0 256,128 0,128"/>
   </object>
-  <object id="72" x="448" y="512">
+  <object id="72" name="platform" x="448" y="512">
    <polygon points="0,0 256,0 256,128 0,128"/>
   </object>
-  <object id="73" x="448" y="192">
+  <object id="73" name="platform" x="448" y="192">
    <polygon points="0,0 192,0 192,128 0,128"/>
   </object>
-  <object id="74" x="1280" y="192">
+  <object id="74" name="platform" x="1280" y="192">
    <polygon points="0,0 192,0 192,128 0,128"/>
   </object>
-  <object id="75" x="1408" y="448">
+  <object id="75" name="platform" x="1408" y="448">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
-  <object id="76" x="384" y="448">
+  <object id="76" name="platform" x="384" y="448">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
   <object id="42" name="player" x="256" y="768" width="32" height="32"/>

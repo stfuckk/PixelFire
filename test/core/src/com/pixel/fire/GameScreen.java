@@ -7,9 +7,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -21,8 +24,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.pixel.fire.Helper.BodyHelperService;
 import com.pixel.fire.Helper.TileMapHelper;
 import com.pixel.fire.Objects.Player.Player;
 import com.pixel.fire.client.Client;
@@ -33,8 +38,7 @@ import java.util.ArrayList;
 
 import static com.pixel.fire.Helper.Constants.PPM;
 
-public class GameScreen extends ScreenAdapter
-{
+public class GameScreen extends ScreenAdapter {
     private MyGame game;
     private OrthographicCamera camera;
     private SpriteBatch batch; //render sprites
@@ -52,10 +56,11 @@ public class GameScreen extends ScreenAdapter
     //game objects
     private Player player;
     private ArrayList<Bullet> bullets;
+
+    private PolygonMapObject objects[];
     private boolean paused = false;
 
-    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen)
-    {
+    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen) {
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
@@ -71,29 +76,26 @@ public class GameScreen extends ScreenAdapter
         this.skin = assetManager.get(Assets.SKIN);
 
         bullets = new ArrayList<Bullet>();
+        Bullet.setObjects(objects);
     }
 
-    private void update()
-    {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
-        {
+    private void update() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pause();
         }
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused)
-        {
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused) {
             bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft()));
         }
-        world.step(1/60f, 6, 2);
+        world.step(1 / 60f, 6, 2);
         cameraUpdate();
         player.update();
-
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalBackgroundRenderer.setView(camera);
 
     }
 
-    private void cameraUpdate(){
+    private void cameraUpdate() {
         Vector3 position = camera.position;
         position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
         position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
@@ -233,5 +235,10 @@ public class GameScreen extends ScreenAdapter
     public void setPlayer(Player player)
     {
         this.player = player;
+    }
+
+    public void setObjects(PolygonMapObject polygons[])
+    {
+        objects = polygons;
     }
 }
