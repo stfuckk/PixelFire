@@ -33,7 +33,7 @@ public class TileMapHelper {
 
         tiledMap = new TmxMapLoader().load("maps/map0.tmx");
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
-        setObjects();
+        //setObjects();
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
 
@@ -46,6 +46,7 @@ public class TileMapHelper {
     public void parseMapObjects(MapObjects mapObjects){
         for(MapObject mapObject:mapObjects){
             if(mapObject instanceof PolygonMapObject){
+                gameScreen.setObjects((PolygonMapObject) mapObject);
                 createStaticBody((PolygonMapObject) mapObject);
             }
 
@@ -80,7 +81,7 @@ public class TileMapHelper {
         float[] vertices = polygonMapObject.getPolygon().getTransformedVertices();
         Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
-        for(int i = 0; i<vertices.length / 2; i++){
+        for(int i = 0; i< vertices.length / 2; i++){
             Vector2 current = new Vector2(vertices[i*2]/PPM, vertices[i*2+1] / PPM);
             worldVertices[i] = current;
         }
@@ -89,6 +90,7 @@ public class TileMapHelper {
         shape.set(worldVertices);
         return shape;
     }
+    /*
 
     private void setObjects()
     {
@@ -99,4 +101,5 @@ public class TileMapHelper {
         }
         gameScreen.setObjects(polygons);
     }
+     */
 }

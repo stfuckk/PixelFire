@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -56,8 +57,7 @@ public class GameScreen extends ScreenAdapter {
     //game objects
     private Player player;
     private ArrayList<Bullet> bullets;
-
-    private PolygonMapObject objects[];
+    private Array<PolygonMapObject> objects = new Array<PolygonMapObject>();
     private boolean paused = false;
 
     public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen) {
@@ -79,7 +79,7 @@ public class GameScreen extends ScreenAdapter {
         Bullet.setObjects(objects);
     }
 
-    private void update() {
+    private void update(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pause();
         }
@@ -88,6 +88,16 @@ public class GameScreen extends ScreenAdapter {
         }
         world.step(1 / 60f, 6, 2);
         cameraUpdate();
+        ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+        for (Bullet bullet : bullets)
+        {
+            bullet.update(delta);
+            if (bullet.remove)
+            {
+                bulletsToRemove.add(bullet);
+            }
+        }
+        bullets.removeAll(bulletsToRemove);
         player.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
@@ -110,8 +120,15 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         orthogonalBackgroundRenderer.render();
         player.render(batch);
+        batch.begin();
+        for (Bullet bullet : bullets)
+        {
+            bullet.render(batch);
+        }
+        batch.end();
         orthogonalTiledMapRenderer.render();
 
+        /*
         ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
         for (Bullet bullet : bullets)
         {
@@ -122,13 +139,7 @@ public class GameScreen extends ScreenAdapter {
             }
         }
         bullets.removeAll(bulletsToRemove);
-
-        batch.begin();
-        for (Bullet bullet : bullets)
-        {
-            bullet.render(batch);
-        }
-        batch.end();
+         */
         //render objects
         //player.render(batch);
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
@@ -138,7 +149,7 @@ public class GameScreen extends ScreenAdapter {
             stage.act();
             stage.draw();
         }
-        this.update();
+        this.update(delta);
     }
 
     @Override
@@ -237,8 +248,8 @@ public class GameScreen extends ScreenAdapter {
         this.player = player;
     }
 
-    public void setObjects(PolygonMapObject polygons[])
+    public void setObjects(PolygonMapObject polygon)
     {
-        objects = polygons;
+        objects.add(polygon);
     }
 }
