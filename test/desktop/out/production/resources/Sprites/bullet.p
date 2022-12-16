@@ -6,7 +6,7 @@ lowMin: 100.0
 lowMax: 100.0
 - Count - 
 min: 0
-max: 100
+max: 15
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
@@ -148,7 +148,7 @@ behind: false
 premultipliedAlpha: false
 spriteMode: single
 - Image Paths -
-libgdx-particles-master/images/simple.png
+/C:/Users/Denio/Desktop/images/simple.png
 
 
 2
@@ -313,4 +313,5 @@ behind: false
 premultipliedAlpha: false
 spriteMode: single
 - Image Paths -
+/C:/Users/Denio/Desktop/images/simple.png
 

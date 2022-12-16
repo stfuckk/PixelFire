@@ -14,31 +14,35 @@ import static com.pixel.fire.Helper.Constants.PPM;
 
 public class Bullet
 {
-    //ANIMATION
     private TextureRegion currentFrame;
     Animation<TextureRegion> bulletAnimation;
     float stateTime;
     private static final int SPEED = 900;
-    private static Texture texture;
+    private static Texture texture = new Texture("Sprites/bullet.png");
+    private Particles destroyParticle;
     private static final Array<Rectangle> objects = new Array<>();
+    private static SpriteBatch batch;
     private Rectangle object = null;
     private float x;
     private final float y;
     private final boolean isLeft;
     private boolean collision = false;
     public boolean remove = false;
+    public boolean invisible = false;
 
-    public Bullet (Vector2 position, boolean isLeft)
+    public Bullet (Vector2 position, boolean isLeft, SpriteBatch spriteBatch)
     {
         this.isLeft = isLeft;
         if (isLeft) this.x = position.x * PPM - 35;
         else this.x = position.x * PPM + 5;
         this.y = position.y * PPM;
 
+        /*
         if (texture == null)
         {
             texture = new Texture("Sprites/bullet.png");
         }
+         */
 
         for (int i = 0; i < objects.size; i++)
         {
@@ -72,7 +76,7 @@ public class Bullet
         TextureRegion[][] tmp;
         tmp = TextureRegion.split(texture,
                 texture.getWidth() / 5,
-                texture.getHeight() / 1);
+                texture.getHeight());
 
         TextureRegion[] bulletFrames = new TextureRegion[5];
         int index = 0;
@@ -82,6 +86,9 @@ public class Bullet
         }
         stateTime = 0f;
         currentFrame = bulletAnimation.getKeyFrame(stateTime, false);
+        batch = spriteBatch;
+
+        destroyParticle = new Particles(batch, "Sprites/bullet.p", "Sprites/images");
     }
 
     public void update (float deltaTime)
@@ -100,11 +107,19 @@ public class Bullet
         }
     }
 
-    public void render (SpriteBatch batch)
+    public void render()
     {
-        stateTime += Gdx.graphics.getDeltaTime();
-        currentFrame = bulletAnimation.getKeyFrame(stateTime, false);
-        batch.draw(currentFrame, x, y-10);
+        if (!invisible)
+        {
+            stateTime += Gdx.graphics.getDeltaTime();
+            currentFrame = bulletAnimation.getKeyFrame(stateTime, false);
+            batch.draw(currentFrame, x, y-10);
+        }
+        else
+        {
+            destroyParticle.update(Gdx.graphics.getDeltaTime());
+            destroyParticle.render();
+        }
     }
 
     public static void setObjects(Array<PolygonMapObject> polygons)
@@ -129,7 +144,16 @@ public class Bullet
     {
         if (object.contains(x,y))
         {
-            remove = true;
+            if (!invisible)
+            {
+                this.startParticle();
+            }
+            invisible = true;
         }
+    }
+
+    private void startParticle()
+    {
+        destroyParticle.start(x,y);
     }
 }

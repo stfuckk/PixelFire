@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 
 import static com.pixel.fire.Helper.Constants.PPM;
 
@@ -22,6 +23,8 @@ public class Player extends GameEntity
     private boolean isJumping = false;
     private boolean isFalling = false;
     private boolean paused = false;
+
+    private static Array<Vector2> spawnpoints = new Array<Vector2>();
 
     private int counter = 0;
     //
@@ -65,6 +68,14 @@ public class Player extends GameEntity
 
         stateTime = 0f;
         currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+
+        spawnpoints.add(new Vector2(10,15));
+        spawnpoints.add(new Vector2(30,30));
+        spawnpoints.add(new Vector2(15,35));
+        spawnpoints.add(new Vector2(5,35));
+        spawnpoints.add(new Vector2(45,40));
+        spawnpoints.add(new Vector2(45,13));
+        spawnpoints.add(new Vector2(30,19));
     }
 
     public TextureRegion[] FramesCycle(TextureRegion[][] tmp, TextureRegion[] Frames){
@@ -185,9 +196,19 @@ public class Player extends GameEntity
         paused = state;
     }
 
-    public void setPosition()
+    public void setRandomPosition()
     {
-        body.setTransform(10, 15, 0);
+        int random = 8;
+        while (random >= 7)
+        {
+            random = (int) (Math.random() * 10);
+        }
+        body.setTransform(spawnpoints.get(random).x, spawnpoints.get(random).y, 0);
+    }
+
+    public void setPosition(float x, float y, float angle)
+    {
+        body.setTransform(x, y, angle);
     }
 
     public boolean isLeft()
