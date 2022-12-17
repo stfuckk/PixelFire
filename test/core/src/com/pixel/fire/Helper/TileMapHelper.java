@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -32,6 +33,7 @@ public class TileMapHelper {
 
         tiledMap = new TmxMapLoader().load("maps/map0.tmx");
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
+        //setObjects();
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
 
@@ -44,6 +46,7 @@ public class TileMapHelper {
     public void parseMapObjects(MapObjects mapObjects){
         for(MapObject mapObject:mapObjects){
             if(mapObject instanceof PolygonMapObject){
+                gameScreen.setObjects((PolygonMapObject) mapObject);
                 createStaticBody((PolygonMapObject) mapObject);
             }
 
@@ -78,7 +81,7 @@ public class TileMapHelper {
         float[] vertices = polygonMapObject.getPolygon().getTransformedVertices();
         Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
-        for(int i = 0; i<vertices.length / 2; i++){
+        for(int i = 0; i< vertices.length / 2; i++){
             Vector2 current = new Vector2(vertices[i*2]/PPM, vertices[i*2+1] / PPM);
             worldVertices[i] = current;
         }
@@ -87,4 +90,16 @@ public class TileMapHelper {
         shape.set(worldVertices);
         return shape;
     }
+    /*
+
+    private void setObjects()
+    {
+        PolygonMapObject polygons[] = new PolygonMapObject[15];
+        for (int i = 0; i < 15; i++)
+        {
+            polygons[i] = (PolygonMapObject) tiledMap.getLayers().get("objects").getObjects().get(i);
+        }
+        gameScreen.setObjects(polygons);
+    }
+     */
 }

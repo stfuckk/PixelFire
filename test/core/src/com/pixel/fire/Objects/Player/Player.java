@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
+import com.pixel.fire.client.Client;
 
 import static com.pixel.fire.Helper.Constants.PPM;
 
@@ -23,6 +25,8 @@ public class Player extends GameEntity
     private boolean isFalling = false;
     private boolean paused = false;
 
+    private static Array<Vector2> spawnpoints = new Array<Vector2>();
+
     private int counter = 0;
     //
     private TextureRegion currentFrame;
@@ -31,6 +35,7 @@ public class Player extends GameEntity
     Animation<TextureRegion> jumpingAnimation;
     float stateTime;
     //
+    private Client client;
     public Player(float width, float height, Body body) {
         super(width, height, body); //super - parent class
         this.speed = 20f;
@@ -65,6 +70,14 @@ public class Player extends GameEntity
 
         stateTime = 0f;
         currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+
+        spawnpoints.add(new Vector2(10,15));
+        spawnpoints.add(new Vector2(30,30));
+        spawnpoints.add(new Vector2(15,35));
+        spawnpoints.add(new Vector2(5,35));
+        spawnpoints.add(new Vector2(45,40));
+        spawnpoints.add(new Vector2(45,13));
+        spawnpoints.add(new Vector2(30,19));
     }
 
     public TextureRegion[] FramesCycle(TextureRegion[][] tmp, TextureRegion[] Frames){
@@ -179,14 +192,34 @@ public class Player extends GameEntity
         body.setLinearVelocity(velX * speed, body.getLinearVelocity().y < 25 ?
                 body.getLinearVelocity().y : 25);
     }
+    private void SendPlayerInfo() {
+
+    }
 
     public void pause(boolean state)
     {
         paused = state;
     }
 
-    public void setPosition()
+    public void setRandomPosition()
     {
-        body.setTransform(10, 15, 0);
+        int random = 8;
+        while (random >= 7)
+        {
+            random = (int) (Math.random() * 10);
+        }
+        body.setTransform(spawnpoints.get(random).x, spawnpoints.get(random).y, 0);
     }
+
+    public void setPosition(float x, float y, float angle)
+    {
+        body.setTransform(x, y, angle);
+    }
+
+    public boolean isLeft()
+    {
+        return left;
+    }
+
+    public void SetClient(Client client) {this.client = client;}
 }

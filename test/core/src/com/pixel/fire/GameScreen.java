@@ -7,9 +7,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -21,37 +24,45 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.pixel.fire.Helper.BodyHelperService;
 import com.pixel.fire.Helper.TileMapHelper;
 import com.pixel.fire.Objects.Player.Player;
 import com.pixel.fire.client.Client;
 import com.pixel.fire.server.Server;
-
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import static com.pixel.fire.Helper.Constants.PPM;
 
-public class GameScreen extends ScreenAdapter
-{
-    private MyGame game;
-    private OrthographicCamera camera;
+public class GameScreen extends ScreenAdapter {
+
+    // GAME LOGIC
+    private MyGame game; // game object
+    private OrthographicCamera camera; // game camera
     private SpriteBatch batch; //render sprites
     private World world; //store box2d bodies
     private Box2DDebugRenderer box2DDebugRenderer; //see box2d without using textures
-    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
-    private OrthogonalTiledMapRenderer orthogonalBackgroundRenderer;
-    private TileMapHelper tileMapHelper;
-    private AssetManager assetManager;
-    private Skin skin;
-    private Table mainTable;
-    private Stage stage;
-    private Viewport viewport;
-    private MenuScreen menuScreen;
-    //game objects
-    private Player player;
-    private boolean paused = false;
+    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer; // arena renderer
+    private OrthogonalTiledMapRenderer orthogonalBackgroundRenderer; // background renderer
+    private TileMapHelper tileMapHelper; // class to initalize arena and background
+    private AssetManager assetManager; // class to initialize assets and work with them
 
-    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen)
-    {
+    // PAUSE AND MENU
+    private Skin skin; // Style for buttons in pause
+    private Table mainTable; // Pause
+    private Stage stage; // Stage for pause
+    private Viewport viewport; // Viewport for pause
+    private MenuScreen menuScreen; // Main menu
+    private boolean paused = false; // Pause boolean
+
+    // GAME OBJECTS
+    private Player player;
+    private ArrayList<Bullet> bullets;
+    private Array<PolygonMapObject> objects = new Array<PolygonMapObject>();
+
+    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen) {
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
@@ -65,25 +76,40 @@ public class GameScreen extends ScreenAdapter
         this.menuScreen = menuScreen;
 
         this.skin = assetManager.get(Assets.SKIN);
+
+        bullets = new ArrayList<Bullet>();
+        Bullet.setObjects(objects);
     }
 
-    private void update()
+    private void update(float delta)
     {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             pause();
         }
-        world.step(1/60f, 6, 2);
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused)
+        {
+            bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch));
+        }
+        world.step(1 / 60f, 6, 2);
         cameraUpdate();
+        ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+        for (Bullet bullet : bullets)
+        {
+            bullet.update(delta);
+            if (bullet.remove)
+            {
+                bulletsToRemove.add(bullet);
+            }
+        }
+        bullets.removeAll(bulletsToRemove);
         player.update();
-
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalBackgroundRenderer.setView(camera);
-
     }
 
-    private void cameraUpdate(){
+    private void cameraUpdate() {
         Vector3 position = camera.position;
         position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
         position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
@@ -98,18 +124,25 @@ public class GameScreen extends ScreenAdapter
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         orthogonalBackgroundRenderer.render();
         player.render(batch);
-        orthogonalTiledMapRenderer.render();
         batch.begin();
+        for (Bullet bullet : bullets)
+        {
+            bullet.render(delta);
+        }
+        batch.end();
+        orthogonalTiledMapRenderer.render();
+
         //render objects
         //player.render(batch);
-        batch.end();
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+
         if (paused)
         {
             stage.act();
             stage.draw();
         }
-        this.update();
+
+        this.update(delta);
     }
 
     @Override
@@ -130,7 +163,6 @@ public class GameScreen extends ScreenAdapter
             public void clicked(InputEvent event, float x, float y)
             {
                 pause();
-                mainTable.setVisible(false);
             }
         });
         menuScreen.addButton("Options", mainTable).addListener(new ClickListener()
@@ -147,7 +179,7 @@ public class GameScreen extends ScreenAdapter
             public void clicked(InputEvent event, float x, float y)
             {
                 pause();
-                player.setPosition();
+                player.setRandomPosition();
                 player.update();
                 game.setScreen(menuScreen);
             }
@@ -187,6 +219,11 @@ public class GameScreen extends ScreenAdapter
         return game;
     }
 
+    public Player getPlayer()
+    {
+        return player;
+    }
+
     public void pause()
     {
         if (paused == false)
@@ -208,4 +245,11 @@ public class GameScreen extends ScreenAdapter
     {
         this.player = player;
     }
+
+    public void setObjects(PolygonMapObject polygon)
+    {
+        objects.add(polygon);
+    }
+
+
 }

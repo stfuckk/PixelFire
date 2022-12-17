@@ -6,6 +6,8 @@ import java.net.Socket;
 public class Client extends Thread {
 
     private static boolean isServerStarted = false;
+
+    private static boolean shouldSuicide = false;
     private int queueNumber;
 
 
@@ -31,14 +33,14 @@ public class Client extends Thread {
     public void run() {
         try
         {
-            Socket s = new Socket("127.0.0.1", 2828);
+            socket = new Socket("127.0.0.1", 2828);
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             DataInputStream in = new DataInputStream(socket.getInputStream());
             isServerStarted = true;
             Log("Client connected to socket!\nClient writing-reading channels initialized.");
 
-            socket = s; bufferedReader = br; dos = out; dis = in;
+            bufferedReader = br; dos = out; dis = in;
 
             if(br.ready()) {
                 dos.writeUTF("00"); dos.flush();
@@ -46,14 +48,18 @@ public class Client extends Thread {
             }
 
             //Check if channel works and if its alive
+            if(!socket.isOutputShutdown()) {
+                dos.writeUTF("00");
+                dos.flush();
+                queueNumber = Integer.parseInt(dis.readUTF());
+            }
             while(!socket.isOutputShutdown()) {
                 //Wait for client data
                 if(bufferedReader.ready()) {
                     Log("Client starts writing in channel...");
-                    //Thread.sleep(1000);
+
                     String clientCommand = bufferedReader.readLine();
 
-                    //Writing data from client to channel's socket for server
                     dos.writeUTF(clientCommand);
                     dos.flush();
                     Log("Client sent message " + clientCommand + " to server.");
@@ -62,7 +68,7 @@ public class Client extends Thread {
                         Log("Client killed connection");
                         Thread.sleep(2000);
                         //Checks server output
-                        if(dis.read() > -1) {
+                        if(dis.read() > -1 && !shouldSuicide) {
                             //If there is output from server, save it in dis and read it
                             Log("reading...");
                             String input = dis.readUTF();
@@ -84,7 +90,7 @@ public class Client extends Thread {
         catch (InterruptedException ie) {};
     }
 
-    private void SendPlayerInfo(float x, float y, boolean left, boolean isGrounded, boolean isIdle,
+    public void SendPlayerInfo(float x, float y, boolean left, boolean isGrounded, boolean isIdle,
                                boolean isJumping, boolean isFalling) throws IOException {
         dos.writeUTF("Sending player info to server..."); dos.flush();
         dos.writeUTF(x +" "+ y +" "+ left +" "+ isGrounded +" "+ isIdle + " "+ isJumping +" "+ isFalling +" ");
@@ -94,4 +100,7 @@ public class Client extends Thread {
     private void Log(String text) {
         System.out.println(text);
     }
+
+    public void ShutDown() {shouldSuicide = true;}
+    public Client GetClient() {return this;}
 }
