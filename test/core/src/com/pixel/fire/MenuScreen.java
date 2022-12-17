@@ -35,7 +35,7 @@ public class MenuScreen extends ScreenAdapter
 
         this.game = game;
 
-        gameScreen = new GameScreen(game, assetManager, this);
+        gameScreen = new GameScreen(game, assetManager, this, client);
     }
 
     @Override

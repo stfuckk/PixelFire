@@ -9,30 +9,23 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.pixel.fire.Helper.BodyHelperService;
 import com.pixel.fire.Helper.TileMapHelper;
 import com.pixel.fire.Objects.Player.Player;
 import com.pixel.fire.client.Client;
-import com.pixel.fire.server.Server;
-import java.awt.event.MouseEvent;
+
 import java.util.ArrayList;
 import static com.pixel.fire.Helper.Constants.PPM;
 
@@ -61,8 +54,10 @@ public class GameScreen extends ScreenAdapter {
     private Player player;
     private ArrayList<Bullet> bullets;
     private Array<PolygonMapObject> objects = new Array<PolygonMapObject>();
+    // SERVER-CLIENT OBJECTS
+    private Client client;
 
-    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen) {
+    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client) {
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
@@ -76,6 +71,7 @@ public class GameScreen extends ScreenAdapter {
         this.menuScreen = menuScreen;
 
         this.skin = assetManager.get(Assets.SKIN);
+        this.client = client;
 
         bullets = new ArrayList<Bullet>();
         Bullet.setObjects(objects);
@@ -181,6 +177,7 @@ public class GameScreen extends ScreenAdapter {
                 pause();
                 player.setRandomPosition();
                 player.update();
+                client.ShutDown();
                 game.setScreen(menuScreen);
             }
         });

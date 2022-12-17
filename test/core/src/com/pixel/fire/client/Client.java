@@ -64,7 +64,7 @@ public class Client extends Thread {
                     dos.flush();
                     Log("Client sent message " + clientCommand + " to server.");
 
-                    if(clientCommand.equalsIgnoreCase("quit")) {
+                    if(clientCommand.equalsIgnoreCase("quit") || shouldSuicide) {
                         Log("Client killed connection");
                         Thread.sleep(2000);
                         //Checks server output
