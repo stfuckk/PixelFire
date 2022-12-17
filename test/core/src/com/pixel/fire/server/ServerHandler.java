@@ -34,11 +34,13 @@ public class ServerHandler implements  Runnable {
         ID = queuePosition;
         allClients[ID] = new clients(socketMassive[queuePosition]);
         clientDialog = socketMassive[ID];
+        this.run();
     }
 
     @Override
     public void run() {
         try {
+            Log("ServerHandler::ServerHandler()");
             //Initialize communication channel for server
             DataOutputStream dos = new DataOutputStream(clientDialog.getOutputStream());
             Log("DOS created");
@@ -51,16 +53,15 @@ public class ServerHandler implements  Runnable {
                 Log("READ from clientDialog message - " + entry);
 
                 if(entry.equals("00")) {
-                    dos.write(ID); dos.flush();
+                    dos.write(ID); dos.flush(); Log("ID:" + ID);
                 }
-                if(entry.equals("01")) {
+                else if(entry.equals("01")) {
                     String playerInfo = entry;
                     Update(playerInfo);
                 }
 
-                if(entry.equalsIgnoreCase("quit")) {
+                else if(entry.equals("quit")) {
                     Log("Client initialize connections suicide...");
-                    dos.writeUTF("Server reply - " + entry + " - OK");
                     Thread.sleep(1000);
                     break;
                 }

@@ -27,7 +27,7 @@ public class MenuScreen extends ScreenAdapter
     private Table settingsTable;
     private final MyGame game;
 
-    private Client client;
+    private Client client = new Client();
 
     public MenuScreen(AssetManager assetManager, MyGame game)
     {

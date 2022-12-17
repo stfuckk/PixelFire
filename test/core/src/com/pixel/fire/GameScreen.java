@@ -197,7 +197,10 @@ public class GameScreen extends ScreenAdapter {
                     @Override
                     protected void result(final Object object)
                     {
-                        if (object.toString().equals("Yes")) Gdx.app.exit();
+                        if (object.toString().equals("Yes")) {
+                            client.ShutDown();
+                            Gdx.app.exit();
+                        };
                     }
                 }.show(stage);
             }
