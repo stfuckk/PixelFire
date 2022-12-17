@@ -9,29 +9,41 @@ import java.util.logging.Logger;
 
 public class ServerHandler implements  Runnable {
 
+    static class clients {
+        public Socket clientSocket;
+        public DataOutputStream dos;
+        public DataInputStream dis;
+
+        public clients(Socket socket) throws IOException {
+            clientSocket = socket;
+            dos = new DataOutputStream(clientSocket.getOutputStream());
+            dis = new DataInputStream(clientSocket.getInputStream());
+        }
+    }
+
     private static Socket clientDialog;
 
-    private int playerPositionInQueue;
+    private static clients[] allClients = new clients[4];
+
+    private final int ID;
 
     protected static final Logger log = Logger.getLogger("log");
 
-    private DataOutputStream dos;
-    private DataInputStream dis;
 
-    public ServerHandler(Socket clientSocket, int queuePosition) {
-        ServerHandler.clientDialog = clientSocket;
-        playerPositionInQueue = queuePosition;
+    public ServerHandler(int queuePosition, Socket[] socketMassive) throws IOException {
+        ID = queuePosition;
+        allClients[ID] = new clients(socketMassive[queuePosition]);
+        clientDialog = socketMassive[ID];
     }
 
     @Override
     public void run() {
         try {
             //Initialize communication channel for server
-            DataOutputStream tempDos = new DataOutputStream(clientDialog.getOutputStream());
+            DataOutputStream dos = new DataOutputStream(clientDialog.getOutputStream());
             Log("DOS created");
-            DataInputStream tempDis = new DataInputStream(clientDialog.getInputStream());
+            DataInputStream dis = new DataInputStream(clientDialog.getInputStream());
             Log("DIS created");
-            dos = tempDos; dis = tempDis;
 
             while(!clientDialog.isClosed()) {
                 Log("Server reading from channel...\n");
@@ -39,10 +51,11 @@ public class ServerHandler implements  Runnable {
                 Log("READ from clientDialog message - " + entry);
 
                 if(entry.equals("00")) {
-                    dos.write(playerPositionInQueue); dos.flush();
+                    dos.write(ID); dos.flush();
                 }
                 if(entry.equals("01")) {
                     String playerInfo = entry;
+                    Update(playerInfo);
                 }
 
                 if(entry.equalsIgnoreCase("quit")) {
@@ -67,7 +80,9 @@ public class ServerHandler implements  Runnable {
     private void Log(String text) {
         log.log(Level.INFO, text);
     }
-    private void GetPlayerInfo(String entryText) {
+
+    private void Update(String entryText) {
+        Log("Sending player's info to other clients...");
 
     }
 }
