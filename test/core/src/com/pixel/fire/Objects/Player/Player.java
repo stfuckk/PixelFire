@@ -21,6 +21,7 @@ public class Player extends GameEntity
     private boolean isIdle = true;
     private boolean isJumping = false;
     private boolean isFalling = false;
+    private boolean paused = false;
 
     private int counter = 0;
     //
@@ -153,18 +154,19 @@ public class Player extends GameEntity
         if(isGrounded && body.getLinearVelocity().y > 0)
             isGrounded = false;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+        if(Gdx.input.isKeyPressed(Input.Keys.D) && paused == false){
             velX = 1;
             left = false;
             isIdle = false;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if(Gdx.input.isKeyPressed(Input.Keys.A) && paused == false) {
             velX = -1;
             left = true;
             isIdle = false;
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W) && counter <= 1){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W) && counter <= 1 && paused == false)
+        {
             float force = body.getMass() * 23;
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(), true);
@@ -178,4 +180,13 @@ public class Player extends GameEntity
                 body.getLinearVelocity().y : 25);
     }
 
+    public void pause(boolean state)
+    {
+        paused = state;
+    }
+
+    public void setPosition()
+    {
+        body.setTransform(10, 15, 0);
+    }
 }

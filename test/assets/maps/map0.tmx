@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="7" nextobjectid="78">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="6" nextobjectid="78">
  <tileset firstgid="1" source="tiles.tsx"/>
  <objectgroup id="2" name="objects">
   <object id="13" x="128" y="896">
@@ -49,14 +49,9 @@
   </object>
   <object id="42" name="player" x="256" y="768" width="32" height="32"/>
  </objectgroup>
- <layer id="6" name="Objects" width="30" height="20">
-  <data encoding="base64" compression="zlib">
-   eJztkkEOQDAUROcA9nSBSlDHchRH6VF6NJPUQkoT6teqL5kN6ZvvK1CQQAFrTn+dU/7Qz2+0kp1K8Ezu/QQz2Ni72Bx87rIMk8B5xtg+K8G+lP8c0gg4Qv68M0efSz07AJtmeqZjWubrPHSALtAJ7TsuLOwxzMxMzHjT+3aPdIAu0AnjO0SRuG+FggQ7xZoMjg==
-  </data>
- </layer>
  <layer id="1" name="Platforms" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztVF0LwjAMbNX1YQ50+uD//6fmIMEQ0q4lzgfZwbFCsjQf16R0QONEnIhn/l4cn8w28XsG70S8hTgTV2IhPhy/G9tW5e/l14s7x/Lu+tY/6Ge0Py3kSnzkOVLXKHrjb9UPe2uGecNeA7QCfdR0DLvNX+v66th7gd6ITntiaF3vObNfQ++SPd+ABmY4MxdmZEf0QmYojM7S7thJcaSXMgMbB2fbl1f67LeSYvVoTRdz/ieNH2jjDfIoBDc=
+   eJztVMsKAjEM7K6tILr4WBH0/z/UFFoYwqSmdg8eHJhT0smkTRPCbyIK78K9cBGmL3N6a07CGbgjeSxnpHbWW4VH4aXwSvLOED8Jb4Y/hkg8Vr1c6wHUwBie+aSfMRGPrVoWrDNMPxSf6NHyV5HnaGnE9Xmtr31qf9HwwPzXvETi3nvL/p7BnmPmH+f6ReIe4IywOWH+dX7PXDBtXQPvPjnyt4DeJaM7wou6Sw6FPTuCof4LfYf6v+Absrf36mAfs0H2H6y39Oq0+mjtZAu9OlYfI3tyROePbfAGBN4KAw==
   </data>
  </layer>
 </map>
