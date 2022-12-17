@@ -1,2 +1,0 @@
-00 = "Send queue number"
-01 = "Transitioning player data"

@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import com.pixel.fire.client.Client;
 
 import static com.pixel.fire.Helper.Constants.PPM;
 
@@ -35,7 +34,6 @@ public class Player extends GameEntity
     Animation<TextureRegion> jumpingAnimation;
     float stateTime;
     //
-    private Client client;
     public Player(float width, float height, Body body) {
         super(width, height, body); //super - parent class
         this.speed = 20f;
@@ -192,9 +190,6 @@ public class Player extends GameEntity
         body.setLinearVelocity(velX * speed, body.getLinearVelocity().y < 25 ?
                 body.getLinearVelocity().y : 25);
     }
-    private void SendPlayerInfo() {
-
-    }
 
     public void pause(boolean state)
     {
@@ -220,6 +215,4 @@ public class Player extends GameEntity
     {
         return left;
     }
-
-    public void SetClient(Client client) {this.client = client;}
 }

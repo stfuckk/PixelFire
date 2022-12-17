@@ -1,57 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="6" nextobjectid="84">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="7" nextobjectid="78">
  <tileset firstgid="1" source="tiles.tsx"/>
  <objectgroup id="2" name="objects">
-  <object id="13" name="platform" x="128" y="896">
+  <object id="13" x="128" y="896">
    <polygon points="0,0 512,0 512,128 0,128"/>
   </object>
-  <object id="51" name="platform" x="128" y="320">
+  <object id="50" x="1280" y="896">
+   <polygon points="0,0 512,0 512,128 0,128"/>
+  </object>
+  <object id="51" x="128" y="320">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
-  <object id="52" name="platform" x="1664" y="320">
+  <object id="52" x="1664" y="320">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
-  <object id="53" name="platform" x="896" y="448">
+  <object id="53" x="896" y="448">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
-  <object id="67" name="platform" x="770" y="768">
+  <object id="67" x="768" y="768">
    <polygon points="0,0 384,0 384,128 0,128"/>
   </object>
-  <object id="68" name="platform" x="832" y="704">
+  <object id="68" x="832" y="704">
    <polygon points="0,0 256,0 256,64 0,64"/>
   </object>
-  <object id="69" name="platform" x="1088" y="128">
+  <object id="69" x="1088" y="128">
    <polygon points="0,0 320,0 320,128 0,128"/>
   </object>
-  <object id="70" name="platform" x="512" y="128">
+  <object id="70" x="512" y="128">
    <polygon points="0,0 320,0 320,128 0,128"/>
   </object>
-  <object id="71" name="platform" x="1216" y="512">
+  <object id="71" x="1216" y="512">
    <polygon points="0,0 256,0 256,128 0,128"/>
   </object>
-  <object id="72" name="platform" x="448" y="512">
+  <object id="72" x="448" y="512">
    <polygon points="0,0 256,0 256,128 0,128"/>
   </object>
-  <object id="73" name="platform" x="448" y="192">
+  <object id="73" x="448" y="192">
    <polygon points="0,0 192,0 192,128 0,128"/>
   </object>
-  <object id="74" name="platform" x="1280" y="192">
+  <object id="74" x="1280" y="192">
    <polygon points="0,0 192,0 192,128 0,128"/>
   </object>
-  <object id="75" name="platform" x="1408" y="448">
+  <object id="75" x="1408" y="448">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
-  <object id="76" name="platform" x="384" y="448">
+  <object id="76" x="384" y="448">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
   <object id="42" name="player" x="256" y="768" width="32" height="32"/>
-  <object id="81" x="1280" y="896">
-   <polygon points="0,0 512,0 512,128 0,128"/>
-  </object>
  </objectgroup>
+ <layer id="6" name="Objects" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztkkEOQDAUROcA9nSBSlDHchRH6VF6NJPUQkoT6teqL5kN6ZvvK1CQQAFrTn+dU/7Qz2+0kp1K8Ezu/QQz2Ni72Bx87rIMk8B5xtg+K8G+lP8c0gg4Qv68M0efSz07AJtmeqZjWubrPHSALtAJ7TsuLOwxzMxMzHjT+3aPdIAu0AnjO0SRuG+FggQ7xZoMjg==
+  </data>
+ </layer>
  <layer id="1" name="Platforms" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztVMsKAjEM7K6tILr4WBH0/z/UFFoYwqSmdg8eHJhT0smkTRPCbyIK78K9cBGmL3N6a07CGbgjeSxnpHbWW4VH4aXwSvLOED8Jb4Y/hkg8Vr1c6wHUwBie+aSfMRGPrVoWrDNMPxSf6NHyV5HnaGnE9Xmtr31qf9HwwPzXvETi3nvL/p7BnmPmH+f6ReIe4IywOWH+dX7PXDBtXQPvPjnyt4DeJaM7wou6Sw6FPTuCof4LfYf6v+Absrf36mAfs0H2H6y39Oq0+mjtZAu9OlYfI3tyROePbfAGBN4KAw==
+   eJztVF0LwjAMbNX1YQ50+uD//6fmIMEQ0q4lzgfZwbFCsjQf16R0QONEnIhn/l4cn8w28XsG70S8hTgTV2IhPhy/G9tW5e/l14s7x/Lu+tY/6Ge0Py3kSnzkOVLXKHrjb9UPe2uGecNeA7QCfdR0DLvNX+v66th7gd6ITntiaF3vObNfQ++SPd+ABmY4MxdmZEf0QmYojM7S7thJcaSXMgMbB2fbl1f67LeSYvVoTRdz/ieNH2jjDfIoBDc=
   </data>
  </layer>
 </map>
