@@ -127,7 +127,7 @@ public class GameScreen extends ScreenAdapter {
         batch.begin();
         for (Bullet bullet : bullets)
         {
-            bullet.render();
+            bullet.render(delta);
         }
         batch.end();
         orthogonalTiledMapRenderer.render();
@@ -141,7 +141,7 @@ public class GameScreen extends ScreenAdapter {
             stage.act();
             stage.draw();
         }
-        
+
         this.update(delta);
     }
 
