@@ -132,26 +132,16 @@ public class GameScreen extends ScreenAdapter {
         batch.end();
         orthogonalTiledMapRenderer.render();
 
-        /*
-        ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-        for (Bullet bullet : bullets)
-        {
-            bullet.update(delta);
-            if (bullet.remove)
-            {
-                bulletsToRemove.add(bullet);
-            }
-        }
-        bullets.removeAll(bulletsToRemove);
-         */
         //render objects
         //player.render(batch);
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+
         if (paused)
         {
             stage.act();
             stage.draw();
         }
+        
         this.update(delta);
     }
 

@@ -9,26 +9,32 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-
 import static com.pixel.fire.Helper.Constants.PPM;
 
 public class Bullet
 {
+    // ANIMATION
     private TextureRegion currentFrame;
     Animation<TextureRegion> bulletAnimation;
     float stateTime;
+
+    // BULLET PROPERTIES
+    private static final Texture texture = new Texture("Sprites/bullet.png");
     private static final int SPEED = 900;
-    private static Texture texture = new Texture("Sprites/bullet.png");
-    private Particles destroyParticle;
-    private static final Array<Rectangle> objects = new Array<>();
-    private static SpriteBatch batch;
-    private Rectangle object = null;
     private float x;
     private final float y;
-    private final boolean isLeft;
-    private boolean collision = false;
-    public boolean remove = false;
-    public boolean invisible = false;
+    public boolean remove = false; // Bullet will be removed in gameScreen update() method
+    public boolean invisible = false; // Bullet will be made invisible
+    private final boolean isLeft; // Bullet flies to the left
+
+    // COLLISION CHECK
+    private static final Array<Rectangle> objects = new Array<>(); // Array of all map objects
+    private Rectangle object = null; // Object that the bullet will collide with
+    private boolean collision = false; // Will the bullet collide with any object
+
+    // RENDER
+    private final Particles destroyParticle; // Particle of bullet collision
+    private final SpriteBatch batch; // Sprite batch that render sprites
 
     public Bullet (Vector2 position, boolean isLeft, SpriteBatch spriteBatch)
     {
@@ -36,13 +42,6 @@ public class Bullet
         if (isLeft) this.x = position.x * PPM - 35;
         else this.x = position.x * PPM + 5;
         this.y = position.y * PPM;
-
-        /*
-        if (texture == null)
-        {
-            texture = new Texture("Sprites/bullet.png");
-        }
-         */
 
         for (int i = 0; i < objects.size; i++)
         {
@@ -144,10 +143,8 @@ public class Bullet
     {
         if (object.contains(x,y))
         {
-            if (!invisible)
-            {
-                this.startParticle();
-            }
+            if (!invisible) this.startParticle();
+
             invisible = true;
         }
     }
