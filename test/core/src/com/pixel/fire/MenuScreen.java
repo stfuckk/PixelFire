@@ -27,6 +27,8 @@ public class MenuScreen extends ScreenAdapter
     private Table settingsTable;
     private final MyGame game;
 
+    private Client client;
+
     public MenuScreen(AssetManager assetManager, MyGame game)
     {
         skin = assetManager.get(Assets.SKIN);
@@ -112,8 +114,8 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                Client clientThread = new Client();
-                clientThread.StartClient();
+                client = new Client();
+                client.StartClient();
                 try
                 {
                     Thread.sleep(100);
@@ -122,8 +124,9 @@ public class MenuScreen extends ScreenAdapter
                 {
                     throw new RuntimeException(e);
                 }
-                if (!clientThread.isServerStarted())
+                if (!client.isServerStarted())
                 {
+                    client.ShutDown(); //If server is not started initialize client's suicide
                     Dialog d = new Dialog("Connection error", skin)
                     {
                         {
@@ -137,6 +140,7 @@ public class MenuScreen extends ScreenAdapter
                 {
                     playTable.setVisible(false);
                     game.setScreen(gameScreen);
+                    //gameScreen.getPlayer();
                 }
             }
         });
@@ -155,10 +159,18 @@ public class MenuScreen extends ScreenAdapter
                             throw new RuntimeException(e);
                         }
                     }}.start();
+                    Dialog d = new Dialog("Server", skin) {
+                        {
+                            text("Server has been created!");
+                            button("Got it!");
+                        }
+                    }; d.show(stage);
+                    /*
                     Client clientThread = new Client();
                     clientThread.StartClient();
                     playTable.setVisible(false);
                     game.setScreen(gameScreen);
+                    */
             }
         });
         addButton("Return", playTable).addListener(new ClickListener()
@@ -196,4 +208,5 @@ public class MenuScreen extends ScreenAdapter
         table.row();
         return button;
     }
+
 }
