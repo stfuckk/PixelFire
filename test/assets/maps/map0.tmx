@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="6" nextobjectid="78">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="7" nextobjectid="78">
  <tileset firstgid="1" source="tiles.tsx"/>
- <layer id="4" name="Background" width="30" height="20">
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20JT6AAAHgaCWAAAQ==
-  </data>
- </layer>
  <objectgroup id="2" name="objects">
   <object id="13" x="128" y="896">
    <polygon points="0,0 512,0 512,128 0,128"/>
@@ -54,9 +49,14 @@
   </object>
   <object id="42" name="player" x="256" y="768" width="32" height="32"/>
  </objectgroup>
+ <layer id="6" name="Objects" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztkkEOQDAUROcA9nSBSlDHchRH6VF6NJPUQkoT6teqL5kN6ZvvK1CQQAFrTn+dU/7Qz2+0kp1K8Ezu/QQz2Ni72Bx87rIMk8B5xtg+K8G+lP8c0gg4Qv68M0efSz07AJtmeqZjWubrPHSALtAJ7TsuLOwxzMxMzHjT+3aPdIAu0AnjO0SRuG+FggQ7xZoMjg==
+  </data>
+ </layer>
  <layer id="1" name="Platforms" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztVMsKAjEM7K5bEV3foP//pybQwhAmJbV78ODAnJJOpmmalH4Ti/Ah3AtXYf4yp7fmJJyBO5LHckZqq95deBReCq8k7wzxk/Dm+GPQPq2OntZ6Ai0whmcQ2jvWg4l4bNXy4J1h+qn4RI+evwrWH4Q9b/WtT+tvcTww/zUvk3i0b+rvlfw5Zv5xrt8kHgHOCJsT5t/m98wF07Y1sPc5kL8F7C4Z3RFR1F1yKOzZEQz1X9ge2v+Cb8jePqqD95gdsv/gvWVUp3WP1k720Kvj3WNkT47o/LENPqB3CPc=
+   eJztVF0LwjAMbNX1YQ50+uD//6fmIMEQ0q4lzgfZwbFCsjQf16R0QONEnIhn/l4cn8w28XsG70S8hTgTV2IhPhy/G9tW5e/l14s7x/Lu+tY/6Ge0Py3kSnzkOVLXKHrjb9UPe2uGecNeA7QCfdR0DLvNX+v66th7gd6ITntiaF3vObNfQ++SPd+ABmY4MxdmZEf0QmYojM7S7thJcaSXMgMbB2fbl1f67LeSYvVoTRdz/ieNH2jjDfIoBDc=
   </data>
  </layer>
 </map>
