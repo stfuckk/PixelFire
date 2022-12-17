@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="7" nextobjectid="78">
  <tileset firstgid="1" source="tiles.tsx"/>
+ <tileset firstgid="50" name="atiles" tilewidth="64" tileheight="64" tilecount="49" columns="7">
+  <image source="animatedTiles/atiles.png" width="448" height="448"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="200"/>
+    <frame tileid="1" duration="200"/>
+    <frame tileid="2" duration="200"/>
+    <frame tileid="3" duration="200"/>
+    <frame tileid="4" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="7">
+   <animation>
+    <frame tileid="7" duration="200"/>
+    <frame tileid="8" duration="200"/>
+    <frame tileid="9" duration="200"/>
+    <frame tileid="10" duration="200"/>
+    <frame tileid="11" duration="200"/>
+   </animation>
+  </tile>
+ </tileset>
  <objectgroup id="2" name="objects">
   <object id="13" x="128" y="896">
    <polygon points="0,0 512,0 512,128 0,128"/>
@@ -51,7 +72,7 @@
  </objectgroup>
  <layer id="6" name="Objects" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztkkEOQDAUROcA9nSBSlDHchRH6VF6NJPUQkoT6teqL5kN6ZvvK1CQQAFrTn+dU/7Qz2+0kp1K8Ezu/QQz2Ni72Bx87rIMk8B5xtg+K8G+lP8c0gg4Qv68M0efSz07AJtmeqZjWubrPHSALtAJ7TsuLOwxzMxMzHjT+3aPdIAu0AnjO0SRuG+FggQ7xZoMjg==
+   eJztVEkKgDAQywO8qwc3cDt78zc+xaf4FJ9mQIWitth2FAQDuXQ6STotBb6B7mKtfz2FHjEwPKkfevZfzc9Wn2ecTHXb+4gt95t6fOdjmWHS1XQ5uD4/EsYBakbdPANBP5d7PiIS0DjizTez+c2uvQUw5mRGpmRC+uahBqgFaiJfPU5o6dOQNVmRpeK7/yl35qj+DdQAtUBNNKuHKCTe248fElgAtaoNzw==
   </data>
  </layer>
  <layer id="1" name="Platforms" width="30" height="20">
