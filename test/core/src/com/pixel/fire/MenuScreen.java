@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -17,18 +16,16 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pixel.fire.client.Client;
 import com.pixel.fire.server.Server;
 
-import java.awt.*;
-
 public class MenuScreen extends ScreenAdapter
 {
     private Stage stage;
     private Viewport viewport;
-    private Skin skin;
-    private GameScreen gameScreen;
+    private final Skin skin;
+    private final GameScreen gameScreen;
     private Table mainTable;
     private Table playTable;
     private Table settingsTable;
-    private MyGame game;
+    private final MyGame game;
 
     public MenuScreen(AssetManager assetManager, MyGame game)
     {
@@ -106,6 +103,7 @@ public class MenuScreen extends ScreenAdapter
             public void clicked(InputEvent event, float x, float y)
             {
                 mainTable.setVisible(false);
+                gameScreen.getPlayer().setRandomPosition();
                 game.setScreen(gameScreen);
             }
         });
