@@ -1,0 +1,3 @@
+00 = "Send queue number"
+01 = "Transitioning player data"
+10 = "Killing connections"
