@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="6" nextobjectid="78">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="7" nextobjectid="78">
  <tileset firstgid="1" source="tiles.tsx"/>
+ <tileset firstgid="50" name="atiles" tilewidth="64" tileheight="64" tilecount="49" columns="7">
+  <image source="animatedTiles/atiles.png" width="448" height="448"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="200"/>
+    <frame tileid="1" duration="200"/>
+    <frame tileid="2" duration="200"/>
+    <frame tileid="3" duration="200"/>
+    <frame tileid="4" duration="200"/>
+   </animation>
+  </tile>
+  <tile id="7">
+   <animation>
+    <frame tileid="7" duration="200"/>
+    <frame tileid="8" duration="200"/>
+    <frame tileid="9" duration="200"/>
+    <frame tileid="10" duration="200"/>
+    <frame tileid="11" duration="200"/>
+   </animation>
+  </tile>
+ </tileset>
  <objectgroup id="2" name="objects">
   <object id="13" x="128" y="896">
    <polygon points="0,0 512,0 512,128 0,128"/>
@@ -49,9 +70,14 @@
   </object>
   <object id="42" name="player" x="256" y="768" width="32" height="32"/>
  </objectgroup>
+ <layer id="6" name="Objects" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztVEkKgDAQywO8qwc3cDt78zc+xaf4FJ9mQIWitth2FAQDuXQ6STotBb6B7mKtfz2FHjEwPKkfevZfzc9Wn2ecTHXb+4gt95t6fOdjmWHS1XQ5uD4/EsYBakbdPANBP5d7PiIS0DjizTez+c2uvQUw5mRGpmRC+uahBqgFaiJfPU5o6dOQNVmRpeK7/yl35qj+DdQAtUBNNKuHKCTe248fElgAtaoNzw==
+  </data>
+ </layer>
  <layer id="1" name="Platforms" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztVMsKAjEM7K6tILr4WBH0/z/UFFoYwqSmdg8eHJhT0smkTRPCbyIK78K9cBGmL3N6a07CGbgjeSxnpHbWW4VH4aXwSvLOED8Jb4Y/hkg8Vr1c6wHUwBie+aSfMRGPrVoWrDNMPxSf6NHyV5HnaGnE9Xmtr31qf9HwwPzXvETi3nvL/p7BnmPmH+f6ReIe4IywOWH+dX7PXDBtXQPvPjnyt4DeJaM7wou6Sw6FPTuCof4LfYf6v+Absrf36mAfs0H2H6y39Oq0+mjtZAu9OlYfI3tyROePbfAGBN4KAw==
+   eJztVF0LwjAMbNX1YQ50+uD//6fmIMEQ0q4lzgfZwbFCsjQf16R0QONEnIhn/l4cn8w28XsG70S8hTgTV2IhPhy/G9tW5e/l14s7x/Lu+tY/6Ge0Py3kSnzkOVLXKHrjb9UPe2uGecNeA7QCfdR0DLvNX+v66th7gd6ITntiaF3vObNfQ++SPd+ABmY4MxdmZEf0QmYojM7S7thJcaSXMgMbB2fbl1f67LeSYvVoTRdz/ieNH2jjDfIoBDc=
   </data>
  </layer>
 </map>

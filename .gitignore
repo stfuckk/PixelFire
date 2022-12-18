@@ -1,0 +1,8 @@
+
+test/.gradle/7.5.1/executionHistory/executionHistory.bin
+test/.gradle/7.5.1/executionHistory/executionHistory.lock
+test/.gradle/7.5.1/fileHashes/fileHashes.bin
+test/.gradle/7.5.1/fileHashes/fileHashes.lock
+test/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+*.lock
+*.bin

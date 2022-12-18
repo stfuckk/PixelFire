@@ -70,7 +70,7 @@ public class GameScreen extends ScreenAdapter {
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.tileMapHelper = new TileMapHelper(this);
         this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
-        this.orthogonalBackgroundRenderer = tileMapHelper.setupBackground();
+        //this.orthogonalBackgroundRenderer = tileMapHelper.setupBackground();
 
         this.assetManager = assetManager;
         this.menuScreen = menuScreen;
@@ -106,7 +106,7 @@ public class GameScreen extends ScreenAdapter {
         player.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
-        orthogonalBackgroundRenderer.setView(camera);
+        //orthogonalBackgroundRenderer.setView(camera);
     }
 
     private void cameraUpdate() {
@@ -122,12 +122,12 @@ public class GameScreen extends ScreenAdapter {
     {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        orthogonalBackgroundRenderer.render();
+        //orthogonalBackgroundRenderer.render();
         player.render(batch);
         batch.begin();
         for (Bullet bullet : bullets)
         {
-            bullet.render(delta);
+            bullet.render();
         }
         batch.end();
         orthogonalTiledMapRenderer.render();
@@ -141,7 +141,7 @@ public class GameScreen extends ScreenAdapter {
             stage.act();
             stage.draw();
         }
-
+        
         this.update(delta);
     }
 

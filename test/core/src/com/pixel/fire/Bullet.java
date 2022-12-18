@@ -90,15 +90,15 @@ public class Bullet
         destroyParticle = new Particles(batch, "Sprites/bullet.p", "Sprites/images");
     }
 
-    public void update (float delta)
+    public void update (float deltaTime)
     {
         if (collision)
         {
             checkCollision();
         }
 
-        if (isLeft) x -= SPEED * delta;
-        else x += SPEED * delta;
+        if (isLeft) x -= SPEED * deltaTime;
+        else x += SPEED * deltaTime;
 
         if (x > Gdx.graphics.getWidth() * PPM / 12)
         {
@@ -106,17 +106,17 @@ public class Bullet
         }
     }
 
-    public void render(float delta)
+    public void render()
     {
         if (!invisible)
         {
-            stateTime += delta;
+            stateTime += Gdx.graphics.getDeltaTime();
             currentFrame = bulletAnimation.getKeyFrame(stateTime, false);
             batch.draw(currentFrame, x, y-10);
         }
         else
         {
-            destroyParticle.update(delta);
+            destroyParticle.update(Gdx.graphics.getDeltaTime());
             destroyParticle.render();
         }
     }
@@ -151,7 +151,6 @@ public class Bullet
 
     private void startParticle()
     {
-        System.out.println(x + " " + y);
         destroyParticle.start(x,y);
     }
 }
