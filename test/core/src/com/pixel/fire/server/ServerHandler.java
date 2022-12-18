@@ -62,6 +62,7 @@ public class ServerHandler implements  Runnable {
                 }
                 else if(entry.equals("10")) {
                     Log("Client initialize connections suicide...");
+                    dos.writeUTF("Suicide connections"); dos.flush();
                     break;
                 }
                 dos.flush();

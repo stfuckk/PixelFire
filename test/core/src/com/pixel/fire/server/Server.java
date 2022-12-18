@@ -50,9 +50,14 @@ public class Server {
                 clientHandlers[clientsCount] = new ServerHandler(clientsCount, clients);
                 logger.log(Level.INFO,"Connection accepted...");
                 clientsCount++;
-                clientHandlers[clientsCount].UpdateClientsCount(clientsCount);
+                //clientHandlers[clientsCount].UpdateClientsCount(clientsCount);
+                if(clientsCount == 0 || clientHandlers[0] == null) {
+                    break;
+                }
             }
             executeIt.shutdown();
+            serverSocket.close();
+            br.close();
         }
         catch(IOException e) {
             logger.log(Level.INFO, "An error has happened!");

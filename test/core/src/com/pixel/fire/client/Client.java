@@ -55,10 +55,10 @@ public class Client extends Thread {
             EchoReply("Client starts writing in channel...");
             while(!socket.isOutputShutdown()) {
                 //Wait for client data
-                    if(shouldSuicide) {
-
+                //EchoReply("ShouldSuicide = " + shouldSuicide);
+                    if(dis.readUTF().equals("Suicide connections")) {
                         EchoReply("Client killed connection");
-                        dos.writeUTF("10"); dos.flush();
+                        //dos.writeUTF("10"); dos.flush();
                         break;
                     }
                     /*String clientCommand = dis.readUTF();
@@ -97,6 +97,12 @@ public class Client extends Thread {
     public void ShutDown() {
         shouldSuicide = true;
         EchoReply("ShouldSuicide: " + shouldSuicide);
+        try {
+            dos.writeUTF("10");
+            dos.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     public Client GetClient() {return this;}
 
