@@ -15,7 +15,7 @@ public class Server {
 
     protected static final Logger logger = Logger.getLogger("log");
 
-    protected static ExecutorService executeIt = Executors.newFixedThreadPool(4);
+    protected static ExecutorService executeIt = Executors.newFixedThreadPool(2);
 
     protected static int clientsCount = 0;
 
@@ -50,6 +50,7 @@ public class Server {
                 clientHandlers[clientsCount] = new ServerHandler(clientsCount, clients);
                 logger.log(Level.INFO,"Connection accepted...");
                 clientsCount++;
+                clientHandlers[clientsCount].UpdateClientsCount(clientsCount);
             }
             executeIt.shutdown();
         }

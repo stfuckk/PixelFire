@@ -26,6 +26,7 @@ public class ServerHandler implements  Runnable {
     private static clients[] allClients = new clients[4];
 
     private final int ID;
+    private int clientsCount = 1;
 
     protected static final Logger log = Logger.getLogger("log");
 
@@ -48,21 +49,19 @@ public class ServerHandler implements  Runnable {
             Log("DIS created");
 
             while(!clientDialog.isClosed()) {
-                Log("Server reading from channel...\n");
+                Log("Reading...\n");
                 String entry = dis.readUTF();
-                Log("READ from clientDialog message - " + entry);
+                Log("Client command: " + entry);
 
                 if(entry.equals("00")) {
-                    dos.write(ID); dos.flush(); Log("ID:" + ID);
+                    dos.writeUTF(String.valueOf(ID)); dos.flush(); Log("ID:" + ID);
                 }
                 else if(entry.equals("01")) {
                     String playerInfo = entry;
                     Update(playerInfo);
                 }
-
-                else if(entry.equals("quit")) {
+                else if(entry.equals("10")) {
                     Log("Client initialize connections suicide...");
-                    Thread.sleep(1000);
                     break;
                 }
                 dos.flush();
@@ -74,9 +73,6 @@ public class ServerHandler implements  Runnable {
 
             Log("Closing connections and channels - DONE!");
         } catch (IOException e) {e.printStackTrace();}
-        catch (InterruptedException e) {
-            log.log(Level.INFO, "Interruption exception...");
-        }
     }
     private void Log(String text) {
         log.log(Level.INFO, text);
@@ -84,6 +80,10 @@ public class ServerHandler implements  Runnable {
 
     private void Update(String entryText) {
         Log("Sending player's info to other clients...");
-
+        Log("Server.clientsCount:" + clientsCount);
+        //Log("Updated info: " + entryText);
+    }
+    public void UpdateClientsCount(int clientsCount) {
+        this.clientsCount = clientsCount;
     }
 }

@@ -114,7 +114,7 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                client = new Client();
+                //client = new Client();
                 client.StartClient();
                 try
                 {
@@ -140,7 +140,7 @@ public class MenuScreen extends ScreenAdapter
                 {
                     playTable.setVisible(false);
                     game.setScreen(gameScreen);
-                    //gameScreen.getPlayer();
+                    gameScreen.getPlayer().SetClient(client);
                 }
             }
         });

@@ -36,6 +36,7 @@ public class Player extends GameEntity
     float stateTime;
     //
     private Client client;
+    private boolean isStateChanged = false;
     public Player(float width, float height, Body body) {
         super(width, height, body); //super - parent class
         this.speed = 20f;
@@ -156,26 +157,35 @@ public class Player extends GameEntity
             isJumping = false;
             isFalling = false;
             counter = 0;
+            //isStateChanged = true;
         }
 
-        if(isGrounded && body.getLinearVelocity().y < 0)
+        if(isGrounded && body.getLinearVelocity().y < 0) {
             isFalling = true;
+            isStateChanged = true;
+        }
 
-        if(isGrounded && body.getLinearVelocity().x == 0)
+        if(isGrounded && body.getLinearVelocity().x == 0) {
             isIdle = true;
+            //isStateChanged = true;
+        }
 
-        if(isGrounded && body.getLinearVelocity().y > 0)
+        if(isGrounded && body.getLinearVelocity().y > 0) {
             isGrounded = false;
+            isStateChanged = true;
+        }
 
         if(Gdx.input.isKeyPressed(Input.Keys.D) && paused == false){
             velX = 1;
             left = false;
             isIdle = false;
+            isStateChanged = true;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.A) && paused == false) {
             velX = -1;
             left = true;
             isIdle = false;
+            isStateChanged = true;
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.W) && counter <= 1 && paused == false)
@@ -187,13 +197,19 @@ public class Player extends GameEntity
             isIdle = false;
             isJumping = true;
             counter++;
+            isStateChanged = true;
         }
 
         body.setLinearVelocity(velX * speed, body.getLinearVelocity().y < 25 ?
                 body.getLinearVelocity().y : 25);
+
+        SendPlayerInfo();
     }
     private void SendPlayerInfo() {
-
+        if(isStateChanged) {
+            client.SendPlayerInfo(x, y, left, isGrounded, isIdle, isJumping, isFalling);
+            isStateChanged = false;
+        }
     }
 
     public void pause(boolean state)
