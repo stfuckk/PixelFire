@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Particles
 {
-    private final ParticleEffect particle;
-    private final SpriteBatch batch;
+    private ParticleEffect particle;
+    private SpriteBatch batch;
 
     public Particles(SpriteBatch spriteBatch, String filePath,String imagesDir)
     {
