@@ -38,7 +38,6 @@ public class GameScreen extends ScreenAdapter {
     private World world; //store box2d bodies
     private Box2DDebugRenderer box2DDebugRenderer; //see box2d without using textures
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer; // arena renderer
-    private OrthogonalTiledMapRenderer orthogonalBackgroundRenderer; // background renderer
     private TileMapHelper tileMapHelper; // class to initalize arena and background
     private AssetManager assetManager; // class to initialize assets and work with them
 
@@ -65,7 +64,6 @@ public class GameScreen extends ScreenAdapter {
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.tileMapHelper = new TileMapHelper(this);
         this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
-        this.orthogonalBackgroundRenderer = tileMapHelper.setupBackground();
 
         this.assetManager = assetManager;
         this.menuScreen = menuScreen;
@@ -102,7 +100,6 @@ public class GameScreen extends ScreenAdapter {
         player.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
-        orthogonalBackgroundRenderer.setView(camera);
     }
 
     private void cameraUpdate() {
@@ -118,7 +115,7 @@ public class GameScreen extends ScreenAdapter {
     {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        orthogonalBackgroundRenderer.render();
+        orthogonalTiledMapRenderer.render();
         player.render(batch);
         batch.begin();
         for (Bullet bullet : bullets)
@@ -126,7 +123,6 @@ public class GameScreen extends ScreenAdapter {
             bullet.render(delta);
         }
         batch.end();
-        orthogonalTiledMapRenderer.render();
 
         //render objects
         //player.render(batch);
