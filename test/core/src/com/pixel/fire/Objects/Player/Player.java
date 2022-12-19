@@ -23,7 +23,7 @@ public class Player extends GameEntity
     private boolean isIdle = true;
     private boolean isJumping = false;
     private boolean isFalling = false;
-    private boolean isDead = false;
+    public boolean isDead = false;
     private boolean paused = false;
 
     private static Array<Vector2> spawnpoints = new Array<Vector2>();
@@ -96,7 +96,12 @@ public class Player extends GameEntity
     public void update() {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
+        if (y <= 192)
+        {
+            isDead = true;
+        }
         checkUserInput();
+        System.out.println(isDead);
 
 
         //////////////GROUND CHECK///////////////

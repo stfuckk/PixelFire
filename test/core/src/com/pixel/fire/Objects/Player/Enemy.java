@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
+import org.w3c.dom.css.Rect;
 
 import static com.pixel.fire.Helper.Constants.PPM;
 
@@ -17,13 +19,15 @@ public class Enemy
     private static int FRAME_COLS = 8, FRAME_ROWS = 1;
     //
 
-    private float x;
-    private float y;
+    public static float x;
+    public static float y;
+    public static Rectangle collider;
     private boolean left = false;
     private boolean isGrounded = false;
     private boolean isIdle = true;
     private boolean isJumping = false;
     private boolean isFalling = false;
+    public boolean isDead = false;
     private static Array<Vector2> spawnpoints = new Array<Vector2>();
 
     //
@@ -92,6 +96,8 @@ public class Enemy
     }
 
     public void update() {
+        collider.x = x - collider.width + 16;
+        collider.y = y - collider.height + 16;
         //x = body.getPosition().x * PPM;
         //y = body.getPosition().y * PPM;
     }
@@ -121,5 +127,10 @@ public class Enemy
         batch.draw(currentFrame, x - 64, y - 16);
         batch.end();
         //
+    }
+
+    public static void setRectangle(float x, float y, float width, float height)
+    {
+        collider = new Rectangle(x, y, width, height);
     }
 }

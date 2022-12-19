@@ -76,7 +76,7 @@ public class ServerHandler implements  Runnable {
         } catch (IOException e) {e.printStackTrace();}
     }
     private void Log(String text) {
-        log.log(Level.INFO, text);
+        //log.log(Level.INFO, text);
     }
 
     private void Update(String entryText) {

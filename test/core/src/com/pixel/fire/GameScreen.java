@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -77,6 +78,7 @@ public class GameScreen extends ScreenAdapter {
         Bullet.setObjects(objects);
 
         this.enemy = new Enemy();
+
     }
 
     private void update(float delta)
@@ -99,6 +101,13 @@ public class GameScreen extends ScreenAdapter {
             {
                 bulletsToRemove.add(bullet);
             }
+            //System.out.println("bullet x: " + bullet.getX()+ " player x: " + enemy.collider.x);
+            //System.out.println("bullet y: " + bullet.getY() + " player y: " + enemy.collider.y);
+            if (Enemy.collider.contains(bullet.getX(), bullet.getY()))
+            {
+                enemy.isDead = true;
+                bullet.killPlayer();
+            }
         }
         bullets.removeAll(bulletsToRemove);
         player.update();
@@ -120,10 +129,12 @@ public class GameScreen extends ScreenAdapter {
     {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        orthogonalTiledMapRenderer.render();
+        orthogonalTiledMapRenderer.render(new int[]{2});
         player.render(batch);
+        //orthogonalTiledMapRenderer.render();
         enemy.render(batch);
         batch.begin();
+        orthogonalTiledMapRenderer.render(new int[]{1, 3});
         for (Bullet bullet : bullets)
         {
             bullet.render(delta);
@@ -132,7 +143,7 @@ public class GameScreen extends ScreenAdapter {
 
         //render objects
         //player.render(batch);
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
 
         if (paused)
         {
@@ -228,7 +239,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void pause()
     {
-        if (paused == false)
+        if (!paused)
         {
             mainTable.setVisible(true);
             paused = true;
