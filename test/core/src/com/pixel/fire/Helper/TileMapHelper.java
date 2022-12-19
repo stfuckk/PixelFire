@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -37,6 +36,7 @@ public class TileMapHelper {
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
 
+
     public void parseMapObjects(MapObjects mapObjects){
         for(MapObject mapObject:mapObjects){
             if(mapObject instanceof PolygonMapObject){
@@ -59,6 +59,19 @@ public class TileMapHelper {
                     );
                     gameScreen.setPlayer(new Player(rectangle.getWidth(), rectangle.getHeight(),body));
                 }
+                /*
+                if(rectangleName.equals("enemy")){
+                    Body body = BodyHelperService.createBody(
+                            rectangle.getX() + rectangle.getWidth() / 2,
+                            rectangle.getY() + rectangle.getHeight() / 2,
+                            rectangle.getWidth(),
+                            rectangle.getHeight(),
+                            false,
+                            gameScreen.getWorld()
+                    );
+                    gameScreen.setEnemy(new Player(rectangle.getWidth(), rectangle.getHeight(),body));
+                }
+                 */
             }
         }
     }

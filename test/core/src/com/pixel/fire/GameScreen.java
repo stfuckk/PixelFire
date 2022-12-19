@@ -9,30 +9,24 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.pixel.fire.Helper.BodyHelperService;
 import com.pixel.fire.Helper.TileMapHelper;
+import com.pixel.fire.Objects.Player.Enemy;
 import com.pixel.fire.Objects.Player.Player;
 import com.pixel.fire.client.Client;
-import com.pixel.fire.server.Server;
-import java.awt.event.MouseEvent;
+
 import java.util.ArrayList;
 import static com.pixel.fire.Helper.Constants.PPM;
 
@@ -58,10 +52,13 @@ public class GameScreen extends ScreenAdapter {
 
     // GAME OBJECTS
     private Player player;
+    private Enemy enemy;
     private ArrayList<Bullet> bullets;
     private Array<PolygonMapObject> objects = new Array<PolygonMapObject>();
+    // SERVER-CLIENT OBJECTS
+    private Client client;
 
-    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen) {
+    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client) {
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
@@ -74,9 +71,12 @@ public class GameScreen extends ScreenAdapter {
         this.menuScreen = menuScreen;
 
         this.skin = assetManager.get(Assets.SKIN);
+        this.client = client;
 
         bullets = new ArrayList<Bullet>();
         Bullet.setObjects(objects);
+
+        this.enemy = new Enemy();
     }
 
     private void update(float delta)
@@ -102,6 +102,7 @@ public class GameScreen extends ScreenAdapter {
         }
         bullets.removeAll(bulletsToRemove);
         player.update();
+        enemy.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
     }
@@ -119,14 +120,15 @@ public class GameScreen extends ScreenAdapter {
     {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        orthogonalTiledMapRenderer.render();
         player.render(batch);
+        enemy.render(batch);
         batch.begin();
         for (Bullet bullet : bullets)
         {
             bullet.render(delta);
         }
         batch.end();
-        orthogonalTiledMapRenderer.render();
 
         //render objects
         //player.render(batch);
@@ -177,6 +179,7 @@ public class GameScreen extends ScreenAdapter {
                 pause();
                 player.setRandomPosition();
                 player.update();
+                client.ShutDown();
                 game.setScreen(menuScreen);
             }
         });
@@ -196,7 +199,10 @@ public class GameScreen extends ScreenAdapter {
                     @Override
                     protected void result(final Object object)
                     {
-                        if (object.toString().equals("Yes")) Gdx.app.exit();
+                        if (object.toString().equals("Yes")) {
+                            client.ShutDown();
+                            Gdx.app.exit();
+                        };
                     }
                 }.show(stage);
             }
