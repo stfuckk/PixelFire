@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pixel.fire.Helper.TileMapHelper;
+import com.pixel.fire.Objects.Player.Enemy;
 import com.pixel.fire.Objects.Player.Player;
 import com.pixel.fire.client.Client;
 
@@ -51,6 +52,7 @@ public class GameScreen extends ScreenAdapter {
 
     // GAME OBJECTS
     private Player player;
+    private Enemy enemy;
     private ArrayList<Bullet> bullets;
     private Array<PolygonMapObject> objects = new Array<PolygonMapObject>();
     // SERVER-CLIENT OBJECTS
@@ -73,6 +75,8 @@ public class GameScreen extends ScreenAdapter {
 
         bullets = new ArrayList<Bullet>();
         Bullet.setObjects(objects);
+
+        this.enemy = new Enemy();
     }
 
     private void update(float delta)
@@ -98,6 +102,7 @@ public class GameScreen extends ScreenAdapter {
         }
         bullets.removeAll(bulletsToRemove);
         player.update();
+        enemy.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
     }
@@ -117,6 +122,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         orthogonalTiledMapRenderer.render();
         player.render(batch);
+        enemy.render(batch);
         batch.begin();
         for (Bullet bullet : bullets)
         {

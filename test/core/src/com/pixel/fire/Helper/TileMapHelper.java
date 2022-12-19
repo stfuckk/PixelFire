@@ -59,6 +59,19 @@ public class TileMapHelper {
                     );
                     gameScreen.setPlayer(new Player(rectangle.getWidth(), rectangle.getHeight(),body));
                 }
+                /*
+                if(rectangleName.equals("enemy")){
+                    Body body = BodyHelperService.createBody(
+                            rectangle.getX() + rectangle.getWidth() / 2,
+                            rectangle.getY() + rectangle.getHeight() / 2,
+                            rectangle.getWidth(),
+                            rectangle.getHeight(),
+                            false,
+                            gameScreen.getWorld()
+                    );
+                    gameScreen.setEnemy(new Player(rectangle.getWidth(), rectangle.getHeight(),body));
+                }
+                 */
             }
         }
     }
