@@ -13,8 +13,9 @@ public class Client extends Thread
     private DataOutputStream dos;
     private DataInputStream dis;
     private static String ip;
-
-    public void StartClient(String ip) {
+    
+    public void StartClient(String ip) 
+    {
         Log("Starting client...");
         this.start();
         if(this.isAlive()) {

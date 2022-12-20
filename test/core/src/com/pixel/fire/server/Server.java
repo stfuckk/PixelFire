@@ -51,7 +51,7 @@ public class Server {
                 logger.log(Level.INFO,"Connection accepted...");
                 clientsCount++;
                 //clientHandlers[clientsCount].UpdateClientsCount(clientsCount);
-                if(clientsCount == 0 || clientHandlers[0] == null) {
+                if(clientHandlers[0].GetClientsCount() == 0) {
                     break;
                 }
             }
