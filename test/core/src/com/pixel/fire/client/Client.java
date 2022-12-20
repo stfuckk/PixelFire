@@ -12,8 +12,9 @@ public class Client extends Thread
     //private BufferedReader bufferedReader;
     private DataOutputStream dos;
     private DataInputStream dis;
+    private static String ip;
 
-    public void StartClient() {
+    public void StartClient(String ip) {
         Log("Starting client...");
         this.start();
         if(this.isAlive()) {
@@ -22,6 +23,7 @@ public class Client extends Thread
             isServerStarted = true;
         }
         else Log("An error has occurred");
+        Client.ip = ip;
     }
 
     public boolean isServerStarted()

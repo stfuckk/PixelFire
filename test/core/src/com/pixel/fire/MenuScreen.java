@@ -1,6 +1,7 @@
 package com.pixel.fire;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pixel.fire.client.Client;
 import com.pixel.fire.server.Server;
+import com.badlogic.gdx.Input.TextInputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class MenuScreen extends ScreenAdapter
 {
@@ -26,8 +29,10 @@ public class MenuScreen extends ScreenAdapter
     private Table playTable;
     private Table settingsTable;
     private final MyGame game;
-
     private Client client = new Client();
+    private final TextListener textListener = new TextListener();
+    private TextField textField = null;
+    private String ip = "";
 
     public MenuScreen(AssetManager assetManager, MyGame game)
     {
@@ -104,33 +109,32 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                //client = new Client();
-                client.StartClient();
-                try
+                if (ip.equals(""))
                 {
-                    Thread.sleep(100);
-                }
-                catch (InterruptedException e)
-                {
-                    throw new RuntimeException(e);
-                }
-                if (!client.isServerStarted())
-                {
-                    client.ShutDown(); //If server is not started initialize client's suicide
-                    Dialog d = new Dialog("Connection error", skin)
-                    {
-                        {
-                            text("Server is not created!");
-                            button("OK");
-                        }
-                    };
-                    d.show(stage);
+                    checkTextField();
                 }
                 else
                 {
-                    playTable.setVisible(false);
-                    game.setScreen(gameScreen);
-                    gameScreen.getPlayer().SetClient(client);
+                    client.StartClient(ip);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (!client.isServerStarted()) {
+                        client.ShutDown(); //If server is not started initialize client's suicide
+                        Dialog d = new Dialog("Connection error", skin) {
+                            {
+                                text("Server is not created!");
+                                button("OK");
+                            }
+                        };
+                        d.show(stage);
+                    } else {
+                        playTable.setVisible(false);
+                        game.setScreen(gameScreen);
+                        gameScreen.getPlayer().SetClient(client);
+                    }
                 }
             }
         });
@@ -177,6 +181,8 @@ public class MenuScreen extends ScreenAdapter
     @Override
     public void render(float delta)
     {
+        update();
+
         Gdx.gl.glClearColor(.1f, .15f, .15f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -198,4 +204,45 @@ public class MenuScreen extends ScreenAdapter
         return button;
     }
 
+    public void checkTextField()
+    {
+        if (textField == null)
+        {
+            textField = new TextField("", skin);
+            playTable.add(textField);
+        }
+    }
+
+    private void update()
+    {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && textField != null && !textField.getText().equals(""))
+        {
+            textField.setVisible(false);
+            ip = textField.getText();
+        }
+    }
+
+}
+
+class TextListener implements TextInputListener
+{
+    private String text;
+
+
+    @Override
+    public void input(String text)
+    {
+        this.text = text;
+    }
+
+    @Override
+    public void canceled()
+    {
+        this.text = "Cancelled";
+    }
+
+    public String getText()
+    {
+        return text;
+    }
 }
