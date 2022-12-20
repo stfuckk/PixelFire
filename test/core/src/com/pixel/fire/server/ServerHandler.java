@@ -63,6 +63,8 @@ public class ServerHandler implements  Runnable {
                 else if(entry.equals("10")) {
                     Log("Client initialize connections suicide...");
                     dos.writeUTF("Suicide connections"); dos.flush();
+                    clientsCount--;
+                    Thread.sleep(10);
                     break;
                 }
                 dos.flush();
@@ -73,7 +75,9 @@ public class ServerHandler implements  Runnable {
             clientDialog.close();
 
             Log("Closing connections and channels - DONE!");
-        } catch (IOException e) {e.printStackTrace();}
+        } catch (IOException e) {e.printStackTrace();} catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
     private void Log(String text) {
         //log.log(Level.INFO, text);
@@ -87,4 +91,5 @@ public class ServerHandler implements  Runnable {
     public void UpdateClientsCount(int clientsCount) {
         this.clientsCount = clientsCount;
     }
+    public int GetClientsCount() {return clientsCount;}
 }

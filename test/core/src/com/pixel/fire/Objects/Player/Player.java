@@ -101,7 +101,7 @@ public class Player extends GameEntity
             isDead = true;
         }
         checkUserInput();
-        System.out.println(isDead);
+        //System.out.println(isDead);
 
 
         //////////////GROUND CHECK///////////////

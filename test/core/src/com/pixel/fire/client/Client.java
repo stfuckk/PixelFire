@@ -13,14 +13,6 @@ public class Client extends Thread
     private DataOutputStream dos;
     private DataInputStream dis;
 
-    private boolean shouldSuicide;
-    private int queueNumber;
-
-
-    private Socket socket;
-    //private BufferedReader bufferedReader;
-    private DataOutputStream dos;
-    private DataInputStream dis;
 
 
 
