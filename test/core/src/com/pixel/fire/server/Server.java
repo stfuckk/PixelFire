@@ -35,23 +35,37 @@ public class Server {
 
             //Works with client until socket is closed
             while(!serverSocket.isClosed()) {
-                if(br.ready()) {
                     logger.log(Level.INFO,"Main server found messages");
-                    String serverCommand = br.readLine();
+                    String serverCommand = "";
 
                     if(serverCommand.equalsIgnoreCase("quit")) {
                         logger.log(Level.INFO,"Main server initiate exit...");
                         serverSocket.close();
                         break;
                     }
-
-                }
                 clients[clientsCount] = serverSocket.accept();
-                clientHandlers[clientsCount] = new ServerHandler(clientsCount, clients);
-                logger.log(Level.INFO,"Connection accepted...");
+                logger.log(Level.INFO,"Connection accepted1...");
+                new Thread(new Runnable()
+                {
+                    @Override public void run()
+                    {
+                        try
+                        {
+                            clientHandlers[clientsCount] = new ServerHandler(clientsCount, clients);
+                            clientHandlers[clientsCount].run();
+                        }
+                        catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }).start();
+                Thread.sleep(100);
+                logger.log(Level.INFO,"Connection accepted2...");
+                logger.log(Level.INFO, "CC1: " + clientsCount);
                 clientsCount++;
-                //clientHandlers[clientsCount].UpdateClientsCount(clientsCount);
-                if(clientHandlers[0].GetClientsCount() == 0) {
+                logger.log(Level.INFO, "CC2: " + clientsCount);
+                clientHandlers[clientsCount - 1].UpdateClientsCount(clientsCount);
+                if(clientHandlers[clientsCount - 1].GetClientsCount() == 0) {
                     break;
                 }
             }

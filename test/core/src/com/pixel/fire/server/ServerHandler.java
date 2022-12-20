@@ -35,7 +35,6 @@ public class ServerHandler implements  Runnable {
         ID = queuePosition;
         allClients[ID] = new clients(socketMassive[queuePosition]);
         clientDialog = socketMassive[ID];
-        this.run();
     }
 
     @Override

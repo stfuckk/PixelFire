@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -33,6 +34,8 @@ public class MenuScreen extends ScreenAdapter
     private final TextListener textListener = new TextListener();
     private TextField textField = null;
     private String ip = "";
+    public boolean isServerStarted = false;
+    private Sound mainMenuMusic = Gdx.audio.newSound(Gdx.files.internal("audio/baby.wav"));
 
     public MenuScreen(AssetManager assetManager, MyGame game)
     {
@@ -41,6 +44,9 @@ public class MenuScreen extends ScreenAdapter
         this.game = game;
 
         gameScreen = new GameScreen(game, assetManager, this, client);
+        mainMenuMusic.play(1.0f);
+        long id = mainMenuMusic.play(1.0f);
+        mainMenuMusic.setLooping(id, true);
     }
 
     @Override
@@ -143,27 +149,36 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                    new Thread(){@Override public void run()
-                    {
-                        try
-                        {
-                            Server.start();
-                        } catch (InterruptedException e)
-                        {
-                            throw new RuntimeException(e);
+                if (!isServerStarted) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                isServerStarted = true;
+                                Server.start();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
-                    }}.start();
+                    }.start();
                     Dialog d = new Dialog("Server", skin) {
                         {
                             text("Server has been created!");
                             button("Got it!");
                         }
-                    }; d.show(stage);
-                    /*
-                    clientThread.StartClient();
-                    playTable.setVisible(false);
-                    game.setScreen(gameScreen);
-                    */
+                    };
+                    d.show(stage);
+                }
+                else
+                {
+                    Dialog d = new Dialog("Server", skin) {
+                        {
+                            text("Server already exist");
+                            button("OK");
+                        }
+                    };
+                    d.show(stage);
+                }
             }
         });
         addButton("Return", playTable).addListener(new ClickListener()

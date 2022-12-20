@@ -48,7 +48,7 @@ public class GameScreen extends ScreenAdapter {
     private Table mainTable; // Pause
     private Stage stage; // Stage for pause
     private Viewport viewport; // Viewport for pause
-    private MenuScreen menuScreen; // Main menu
+    private final MenuScreen menuScreen; // Main menu
     private boolean paused = false; // Pause boolean
 
     // GAME OBJECTS
@@ -191,6 +191,7 @@ public class GameScreen extends ScreenAdapter {
                 player.setRandomPosition();
                 player.update();
                 client.ShutDown();
+                menuScreen.isServerStarted = false;
                 game.setScreen(menuScreen);
             }
         });

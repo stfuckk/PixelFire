@@ -80,8 +80,8 @@ public class Enemy
         spawnpoints.add(new Vector2(45,13));
         spawnpoints.add(new Vector2(30,19));
 
-        x = spawnpoints.get(1).x * PPM;
-        y = spawnpoints.get(1).y * PPM;
+        x = spawnpoints.get(0).x * PPM;
+        y = spawnpoints.get(0).y * PPM;
         isGrounded = true;
     }
 
@@ -97,7 +97,7 @@ public class Enemy
 
     public void update() {
         collider.x = x - collider.width + 16;
-        collider.y = y - collider.height + 16;
+        collider.y = y - collider.height + 14;
         //x = body.getPosition().x * PPM;
         //y = body.getPosition().y * PPM;
     }

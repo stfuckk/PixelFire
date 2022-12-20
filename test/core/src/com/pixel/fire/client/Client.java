@@ -17,14 +17,14 @@ public class Client extends Thread
     public void StartClient(String ip) 
     {
         Log("Starting client...");
-        this.start();
-        if(this.isAlive()) {
+        if (!this.isAlive()) this.start();
+        if (this.isAlive())
+        {
             Log("Client started!");
             shouldSuicide = false;
             isServerStarted = true;
+            Client.ip = ip;
         }
-        else Log("An error has occurred");
-        Client.ip = ip;
     }
 
     public boolean isServerStarted()
@@ -89,7 +89,7 @@ public class Client extends Thread
     }
 
     private void Log(String text) {
-        System.out.println(text);
+        //System.out.println(text);
     }
 
     public void ShutDown() {
