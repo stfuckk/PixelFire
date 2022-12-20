@@ -23,6 +23,7 @@ public class Player extends GameEntity
     private boolean isIdle = true;
     private boolean isJumping = false;
     private boolean isFalling = false;
+    public boolean isDead = false;
     private boolean paused = false;
 
     private static Array<Vector2> spawnpoints = new Array<Vector2>();
@@ -95,8 +96,13 @@ public class Player extends GameEntity
     public void update() {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
-
+        if (y <= 192)
+        {
+            isDead = true;
+        }
         checkUserInput();
+        System.out.println(isDead);
+
 
         //////////////GROUND CHECK///////////////
         if
@@ -162,7 +168,7 @@ public class Player extends GameEntity
 
         if(isGrounded && body.getLinearVelocity().y < 0) {
             isFalling = true;
-            isStateChanged = true;
+            //isStateChanged = true;
         }
 
         if(isGrounded && body.getLinearVelocity().x == 0) {
@@ -172,7 +178,7 @@ public class Player extends GameEntity
 
         if(isGrounded && body.getLinearVelocity().y > 0) {
             isGrounded = false;
-            isStateChanged = true;
+            //isStateChanged = true;
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.D) && paused == false){

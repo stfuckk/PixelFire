@@ -16,13 +16,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.pixel.fire.GameScreen;
+import com.pixel.fire.Objects.Player.Enemy;
 import com.pixel.fire.Objects.Player.Player;
 
 import static com.pixel.fire.Helper.Constants.PPM;
 
 public class TileMapHelper {
-    private TiledMap tiledMap;
-    private TiledMap tiledMapBackground;
+    public TiledMap tiledMap;
     private GameScreen gameScreen;
 
     public TileMapHelper(GameScreen gameScreen){
@@ -37,11 +37,6 @@ public class TileMapHelper {
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
 
-    public OrthogonalTiledMapRenderer setupBackground(){
-
-        tiledMapBackground = new TmxMapLoader().load("maps/map1_background.tmx");
-        return new OrthogonalTiledMapRenderer(tiledMapBackground);
-    }
 
     public void parseMapObjects(MapObjects mapObjects){
         for(MapObject mapObject:mapObjects){
@@ -63,8 +58,22 @@ public class TileMapHelper {
                             false,
                             gameScreen.getWorld()
                     );
+                    Enemy.setRectangle(rectangle.getX() + rectangle.getWidth() / 2,rectangle.getY() + rectangle.getHeight() / 2, rectangle.getWidth(), rectangle.getHeight());
                     gameScreen.setPlayer(new Player(rectangle.getWidth(), rectangle.getHeight(),body));
                 }
+                /*
+                if(rectangleName.equals("enemy")){
+                    Body body = BodyHelperService.createBody(
+                            rectangle.getX() + rectangle.getWidth() / 2,
+                            rectangle.getY() + rectangle.getHeight() / 2,
+                            rectangle.getWidth(),
+                            rectangle.getHeight(),
+                            false,
+                            gameScreen.getWorld()
+                    );
+                    gameScreen.setEnemy(new Player(rectangle.getWidth(), rectangle.getHeight(),body));
+                }
+                 */
             }
         }
     }

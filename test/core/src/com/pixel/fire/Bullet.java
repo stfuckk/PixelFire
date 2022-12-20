@@ -129,6 +129,12 @@ public class Bullet
         }
     }
 
+    public void killPlayer()
+    {
+        if (!invisible) this.startParticle();
+        invisible = true;
+    }
+
     public float getX()
     {
         return x;
@@ -151,7 +157,6 @@ public class Bullet
 
     private void startParticle()
     {
-        System.out.println(x + " " + y);
         destroyParticle.start(x,y);
     }
 }

@@ -3,9 +3,15 @@ package com.pixel.fire.client;
 import java.io.*;
 import java.net.Socket;
 
-public class Client extends Thread {
-
+public class Client extends Thread
+{
     private static boolean isServerStarted = false;
+    private boolean shouldSuicide;
+    private int queueNumber;
+    private Socket socket;
+    //private BufferedReader bufferedReader;
+    private DataOutputStream dos;
+    private DataInputStream dis;
 
     private boolean shouldSuicide;
     private int queueNumber;

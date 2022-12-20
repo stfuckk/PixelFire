@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pixel.fire.Helper.TileMapHelper;
+import com.pixel.fire.Objects.Player.Enemy;
 import com.pixel.fire.Objects.Player.Player;
 import com.pixel.fire.client.Client;
 
@@ -38,7 +40,6 @@ public class GameScreen extends ScreenAdapter {
     private World world; //store box2d bodies
     private Box2DDebugRenderer box2DDebugRenderer; //see box2d without using textures
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer; // arena renderer
-    private OrthogonalTiledMapRenderer orthogonalBackgroundRenderer; // background renderer
     private TileMapHelper tileMapHelper; // class to initalize arena and background
     private AssetManager assetManager; // class to initialize assets and work with them
 
@@ -52,6 +53,7 @@ public class GameScreen extends ScreenAdapter {
 
     // GAME OBJECTS
     private Player player;
+    private Enemy enemy;
     private ArrayList<Bullet> bullets;
     private Array<PolygonMapObject> objects = new Array<PolygonMapObject>();
     // SERVER-CLIENT OBJECTS
@@ -65,7 +67,6 @@ public class GameScreen extends ScreenAdapter {
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.tileMapHelper = new TileMapHelper(this);
         this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
-        this.orthogonalBackgroundRenderer = tileMapHelper.setupBackground();
 
         this.assetManager = assetManager;
         this.menuScreen = menuScreen;
@@ -75,6 +76,9 @@ public class GameScreen extends ScreenAdapter {
 
         bullets = new ArrayList<Bullet>();
         Bullet.setObjects(objects);
+
+        this.enemy = new Enemy();
+
     }
 
     private void update(float delta)
@@ -97,12 +101,19 @@ public class GameScreen extends ScreenAdapter {
             {
                 bulletsToRemove.add(bullet);
             }
+            //System.out.println("bullet x: " + bullet.getX()+ " player x: " + enemy.collider.x);
+            //System.out.println("bullet y: " + bullet.getY() + " player y: " + enemy.collider.y);
+            if (Enemy.collider.contains(bullet.getX(), bullet.getY()))
+            {
+                enemy.isDead = true;
+                bullet.killPlayer();
+            }
         }
         bullets.removeAll(bulletsToRemove);
         player.update();
+        enemy.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
-        orthogonalBackgroundRenderer.setView(camera);
     }
 
     private void cameraUpdate() {
@@ -118,19 +129,21 @@ public class GameScreen extends ScreenAdapter {
     {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        orthogonalBackgroundRenderer.render();
+        orthogonalTiledMapRenderer.render(new int[]{2});
         player.render(batch);
+        //orthogonalTiledMapRenderer.render();
+        enemy.render(batch);
         batch.begin();
+        orthogonalTiledMapRenderer.render(new int[]{1, 3});
         for (Bullet bullet : bullets)
         {
             bullet.render(delta);
         }
         batch.end();
-        orthogonalTiledMapRenderer.render();
 
         //render objects
         //player.render(batch);
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
 
         if (paused)
         {
@@ -226,7 +239,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void pause()
     {
-        if (paused == false)
+        if (!paused)
         {
             mainTable.setVisible(true);
             paused = true;

@@ -99,16 +99,6 @@ public class MenuScreen extends ScreenAdapter
                 Gdx.app.exit();
             }
         });
-        addButton("Test", mainTable).addListener(new ClickListener()
-        {
-            @Override
-            public void clicked(InputEvent event, float x, float y)
-            {
-                mainTable.setVisible(false);
-                gameScreen.getPlayer().setRandomPosition();
-                game.setScreen(gameScreen);
-            }
-        });
         addButton("Connect", playTable).addListener(new ClickListener()
         {
             @Override
@@ -166,7 +156,6 @@ public class MenuScreen extends ScreenAdapter
                         }
                     }; d.show(stage);
                     /*
-                    Client clientThread = new Client();
                     clientThread.StartClient();
                     playTable.setVisible(false);
                     game.setScreen(gameScreen);
