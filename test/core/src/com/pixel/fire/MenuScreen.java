@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.pixel.fire.client.Client;
 import com.pixel.fire.server.Server;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class MenuScreen extends ScreenAdapter
@@ -31,11 +30,9 @@ public class MenuScreen extends ScreenAdapter
     private Table settingsTable;
     private final MyGame game;
     private Client client = new Client();
-    private final TextListener textListener = new TextListener();
     private TextField textField = null;
     private String ip = "";
     public boolean isServerStarted = false;
-    private Sound mainMenuMusic = Gdx.audio.newSound(Gdx.files.internal("audio/baby.wav"));
 
     public MenuScreen(AssetManager assetManager, MyGame game)
     {
@@ -44,14 +41,12 @@ public class MenuScreen extends ScreenAdapter
         this.game = game;
 
         gameScreen = new GameScreen(game, assetManager, this, client);
-        mainMenuMusic.play(0.1f);
-        long id = mainMenuMusic.play(0.1f);
-        mainMenuMusic.setLooping(id, true);
     }
 
     @Override
     public void show()
     {
+        SoundManager.get("mainMenuMusic").play(0.1f).loop(true);
         viewport = new ExtendViewport(700,800);
         stage = new Stage(viewport);
 
@@ -115,6 +110,10 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
+                if (textField != null)
+                {
+                    textField.setVisible(true);
+                }
                 if (ip.equals(""))
                 {
                     checkTextField();
@@ -136,10 +135,13 @@ public class MenuScreen extends ScreenAdapter
                             }
                         };
                         d.show(stage);
-                    } else {
+                    }
+                    else
+                    {
                         playTable.setVisible(false);
                         game.setScreen(gameScreen);
                         gameScreen.getPlayer().SetClient(client);
+                        SoundManager.get("mainMenuMusic").stop();
                     }
                 }
             }
@@ -186,6 +188,10 @@ public class MenuScreen extends ScreenAdapter
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
+                if (textField != null)
+                {
+                    textField.setVisible(false);
+                }
                 playTable.setVisible(false);
                 mainTable.setVisible(true);
             }
@@ -237,27 +243,4 @@ public class MenuScreen extends ScreenAdapter
         }
     }
 
-}
-
-class TextListener implements TextInputListener
-{
-    private String text;
-
-
-    @Override
-    public void input(String text)
-    {
-        this.text = text;
-    }
-
-    @Override
-    public void canceled()
-    {
-        this.text = "Cancelled";
-    }
-
-    public String getText()
-    {
-        return text;
-    }
 }
