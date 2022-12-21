@@ -2,6 +2,7 @@ package com.pixel.fire.client;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class Client extends Thread
 {
@@ -37,12 +38,11 @@ public class Client extends Thread
         try
         {
             socket = new Socket("127.0.0.1", 2828);
-            //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             DataInputStream in = new DataInputStream(socket.getInputStream());
             Log("Client connected to socket!\nClient writing-reading channels initialized.");
 
-            //bufferedReader = br;
+
             dos = out; dis = in;
 
             //Check if channel works and if its alive
@@ -59,19 +59,13 @@ public class Client extends Thread
                         //dos.writeUTF("10"); dos.flush();
                         break;
                     }
-                    /*String clientCommand = dis.readUTF();
-                    dos.writeUTF(clientCommand);
-                    dos.flush();
-                    Log("Client sent message " + clientCommand + " to server."); */
 
             }
             Log("Closing connections and channels on client's side - DONE.");
             dos.close();
             dis.close();
-            //br.close();
             out.close();
             in.close();
-            //bufferedReader.close();
             socket.close();
         }
         catch (IOException e) {Log("IOException");}
@@ -85,6 +79,8 @@ public class Client extends Thread
             dos.flush();
             dos.writeUTF(x + " " + y + " " + left + " " + isGrounded + " " + isIdle + " " + isJumping + " " + isFalling + " ");
             dos.flush();
+        } catch(SocketException e) {
+            System.out.println("HOY!");
         } catch(IOException e) {Log("IOException:"); e.printStackTrace();}
     }
 

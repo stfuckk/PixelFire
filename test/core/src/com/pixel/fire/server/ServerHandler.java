@@ -47,7 +47,7 @@ public class ServerHandler implements  Runnable {
             DataInputStream dis = new DataInputStream(clientDialog.getInputStream());
             Log("DIS created");
 
-            while(!clientDialog.isClosed()) {
+            while(!clientDialog.isClosed() && Server.CheckServerState()) {
                 Log("Reading...\n");
                 String entry = dis.readUTF();
                 Log("Client command: " + entry);
@@ -62,6 +62,7 @@ public class ServerHandler implements  Runnable {
                 else if(entry.equals("10")) {
                     Log("Client initialize connections suicide...");
                     dos.writeUTF("Suicide connections"); dos.flush();
+                    Server.RefreshData("Quit");
                     clientsCount--;
                     Thread.sleep(10);
                     break;

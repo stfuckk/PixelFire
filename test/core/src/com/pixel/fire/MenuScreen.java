@@ -44,8 +44,8 @@ public class MenuScreen extends ScreenAdapter
         this.game = game;
 
         gameScreen = new GameScreen(game, assetManager, this, client);
-        mainMenuMusic.play(1.0f);
-        long id = mainMenuMusic.play(1.0f);
+        mainMenuMusic.play(0.1f);
+        long id = mainMenuMusic.play(0.1f);
         mainMenuMusic.setLooping(id, true);
     }
 

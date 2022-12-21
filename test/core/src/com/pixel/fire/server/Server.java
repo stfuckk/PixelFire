@@ -21,13 +21,14 @@ public class Server {
 
     protected static Socket[] clients;
     protected static ServerHandler[] clientHandlers;
-
-
+    private static ServerSocket serverSocket;
+    private static boolean isActive = false;
+    protected static String serverCommand = "";
     public static void start () throws InterruptedException {
 
-        try(final ServerSocket serverSocket = new ServerSocket(2828)) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            logger.log(Level.INFO,"Server socket created, command console reader created");
+        try( ServerSocket servSock = new ServerSocket(2828)) {
+            serverSocket = servSock;
+            Log("Server socket created, command console reader created");
 
             //clients = new Client[4];
             clientHandlers = new ServerHandler[4];
@@ -35,16 +36,17 @@ public class Server {
 
             //Works with client until socket is closed
             while(!serverSocket.isClosed()) {
-                    logger.log(Level.INFO,"Main server found messages");
-                    String serverCommand = "";
+                Log("Main server found messages");
 
                     if(serverCommand.equalsIgnoreCase("quit")) {
-                        logger.log(Level.INFO,"Main server initiate exit...");
-                        serverSocket.close();
+                        Log("Main server initiate exit...");
                         break;
                     }
-                clients[clientsCount] = serverSocket.accept();
-                logger.log(Level.INFO,"Connection accepted1...");
+                try {clients[clientsCount] = serverSocket.accept();} catch (IOException e) {
+                    Log("serverSocket.accept() interrupted. Irrelevant! Continue...");
+                    return;
+                }
+                Log("Connection accepted1...");
                 new Thread(new Runnable()
                 {
                     @Override public void run()
@@ -52,6 +54,7 @@ public class Server {
                         try
                         {
                             clientHandlers[clientsCount] = new ServerHandler(clientsCount, clients);
+                            isActive = true;
                             clientHandlers[clientsCount].run();
                         }
                         catch (IOException e) {
@@ -60,23 +63,50 @@ public class Server {
                     }
                 }).start();
                 Thread.sleep(100);
-                logger.log(Level.INFO,"Connection accepted2...");
-                logger.log(Level.INFO, "CC1: " + clientsCount);
+                Log("Connection accepted2...");
+                Log("CC1: " + clientsCount);
                 clientsCount++;
-                logger.log(Level.INFO, "CC2: " + clientsCount);
-                clientHandlers[clientsCount - 1].UpdateClientsCount(clientsCount);
-                if(clientHandlers[clientsCount - 1].GetClientsCount() == 0) {
-                    break;
-                }
+                Log("CC2: " + clientsCount); //Need to make a cycle to run
+                //through all of clients
+
             }
-            executeIt.shutdown();
             serverSocket.close();
-            br.close();
+            executeIt.shutdown();
         }
         catch(IOException e) {
-            logger.log(Level.INFO, "An error has happened!");
+            Log("An error has happened!");
             e.printStackTrace();
         }
+    }
+    public static void KillServer() {
+        try {
+            Log("Shutting server down...");
+            serverSocket.close();
+            executeIt.shutdown();
+            isActive = false;
+            Log("Server shut down!");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void RefreshData(String action) throws IOException {
+        if(action.equals("Quit")) clientsCount--;
+        //else clientsCount++; <--- have an increment in Server.start();
+        Log("RefreshData: " + clientsCount);
+        for(int i = 0; i <= clientsCount; i++) {
+            clientHandlers[i].UpdateClientsCount(clientsCount);
+            Log("Server.RefreshData():clientHanlders[" + i + "] CC:" + clientsCount);
+        }
+        if(clientsCount==0){
+            isActive = false;
+            Log("Server.RefreshData() shouldSuicide = true");
+            KillServer();
+        }
+    }
+    public static boolean CheckServerState() {return isActive;}
+    private static void Log(String logText) {
+        logger.log(Level.INFO, logText);
     }
 
 }
