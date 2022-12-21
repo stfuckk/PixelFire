@@ -97,16 +97,24 @@ public class Player extends GameEntity
     }
 
     @Override
-    public void update() {
-        x = body.getPosition().x * PPM;
-        y = body.getPosition().y * PPM;
+    public void update()
+    {
+        if (!isDead)
+        {
+            x = body.getPosition().x * PPM;
+            y = body.getPosition().y * PPM;
+            checkUserInput();
+        }
+        else
+        {
+            this.setPosition(x, y, 0);
+        }
 
         if (y <= 192 && !isDead)
         {
-            SoundManager.get("death").play(SoundManager.volume);
+            SoundManager.get("death").play(SoundManager.soundVolume);
             isDead = true;
         }
-        checkUserInput();
         //System.out.println(isDead);
 
 
@@ -208,7 +216,7 @@ public class Player extends GameEntity
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.W) && counter <= 1 && paused == false)
         {
-            SoundManager.get("jump").play(SoundManager.volume);
+            SoundManager.get("jump").play(SoundManager.soundVolume);
             float force = body.getMass() * 23;
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(), true);
@@ -248,7 +256,7 @@ public class Player extends GameEntity
 
     public void setPosition(float x, float y, float angle)
     {
-        body.setTransform(x, y, angle);
+        body.setTransform(x / PPM, y / PPM, angle);
     }
 
     public boolean isLeft()

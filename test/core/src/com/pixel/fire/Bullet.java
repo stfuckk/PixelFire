@@ -133,7 +133,7 @@ public class Bullet
     {
         if (!invisible)
         {
-            SoundManager.get("bulletcollision").play(0.2f);
+            SoundManager.get("bulletcollision").play(SoundManager.soundVolume);
             this.startParticle();
         }
         invisible = true;
@@ -153,7 +153,7 @@ public class Bullet
     {
         if (object.contains(x,y) && !invisible)
         {
-            SoundManager.get("bulletcollision").play(0.2f);
+            SoundManager.get("bulletcollision").play(SoundManager.soundVolume);
             this.startParticle();
 
             invisible = true;

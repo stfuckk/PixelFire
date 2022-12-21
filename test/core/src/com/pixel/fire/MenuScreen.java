@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -35,7 +36,9 @@ public class MenuScreen extends ScreenAdapter
     private String ip = "";
     public boolean isServerStarted = false;
 
-    private final Slider slider;
+    private final Slider musicSlider;
+    private final Slider soundSlider;
+    private final CheckBox fullscreenMode;
 
     public MenuScreen(AssetManager assetManager, MyGame game)
     {
@@ -45,14 +48,19 @@ public class MenuScreen extends ScreenAdapter
 
         gameScreen = new GameScreen(game, assetManager, this, client);
 
-        slider = new Slider(0, 1, 0.01f, false, skin);
-        slider.setValue(SoundManager.volume);
+        musicSlider = new Slider(0, 1, 0.01f, false, skin);
+        musicSlider.setValue(SoundManager.musicVolume);
+
+        soundSlider = new Slider(0, 1, 0.01f, false, skin);
+        soundSlider.setValue(SoundManager.soundVolume);
+
+        fullscreenMode = new CheckBox("Fullscreen mode", skin);
     }
 
     @Override
     public void show()
     {
-        SoundManager.get("mainMenuMusic").play(SoundManager.volume).loop(true);
+        SoundManager.get("mainmenumusic").play(SoundManager.musicVolume).loop(true);
         viewport = new ExtendViewport(700,800);
         stage = new Stage(viewport);
 
@@ -71,11 +79,21 @@ public class MenuScreen extends ScreenAdapter
         stage.addActor(playTable);
         stage.addActor(settingsTable);
 
-        Label volumeSettings = new Label("Volume", skin);
-        settingsTable.add(volumeSettings);
+        Label musicVolume = new Label("Music volume", skin);
+        settingsTable.add(musicVolume);
         settingsTable.row();
 
-        settingsTable.add(slider).width(700).height(120).padBottom(60);
+        settingsTable.add(musicSlider).width(700).height(120).padBottom(60);
+        settingsTable.row();
+
+        Label soundVolume = new Label("Sound volume", skin);
+        settingsTable.add(soundVolume);
+        settingsTable.row();
+
+        settingsTable.add(soundSlider).width(700).height(120).padBottom(60);
+        settingsTable.row();
+
+        settingsTable.add(fullscreenMode).width(700).height(120).padBottom(60);
         settingsTable.row();
 
         addButton("Play", mainTable).addListener(new ClickListener()
@@ -158,7 +176,7 @@ public class MenuScreen extends ScreenAdapter
                         playTable.setVisible(false);
                         game.setScreen(gameScreen);
                         gameScreen.getPlayer().SetClient(client);
-                        SoundManager.get("mainMenuMusic").stop();
+                        SoundManager.get("mainmenumusic").stop();
                     }
                 }
             }
@@ -272,17 +290,32 @@ public class MenuScreen extends ScreenAdapter
 
     private void update()
     {
-        if (slider.isDragging())
-        {
-            SoundManager.volume = slider.getValue();
-            SoundManager.updateVolume();
-        }
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && textField != null && !textField.getText().equals(""))
         {
             textField.setVisible(false);
             playTable.getChild(3).setVisible(false);
             ip = textField.getText();
+        }
+
+        if (musicSlider.isDragging())
+        {
+            SoundManager.musicVolume = musicSlider.getValue();
+            SoundManager.updateVolume();
+        }
+
+        if (soundSlider.isDragging())
+        {
+            SoundManager.soundVolume = soundSlider.getValue();
+            SoundManager.updateVolume();
+        }
+
+        if (fullscreenMode.isChecked())
+        {
+            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        }
+        else
+        {
+            Gdx.graphics.setWindowedMode(1280,720);
         }
     }
 

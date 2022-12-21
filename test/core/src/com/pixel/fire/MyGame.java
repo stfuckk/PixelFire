@@ -29,7 +29,7 @@ public class MyGame extends Game {
 		assets.loadAll();
 		assets.getAssetManager().finishLoading();
 
-		SoundManager.add("mainMenuMusic", "audio/mainmenumusic.wav"); //
+		SoundManager.add("mainmenumusic", "audio/mainmenumusic.wav"); //
 		SoundManager.add("shot", "audio/shot.wav"); //
 		SoundManager.add("death", "audio/death.wav"); //
 		SoundManager.add("jump", "audio/jump.wav"); //

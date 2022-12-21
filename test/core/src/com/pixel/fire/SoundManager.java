@@ -7,7 +7,8 @@ import com.pixel.fire.MySound;
 public class SoundManager
 {
     private static final Array<MySound> sounds = new Array<MySound>();
-    public static float volume = 1.0f;
+    public static float musicVolume = 1.0f;
+    public static float soundVolume = 1.0f;
 
     public static MySound get(String name)
     {
@@ -29,7 +30,8 @@ public class SoundManager
     {
         for (MySound s : sounds)
         {
-            s.setVolume(volume);
+            if (s.getName().equals("mainmenumusic") || s.getName().equals("gamemusic")) s.setVolume(SoundManager.musicVolume);
+            else s.setVolume(SoundManager.soundVolume);
         }
     }
 }

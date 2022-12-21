@@ -48,7 +48,9 @@ public class GameScreen extends ScreenAdapter {
     private Viewport viewport; // Viewport for pause
     private final MenuScreen menuScreen; // Main menu
     private Table settingsTable;
-    private Slider slider = null;
+    private Slider musicSlider = null;
+    private Slider soundSlider = null;
+    private CheckBox fullscreenMode = null;
     private boolean paused = false; // Pause boolean
 
     // GAME OBJECTS
@@ -102,7 +104,7 @@ public class GameScreen extends ScreenAdapter {
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused)
         {
-            SoundManager.get("shot").play(SoundManager.volume);
+            SoundManager.get("shot").play(SoundManager.soundVolume);
             bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch));
         }
         world.step(1 / 60f, 6, 2);
@@ -129,10 +131,28 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
 
-        if (slider != null && slider.isDragging())
+        if (musicSlider != null && musicSlider.isDragging())
         {
-            SoundManager.volume = slider.getValue();
+            SoundManager.musicVolume = musicSlider.getValue();
             SoundManager.updateVolume();
+        }
+
+        if (soundSlider != null && soundSlider.isDragging())
+        {
+            SoundManager.soundVolume = soundSlider.getValue();
+            SoundManager.updateVolume();
+        }
+
+        if (fullscreenMode != null)
+        {
+            if (fullscreenMode.isChecked())
+            {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            }
+            else
+            {
+                Gdx.graphics.setWindowedMode(1280,720);
+            }
         }
     }
 
@@ -177,7 +197,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show()
     {
-        SoundManager.get("gamemusic").play(SoundManager.volume).loop(true);
+        SoundManager.get("gamemusic").play(SoundManager.musicVolume).loop(true);
         viewport = new ExtendViewport(700,800);
         stage = new Stage(viewport);
 
@@ -189,12 +209,24 @@ public class GameScreen extends ScreenAdapter {
         settingsTable.setFillParent(true);
         settingsTable.setVisible(false);
 
-        Label volumeSettings = new Label("Volume", skin);
-        settingsTable.add(volumeSettings);
+        Label musicVolume = new Label("Music volume", skin);
+        settingsTable.add(musicVolume);
         settingsTable.row();
 
-        slider = (Slider) menuScreen.getSettingsTable().getChild(1);
-        settingsTable.add(slider).width(700).height(120).padBottom(60);
+        musicSlider = (Slider) menuScreen.getSettingsTable().getChild(1);
+        settingsTable.add(musicSlider).width(700).height(120).padBottom(60);
+        settingsTable.row();
+
+        Label soundVolume = new Label("Sound volume", skin);
+        settingsTable.add(soundVolume);
+        settingsTable.row();
+
+        soundSlider = (Slider) menuScreen.getSettingsTable().getChild(2);
+        settingsTable.add(soundSlider).width(700).height(120).padBottom(60);
+        settingsTable.row();
+
+        fullscreenMode = new CheckBox("Fullscreen mode", skin);
+        settingsTable.add(fullscreenMode).width(700).height(120).padBottom(60);
         settingsTable.row();
 
         stage.addActor(mainTable);
