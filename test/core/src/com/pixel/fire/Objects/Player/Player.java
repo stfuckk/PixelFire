@@ -67,12 +67,12 @@ public class Player extends GameEntity
         jumpingAnimation = new Animation<TextureRegion>(0.064f, FramesCycle(tmp, jumpFrames));
 
         //RUNNING//
-        FRAME_COLS = 8;
+        FRAME_COLS = 6;
         tmp = TextureRegion.split(runSheet,
                 runSheet.getWidth() / FRAME_COLS,
                 runSheet.getHeight() / FRAME_ROWS);
         TextureRegion[] runFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-        runningAnimation = new Animation<TextureRegion>(0.064f, FramesCycle(tmp, runFrames));
+        runningAnimation = new Animation<TextureRegion>(0.1f, FramesCycle(tmp, runFrames));
 
         stateTime = 0f;
         currentFrame = idleAnimation.getKeyFrame(stateTime, true);
@@ -103,7 +103,7 @@ public class Player extends GameEntity
 
         if (y <= 192 && !isDead)
         {
-            SoundManager.get("death").play(0.2f);
+            SoundManager.get("death").play(SoundManager.volume);
             isDead = true;
         }
         checkUserInput();
@@ -208,7 +208,7 @@ public class Player extends GameEntity
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.W) && counter <= 1 && paused == false)
         {
-            SoundManager.get("jump").play(0.2f);
+            SoundManager.get("jump").play(SoundManager.volume);
             float force = body.getMass() * 23;
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(), true);

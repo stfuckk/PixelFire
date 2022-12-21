@@ -4,13 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -34,6 +35,8 @@ public class MenuScreen extends ScreenAdapter
     private String ip = "";
     public boolean isServerStarted = false;
 
+    private final Slider slider;
+
     public MenuScreen(AssetManager assetManager, MyGame game)
     {
         skin = assetManager.get(Assets.SKIN);
@@ -41,12 +44,15 @@ public class MenuScreen extends ScreenAdapter
         this.game = game;
 
         gameScreen = new GameScreen(game, assetManager, this, client);
+
+        slider = new Slider(0, 1, 0.01f, false, skin);
+        slider.setValue(SoundManager.volume);
     }
 
     @Override
     public void show()
     {
-        SoundManager.get("mainMenuMusic").play(0.1f).loop(true);
+        SoundManager.get("mainMenuMusic").play(SoundManager.volume).loop(true);
         viewport = new ExtendViewport(700,800);
         stage = new Stage(viewport);
 
@@ -63,6 +69,14 @@ public class MenuScreen extends ScreenAdapter
 
         stage.addActor(mainTable);
         stage.addActor(playTable);
+        stage.addActor(settingsTable);
+
+        Label volumeSettings = new Label("Volume", skin);
+        settingsTable.add(volumeSettings);
+        settingsTable.row();
+
+        settingsTable.add(slider).width(700).height(120).padBottom(60);
+        settingsTable.row();
 
         addButton("Play", mainTable).addListener(new ClickListener()
         {
@@ -73,12 +87,13 @@ public class MenuScreen extends ScreenAdapter
                 playTable.setVisible(true);
             }
         });
-        addButton("Options", mainTable).addListener(new ClickListener()
+        addButton("Settings", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                System.out.println("Options click");
+                mainTable.setVisible(false);
+                settingsTable.setVisible(true);
             }
         });
         addButton("Credits", mainTable).addListener(new ClickListener()
@@ -89,7 +104,7 @@ public class MenuScreen extends ScreenAdapter
                 Dialog d = new Dialog("Credits", skin)
                 {
                     {
-                        text("This beatiful game was created by these dudes:\nKolmogorov Danil Pavlovich aka Denio1337\nKozlov Denis Valeryevich aka PIDOR\nStepanyuk Dmitriy Aleksandrovich aka X3");
+                        text("This beatiful game was created by these dudes:\nKolmogorov Danil Pavlovich aka Denio1337\nKozlov Denis Valeryevich aka stfuckk\nStepanyuk Dmitriy Aleksandrovich aka X3");
                         button("OK");
                     }
                 };
@@ -105,6 +120,7 @@ public class MenuScreen extends ScreenAdapter
                 Gdx.app.exit();
             }
         });
+
         addButton("Connect", playTable).addListener(new ClickListener()
         {
             @Override
@@ -112,6 +128,7 @@ public class MenuScreen extends ScreenAdapter
             {
                 if (textField != null)
                 {
+                    playTable.getChild(3).setVisible(true);
                     textField.setVisible(true);
                 }
                 if (ip.equals(""))
@@ -191,8 +208,18 @@ public class MenuScreen extends ScreenAdapter
                 if (textField != null)
                 {
                     textField.setVisible(false);
+                    playTable.getChild(3).setVisible(false);
                 }
                 playTable.setVisible(false);
+                mainTable.setVisible(true);
+            }
+        });
+        addButton("Return", settingsTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                settingsTable.setVisible(false);
                 mainTable.setVisible(true);
             }
         });
@@ -229,16 +256,32 @@ public class MenuScreen extends ScreenAdapter
     {
         if (textField == null)
         {
+            Label ipInput = new Label("Enter ip:", skin);
+            playTable.add(ipInput);
+            playTable.row();
             textField = new TextField("", skin);
             playTable.add(textField);
+            playTable.row();
         }
+    }
+
+    public Table getSettingsTable()
+    {
+        return settingsTable;
     }
 
     private void update()
     {
+        if (slider.isDragging())
+        {
+            SoundManager.volume = slider.getValue();
+            SoundManager.updateVolume();
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && textField != null && !textField.getText().equals(""))
         {
             textField.setVisible(false);
+            playTable.getChild(3).setVisible(false);
             ip = textField.getText();
         }
     }

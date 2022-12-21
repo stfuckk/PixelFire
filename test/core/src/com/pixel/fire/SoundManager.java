@@ -7,6 +7,7 @@ import com.pixel.fire.MySound;
 public class SoundManager
 {
     private static final Array<MySound> sounds = new Array<MySound>();
+    public static float volume = 1.0f;
 
     public static MySound get(String name)
     {
@@ -22,5 +23,13 @@ public class SoundManager
     public static void add(String name, String path)
     {
         sounds.add(new MySound(name, Gdx.audio.newSound(Gdx.files.internal(path))));
+    }
+
+    public static void updateVolume()
+    {
+        for (MySound s : sounds)
+        {
+            s.setVolume(volume);
+        }
     }
 }

@@ -36,4 +36,10 @@ public class MySound
         sound.setLooping(id, loop);
         return this;
     }
+
+    public MySound setVolume(float volume)
+    {
+        sound.setVolume(id, volume);
+        return this;
+    }
 }

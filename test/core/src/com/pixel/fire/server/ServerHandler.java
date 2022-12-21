@@ -21,7 +21,7 @@ public class ServerHandler implements  Runnable {
         }
     }
 
-    private static Socket clientDialog;
+    private final Socket clientDialog;
 
     private static clients[] allClients = new clients[4];
 

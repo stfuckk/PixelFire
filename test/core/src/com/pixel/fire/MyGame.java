@@ -18,10 +18,12 @@ public class MyGame extends Game {
 	@Override
 	public void create () {
 		this.widthScreen = Gdx.graphics.getWidth();
+
 		this.heightScreen = Gdx.graphics.getHeight();
 		this.orthographicCamera = new OrthographicCamera();
 		this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
-		this.orthographicCamera.zoom -= 0.25f;
+		this.orthographicCamera.zoom -= 0.3f;
+		//Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 
 		Assets assets = new Assets();
 		assets.loadAll();

@@ -16,9 +16,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -49,6 +47,8 @@ public class GameScreen extends ScreenAdapter {
     private Stage stage; // Stage for pause
     private Viewport viewport; // Viewport for pause
     private final MenuScreen menuScreen; // Main menu
+    private Table settingsTable;
+    private Slider slider = null;
     private boolean paused = false; // Pause boolean
 
     // GAME OBJECTS
@@ -86,10 +86,23 @@ public class GameScreen extends ScreenAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             pause();
+            settingsTable.setVisible(false);
+            /*
+            if (mainTable.isVisible())
+            {
+                pause();
+            }
+            else if (settingsTable.isVisible())
+            {
+                settingsTable.setVisible(false);
+                pause();
+            }
+
+             */
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused)
         {
-            SoundManager.get("shot").play(0.5f);
+            SoundManager.get("shot").play(SoundManager.volume);
             bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch));
         }
         world.step(1 / 60f, 6, 2);
@@ -115,6 +128,12 @@ public class GameScreen extends ScreenAdapter {
         enemy.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
+
+        if (slider != null && slider.isDragging())
+        {
+            SoundManager.volume = slider.getValue();
+            SoundManager.updateVolume();
+        }
     }
 
     private void cameraUpdate() {
@@ -130,12 +149,12 @@ public class GameScreen extends ScreenAdapter {
     {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        orthogonalTiledMapRenderer.render(new int[]{2});
+        orthogonalTiledMapRenderer.render(new int[]{4,5});
         player.render(batch);
         //orthogonalTiledMapRenderer.render();
         enemy.render(batch);
         batch.begin();
-        orthogonalTiledMapRenderer.render(new int[]{1, 3});
+        orthogonalTiledMapRenderer.render(new int[]{1, 2, 3});
         for (Bullet bullet : bullets)
         {
             bullet.render(delta);
@@ -158,15 +177,28 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show()
     {
-        SoundManager.get("gamemusic").play(0.2f).loop(true);
+        SoundManager.get("gamemusic").play(SoundManager.volume).loop(true);
         viewport = new ExtendViewport(700,800);
         stage = new Stage(viewport);
 
         mainTable = new Table();
         mainTable.setFillParent(true);
+        mainTable.setVisible(false);
+
+        settingsTable = new Table();
+        settingsTable.setFillParent(true);
+        settingsTable.setVisible(false);
+
+        Label volumeSettings = new Label("Volume", skin);
+        settingsTable.add(volumeSettings);
+        settingsTable.row();
+
+        slider = (Slider) menuScreen.getSettingsTable().getChild(1);
+        settingsTable.add(slider).width(700).height(120).padBottom(60);
+        settingsTable.row();
 
         stage.addActor(mainTable);
-        mainTable.setVisible(false);
+        stage.addActor(settingsTable);
 
         menuScreen.addButton("Resume", mainTable).addListener(new ClickListener()
         {
@@ -176,12 +208,13 @@ public class GameScreen extends ScreenAdapter {
                 pause();
             }
         });
-        menuScreen.addButton("Options", mainTable).addListener(new ClickListener()
+        menuScreen.addButton("Settings", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                System.out.println("Options click");
+                mainTable.setVisible(false);
+                settingsTable.setVisible(true);
             }
         });
         menuScreen.addButton("Disconnect", mainTable).addListener(new ClickListener()
@@ -220,6 +253,15 @@ public class GameScreen extends ScreenAdapter {
                         };
                     }
                 }.show(stage);
+            }
+        });
+        menuScreen.addButton("Return", settingsTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                settingsTable.setVisible(false);
+                mainTable.setVisible(true);
             }
         });
 

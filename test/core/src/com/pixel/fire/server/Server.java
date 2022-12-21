@@ -35,7 +35,8 @@ public class Server {
             clients = new Socket[4];
 
             //Works with client until socket is closed
-            while(!serverSocket.isClosed()) {
+            while(!serverSocket.isClosed())
+            {
                 Log("Main server found messages");
 
                     if(serverCommand.equalsIgnoreCase("quit")) {
@@ -85,7 +86,9 @@ public class Server {
             executeIt.shutdown();
             isActive = false;
             Log("Server shut down!");
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -94,10 +97,11 @@ public class Server {
         if(action.equals("Quit")) clientsCount--;
         //else clientsCount++; <--- have an increment in Server.start();
         Log("RefreshData: " + clientsCount);
-        for(int i = 0; i <= clientsCount; i++) {
+        for(int i = 0; i < clientsCount; i++) {
             clientHandlers[i].UpdateClientsCount(clientsCount);
             Log("Server.RefreshData():clientHanlders[" + i + "] CC:" + clientsCount);
         }
+
         if(clientsCount==0){
             isActive = false;
             Log("Server.RefreshData() shouldSuicide = true");
