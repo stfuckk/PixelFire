@@ -1,5 +1,7 @@
 package com.pixel.fire.client;
 
+import com.pixel.fire.Objects.Player.Enemy;
+
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -8,12 +10,13 @@ public class Client extends Thread
 {
     private static boolean isServerStarted = false;
     private boolean shouldSuicide;
-    private int queueNumber;
+    private int ID;
     private Socket socket;
-    //private BufferedReader bufferedReader;
     private DataOutputStream dos;
     private DataInputStream dis;
     private static String ip;
+
+    private Enemy enemy;
     
     public void StartClient(String ip) 
     {
@@ -48,18 +51,20 @@ public class Client extends Thread
             //Check if channel works and if its alive
                 dos.writeUTF("00");
                 dos.flush();
+
+                ID = dis.read();
+
                 dos.writeUTF("01"); dos.flush();
 
-            EchoReply("Client starts writing in channel...");
             while(!socket.isOutputShutdown()) {
-                //Wait for client data
-                //EchoReply("ShouldSuicide = " + shouldSuicide);
                     if(dis.readUTF().equals("Suicide connections")) {
                         EchoReply("Client killed connection");
                         //dos.writeUTF("10"); dos.flush();
                         break;
                     }
-
+                    else if(dis.readUTF().equals("11")) {
+                        enemy.setState(dis.readUTF());
+                    }
             }
             Log("Closing connections and channels on client's side - DONE.");
             dos.close();
@@ -71,23 +76,6 @@ public class Client extends Thread
         catch (IOException e) {Log("IOException");}
         //catch (InterruptedException e) {};
     }
-
-    public void SendPlayerInfo(float x, float y, boolean left, boolean isGrounded, boolean isIdle,
-                               boolean isJumping, boolean isFalling) {
-        try {
-            dos.writeUTF("01");
-            dos.flush();
-            dos.writeUTF(x + " " + y + " " + left + " " + isGrounded + " " + isIdle + " " + isJumping + " " + isFalling + " ");
-            dos.flush();
-        } catch(SocketException e) {
-            System.out.println("HOY!");
-        } catch(IOException e) {Log("IOException:"); e.printStackTrace();}
-    }
-
-    private void Log(String text) {
-        //System.out.println(text);
-    }
-
     public void ShutDown() {
         shouldSuicide = true;
         EchoReply("ShouldSuicide: " + shouldSuicide);
@@ -98,11 +86,31 @@ public class Client extends Thread
             throw new RuntimeException(e);
         }
     }
-    public Client GetClient() {return this;}
+//==================================METHODS FOR INTERACTING WITH THE GAME
+    public void SendPlayerInfo(float x, float y, boolean left, boolean isGrounded, boolean isIdle,
+                               boolean isJumping, boolean isFalling){
+        try {
+            dos.writeUTF("01");
+            dos.flush();
+            try {this.sleep(1);} catch(InterruptedException e) {System.out.println("sleep interrupted");}
+            dos.writeUTF(x + " " + y + " " + left + " " + isGrounded + " " + isIdle + " " + isJumping + " " + isFalling + " ");
+            dos.flush();
+        } catch(SocketException e) {
+            System.out.println("HOY!");
+        } catch(IOException e) {Log("IOException:"); e.printStackTrace();}
+    }
 
+    public void SetEnemyState(String state) {
+        enemy.setState(state);
+    }
+
+//==================================SERVICE METHODS
     public void EchoReply(String text) {
        try{
            dos.writeUTF(text); dos.flush();
        }catch (IOException e ) {}
+    }
+    private void Log(String text) {
+        //System.out.println(text);
     }
 }

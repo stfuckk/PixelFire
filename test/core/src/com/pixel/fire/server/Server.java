@@ -66,23 +66,31 @@ public class Server {
                 Log("Connection accepted2...");
                 Log("CC1: " + clientsCount);
                 clientsCount++;
-                Log("CC2: " + clientsCount); //Need to make a cycle to run
-                //through all of clients
+                Log("CC2: " + clientsCount);
 
             }
             serverSocket.close();
-            executeIt.shutdown();
         }
         catch(IOException e) {
             Log("An error has happened!");
             e.printStackTrace();
         }
     }
+    public static void UpdateClientsData(String newData, int clientID) throws InterruptedException {
+        if(clientID == 1 && clientHandlers[1] != null) {
+            Log("Server.UpdateClientsData(clientID = 1): " + newData);
+            clientHandlers[2].UpdateEnemies(newData);
+        }
+        else if(clientID == 2) {
+            Log("Server.UpdateClientsData(clientID = 2): " + newData);
+            clientHandlers[0].UpdateEnemies(newData);
+        }
+    }
+//==================================METHODS USED BY OTHER CLASSES (I.E. SERVER HANDLER)
     public static void KillServer() {
         try {
             Log("Shutting server down...");
             serverSocket.close();
-            executeIt.shutdown();
             isActive = false;
             Log("Server shut down!");
         } catch (IOException e) {
@@ -105,6 +113,8 @@ public class Server {
         }
     }
     public static boolean CheckServerState() {return isActive;}
+
+//==================================SERVICE METHODS
     private static void Log(String logText) {
         logger.log(Level.INFO, logText);
     }

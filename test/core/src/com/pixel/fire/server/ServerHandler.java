@@ -21,10 +21,11 @@ public class ServerHandler implements  Runnable {
         }
     }
 
-    private static Socket clientDialog;
+    private final Socket clientDialog;
 
     private static clients[] allClients = new clients[4];
-
+    private DataInputStream dis;
+    private DataOutputStream dos;
     private final int ID;
     private int clientsCount = 1;
 
@@ -41,10 +42,10 @@ public class ServerHandler implements  Runnable {
     public void run() {
         try {
             Log("ServerHandler::ServerHandler()");
-            //Initialize communication channel for server
-            DataOutputStream dos = new DataOutputStream(clientDialog.getOutputStream());
+
+            dos = new DataOutputStream(clientDialog.getOutputStream());
             Log("DOS created");
-            DataInputStream dis = new DataInputStream(clientDialog.getInputStream());
+             dis = new DataInputStream(clientDialog.getInputStream());
             Log("DIS created");
 
             while(!clientDialog.isClosed() && Server.CheckServerState()) {
@@ -56,8 +57,8 @@ public class ServerHandler implements  Runnable {
                     dos.writeUTF(String.valueOf(ID)); dos.flush(); Log("ID:" + ID);
                 }
                 else if(entry.equals("01")) {
-                    String playerInfo = entry;
-                    Update(playerInfo);
+                    String playerInfo = dis.readUTF();
+                    SendPlayerDataToServer(playerInfo);
                 }
                 else if(entry.equals("10")) {
                     Log("Client initialize connections suicide...");
@@ -79,17 +80,26 @@ public class ServerHandler implements  Runnable {
             throw new RuntimeException(e);
         }
     }
-    private void Log(String text) {
-        //log.log(Level.INFO, text);
+    private void SendPlayerDataToServer(String entryText) throws InterruptedException {
+        Log("Sending player's info to other clients...");
+        Server.UpdateClientsData(entryText, ID);
+        Log("Updated info: " + entryText);
     }
 
-    private void Update(String entryText) {
-        Log("Sending player's info to other clients...");
-        Log("Server.clientsCount:" + clientsCount);
-        //Log("Updated info: " + entryText);
+//==================================METHODS NOT USED BY THIS CLASS (I.E. USED BY SERVER)
+    public void UpdateEnemies(String info) throws InterruptedException{
+        try {
+            dos.writeUTF("11"); dos.flush();
+            Thread.sleep(1);
+            dos.writeUTF(info); dos.flush();
+        } catch (IOException e) {throw new RuntimeException(e);}
     }
     public void UpdateClientsCount(int clientsCount) {
         this.clientsCount = clientsCount;
     }
-    public int GetClientsCount() {return clientsCount;}
+
+//==================================SERVICE METHODS
+    private void Log(String text) {
+        //log.log(Level.INFO, text);
+    }
 }
