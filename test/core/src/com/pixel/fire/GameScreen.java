@@ -59,7 +59,8 @@ public class GameScreen extends ScreenAdapter {
     // SERVER-CLIENT OBJECTS
     private Client client;
 
-    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client) {
+    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client)
+    {
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
@@ -78,7 +79,6 @@ public class GameScreen extends ScreenAdapter {
         Bullet.setObjects(objects);
 
         this.enemy = new Enemy();
-
     }
 
     private void update(float delta)
@@ -89,6 +89,7 @@ public class GameScreen extends ScreenAdapter {
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused)
         {
+            SoundManager.get("shot").play(0.5f);
             bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch));
         }
         world.step(1 / 60f, 6, 2);
@@ -157,6 +158,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show()
     {
+        SoundManager.get("gamemusic").play(0.2f).loop(true);
         viewport = new ExtendViewport(700,800);
         stage = new Stage(viewport);
 
@@ -187,6 +189,7 @@ public class GameScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
+                SoundManager.get("gamemusic").stop();
                 pause();
                 player.setRandomPosition();
                 player.update();

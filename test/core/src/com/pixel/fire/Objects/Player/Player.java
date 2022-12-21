@@ -2,6 +2,7 @@ package com.pixel.fire.Objects.Player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
+import com.pixel.fire.SoundManager;
 import com.pixel.fire.client.Client;
 
 import static com.pixel.fire.Helper.Constants.PPM;
@@ -38,7 +40,9 @@ public class Player extends GameEntity
     //
     private Client client;
     private boolean isStateChanged = false;
-    public Player(float width, float height, Body body) {
+
+    public Player(float width, float height, Body body)
+    {
         super(width, height, body); //super - parent class
         this.speed = 20f;
         Texture runSheet = new Texture("Sprites/run.png");
@@ -96,8 +100,10 @@ public class Player extends GameEntity
     public void update() {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
-        if (y <= 192)
+
+        if (y <= 192 && !isDead)
         {
+            SoundManager.get("death").play(0.2f);
             isDead = true;
         }
         checkUserInput();
@@ -133,15 +139,18 @@ public class Player extends GameEntity
         stateTime += Gdx.graphics.getDeltaTime();
         //idle
         if (isGrounded && isIdle && !isJumping)
+        {
             currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+        }
         //run
         if(!isIdle && isGrounded && body.getLinearVelocity().y == 0)
             currentFrame = runningAnimation.getKeyFrame(stateTime, true);
 
         //jump
         if(isJumping || isFalling)
+        {
             currentFrame = jumpingAnimation.getKeyFrame(stateTime, true);
-
+        }
 
         //flip sprite
         if(!currentFrame.isFlipX() && left)
@@ -181,13 +190,16 @@ public class Player extends GameEntity
             //isStateChanged = true;
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.D) && paused == false){
+        if(Gdx.input.isKeyPressed(Input.Keys.D) && paused == false)
+        {
             velX = 1;
             left = false;
             isIdle = false;
             isStateChanged = true;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A) && paused == false) {
+
+        if(Gdx.input.isKeyPressed(Input.Keys.A) && paused == false)
+        {
             velX = -1;
             left = true;
             isIdle = false;
@@ -196,6 +208,7 @@ public class Player extends GameEntity
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.W) && counter <= 1 && paused == false)
         {
+            SoundManager.get("jump").play(0.2f);
             float force = body.getMass() * 23;
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(), true);

@@ -20,7 +20,7 @@ public class Bullet
 
     // BULLET PROPERTIES
     private static final Texture texture = new Texture("Sprites/bullet.png");
-    private static final int SPEED = 500;
+    private static final int SPEED = 900;
     private float x;
     private final float y;
     public boolean remove = false; // Bullet will be removed in gameScreen update() method
@@ -131,7 +131,11 @@ public class Bullet
 
     public void killPlayer()
     {
-        if (!invisible) this.startParticle();
+        if (!invisible)
+        {
+            SoundManager.get("bulletcollision").play(0.2f);
+            this.startParticle();
+        }
         invisible = true;
     }
 
@@ -147,9 +151,10 @@ public class Bullet
 
     private void checkCollision()
     {
-        if (object.contains(x,y))
+        if (object.contains(x,y) && !invisible)
         {
-            if (!invisible) this.startParticle();
+            SoundManager.get("bulletcollision").play(0.2f);
+            this.startParticle();
 
             invisible = true;
         }
