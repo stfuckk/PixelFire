@@ -133,4 +133,16 @@ public class Enemy
     {
         collider = new Rectangle(x, y, width, height);
     }
+
+    public void setState(String info) {
+        String[] parameters = info.split(" ");
+        x = Float.parseFloat(parameters[0]);
+        y = Float.parseFloat(parameters[1]);
+        left = Boolean.parseBoolean(parameters[2]);
+        isGrounded = Boolean.parseBoolean(parameters[3]);
+        isIdle = Boolean.parseBoolean(parameters[4]);
+        isJumping = Boolean.parseBoolean(parameters[5]);
+        isFalling = Boolean.parseBoolean(parameters[6]);
+        update();
+    }
 }
