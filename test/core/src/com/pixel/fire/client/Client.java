@@ -17,6 +17,8 @@ public class Client extends Thread
     private static String ip;
 
     private Enemy enemy;
+
+    private String enemyState = "100 400 false false false false false";
     
     public void StartClient(String ip) 
     {
@@ -53,18 +55,23 @@ public class Client extends Thread
                 dos.flush();
 
                 ID = dis.read();
-
-                dos.writeUTF("01"); dos.flush();
+                System.out.println(ID);
+                //dos.writeUTF("01"); dos.flush();
 
             while(!socket.isOutputShutdown()) {
-                    if(dis.readUTF().equals("Suicide connections")) {
-                        EchoReply("Client killed connection");
-                        //dos.writeUTF("10"); dos.flush();
-                        break;
-                    }
-                    else if(dis.readUTF().equals("11")) {
-                        enemy.setState(dis.readUTF());
-                    }
+                System.out.println("socket is working");
+                String entry = dis.readUTF();
+                System.out.println("ENTRY: " + entry);
+                if(entry.equals("11")) {
+                    enemyState = dis.readUTF();
+                    System.out.println(enemyState);
+                }
+
+                else if(entry.equals("Suicide connections")) {
+                    EchoReply("Client killed connection");
+                    //dos.writeUTF("10"); dos.flush();
+                    break;
+                }
             }
             Log("Closing connections and channels on client's side - DONE.");
             dos.close();
@@ -92,7 +99,7 @@ public class Client extends Thread
         try {
             dos.writeUTF("01");
             dos.flush();
-            try {this.sleep(1);} catch(InterruptedException e) {System.out.println("sleep interrupted");}
+            try {this.sleep(10);} catch(InterruptedException e) {System.out.println("sleep interrupted");}
             dos.writeUTF(x + " " + y + " " + left + " " + isGrounded + " " + isIdle + " " + isJumping + " " + isFalling + " ");
             dos.flush();
         } catch(SocketException e) {
@@ -100,9 +107,7 @@ public class Client extends Thread
         } catch(IOException e) {Log("IOException:"); e.printStackTrace();}
     }
 
-    public void SetEnemyState(String state) {
-        enemy.setState(state);
-    }
+    public String GetInfo() {return enemyState;}
 
 //==================================SERVICE METHODS
     public void EchoReply(String text) {
@@ -111,6 +116,10 @@ public class Client extends Thread
        }catch (IOException e ) {}
     }
     private void Log(String text) {
-        //System.out.println(text);
+        System.out.println(text);
+    }
+
+    public void test() {
+        try {dos.writeUTF("101"); dos.flush();} catch (IOException e) {e.printStackTrace();}
     }
 }

@@ -115,6 +115,8 @@ public class GameScreen extends ScreenAdapter {
         enemy.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
+
+        UpdateEnemy();
     }
 
     private void cameraUpdate() {
@@ -182,6 +184,7 @@ public class GameScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y)
             {
                 System.out.println("Options click");
+                client.test();
             }
         });
         menuScreen.addButton("Disconnect", mainTable).addListener(new ClickListener()
@@ -263,6 +266,10 @@ public class GameScreen extends ScreenAdapter {
         this.player = player;
     }
 
+    public void UpdateEnemy() {
+        enemy.setState(client.GetInfo());
+        //System.out.println("GAMESCREEN.UPDATEENEMY()" + client.GetInfo());
+    }
     public void setObjects(PolygonMapObject polygon)
     {
         objects.add(polygon);
