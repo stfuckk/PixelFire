@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -15,9 +16,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -47,7 +46,11 @@ public class GameScreen extends ScreenAdapter {
     private Table mainTable; // Pause
     private Stage stage; // Stage for pause
     private Viewport viewport; // Viewport for pause
-    private MenuScreen menuScreen; // Main menu
+    private final MenuScreen menuScreen; // Main menu
+    private Table settingsTable;
+    private Slider musicSlider = null;
+    private Slider soundSlider = null;
+    private CheckBox fullscreenMode = null;
     private boolean paused = false; // Pause boolean
 
     // GAME OBJECTS
@@ -58,7 +61,8 @@ public class GameScreen extends ScreenAdapter {
     // SERVER-CLIENT OBJECTS
     private Client client;
 
-    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client) {
+    public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client)
+    {
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
@@ -84,9 +88,23 @@ public class GameScreen extends ScreenAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             pause();
+            settingsTable.setVisible(false);
+            /*
+            if (mainTable.isVisible())
+            {
+                pause();
+            }
+            else if (settingsTable.isVisible())
+            {
+                settingsTable.setVisible(false);
+                pause();
+            }
+
+             */
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused)
         {
+            SoundManager.get("shot").play(SoundManager.soundVolume);
             bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch));
         }
         world.step(1 / 60f, 6, 2);
@@ -99,12 +117,43 @@ public class GameScreen extends ScreenAdapter {
             {
                 bulletsToRemove.add(bullet);
             }
+            //System.out.println("bullet x: " + bullet.getX()+ " player x: " + enemy.collider.x);
+            //System.out.println("bullet y: " + bullet.getY() + " player y: " + enemy.collider.y);
+            if (Enemy.collider.contains(bullet.getX(), bullet.getY()))
+            {
+                enemy.isDead = true;
+                bullet.killPlayer();
+            }
         }
         bullets.removeAll(bulletsToRemove);
         player.update();
         enemy.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
+
+        if (musicSlider != null && musicSlider.isDragging())
+        {
+            SoundManager.musicVolume = musicSlider.getValue();
+            SoundManager.updateVolume();
+        }
+
+        if (soundSlider != null && soundSlider.isDragging())
+        {
+            SoundManager.soundVolume = soundSlider.getValue();
+            SoundManager.updateVolume();
+        }
+
+        if (fullscreenMode != null)
+        {
+            if (fullscreenMode.isChecked())
+            {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            }
+            else
+            {
+                Gdx.graphics.setWindowedMode(1280,720);
+            }
+        }
     }
 
     private void cameraUpdate() {
@@ -120,10 +169,12 @@ public class GameScreen extends ScreenAdapter {
     {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        orthogonalTiledMapRenderer.render();
+        orthogonalTiledMapRenderer.render(new int[]{4,5});
         player.render(batch);
+        //orthogonalTiledMapRenderer.render();
         enemy.render(batch);
         batch.begin();
+        orthogonalTiledMapRenderer.render(new int[]{1, 2, 3});
         for (Bullet bullet : bullets)
         {
             bullet.render(delta);
@@ -132,7 +183,7 @@ public class GameScreen extends ScreenAdapter {
 
         //render objects
         //player.render(batch);
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
 
         if (paused)
         {
@@ -146,14 +197,40 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show()
     {
+        SoundManager.get("gamemusic").play(SoundManager.musicVolume).loop(true);
         viewport = new ExtendViewport(700,800);
         stage = new Stage(viewport);
 
         mainTable = new Table();
         mainTable.setFillParent(true);
+        mainTable.setVisible(false);
+
+        settingsTable = new Table();
+        settingsTable.setFillParent(true);
+        settingsTable.setVisible(false);
+
+        Label musicVolume = new Label("Music volume", skin);
+        settingsTable.add(musicVolume);
+        settingsTable.row();
+
+        musicSlider = (Slider) menuScreen.getSettingsTable().getChild(1);
+        settingsTable.add(musicSlider).width(700).height(120).padBottom(60);
+        settingsTable.row();
+
+        Label soundVolume = new Label("Sound volume", skin);
+        settingsTable.add(soundVolume);
+        settingsTable.row();
+
+        soundSlider = (Slider) menuScreen.getSettingsTable().getChild(2);
+        settingsTable.add(soundSlider).width(700).height(120).padBottom(60);
+        settingsTable.row();
+
+        fullscreenMode = new CheckBox("Fullscreen mode", skin);
+        settingsTable.add(fullscreenMode).width(700).height(120).padBottom(60);
+        settingsTable.row();
 
         stage.addActor(mainTable);
-        mainTable.setVisible(false);
+        stage.addActor(settingsTable);
 
         menuScreen.addButton("Resume", mainTable).addListener(new ClickListener()
         {
@@ -163,12 +240,13 @@ public class GameScreen extends ScreenAdapter {
                 pause();
             }
         });
-        menuScreen.addButton("Options", mainTable).addListener(new ClickListener()
+        menuScreen.addButton("Settings", mainTable).addListener(new ClickListener()
         {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                System.out.println("Options click");
+                mainTable.setVisible(false);
+                settingsTable.setVisible(true);
             }
         });
         menuScreen.addButton("Disconnect", mainTable).addListener(new ClickListener()
@@ -176,10 +254,12 @@ public class GameScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
+                SoundManager.get("gamemusic").stop();
                 pause();
                 player.setRandomPosition();
                 player.update();
                 client.ShutDown();
+                menuScreen.isServerStarted = false;
                 game.setScreen(menuScreen);
             }
         });
@@ -207,6 +287,15 @@ public class GameScreen extends ScreenAdapter {
                 }.show(stage);
             }
         });
+        menuScreen.addButton("Return", settingsTable).addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y)
+            {
+                settingsTable.setVisible(false);
+                mainTable.setVisible(true);
+            }
+        });
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -228,7 +317,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void pause()
     {
-        if (paused == false)
+        if (!paused)
         {
             mainTable.setVisible(true);
             paused = true;

@@ -129,6 +129,16 @@ public class Bullet
         }
     }
 
+    public void killPlayer()
+    {
+        if (!invisible)
+        {
+            SoundManager.get("bulletcollision").play(SoundManager.soundVolume);
+            this.startParticle();
+        }
+        invisible = true;
+    }
+
     public float getX()
     {
         return x;
@@ -141,9 +151,10 @@ public class Bullet
 
     private void checkCollision()
     {
-        if (object.contains(x,y))
+        if (object.contains(x,y) && !invisible)
         {
-            if (!invisible) this.startParticle();
+            SoundManager.get("bulletcollision").play(SoundManager.soundVolume);
+            this.startParticle();
 
             invisible = true;
         }
@@ -151,7 +162,6 @@ public class Bullet
 
     private void startParticle()
     {
-        System.out.println(x + " " + y);
         destroyParticle.start(x,y);
     }
 }

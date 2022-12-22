@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="7" nextobjectid="79">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="64" tileheight="64" infinite="0" backgroundcolor="#bcdadf" nextlayerid="10" nextobjectid="80">
  <tileset firstgid="1" source="tiles.tsx"/>
  <tileset firstgid="50" name="atiles" tilewidth="64" tileheight="64" tilecount="49" columns="7">
   <image source="animatedTiles/atiles.png" width="448" height="448"/>
@@ -68,8 +68,26 @@
   <object id="76" x="384" y="448">
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
-  <object id="42" name="player" x="256" y="768" width="32" height="32"/>
+  <object id="42" name="player" x="256" y="768" width="16" height="32"/>
+  <object id="79" x="-1920" y="1216">
+   <polygon points="0,0 0,64 5760,64 5760,0"/>
+  </object>
  </objectgroup>
+ <layer id="7" name="lava" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApGwUgB2gOEdQcIDxQAALt3ClE=
+  </data>
+ </layer>
+ <layer id="8" name="lava2" width="30" height="20" offsetx="-1920" offsety="0">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApGwUgB2gOEdQcIDxQAALt3ClE=
+  </data>
+ </layer>
+ <layer id="9" name="lava3" width="30" height="20" offsetx="1920" offsety="0">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApGwUgB2gOEdQcIDxQAALt3ClE=
+  </data>
+ </layer>
  <layer id="6" name="Objects" width="30" height="20">
   <data encoding="base64" compression="zlib">
    eJztVEkKgDAQywO8qwc3cDt78zc+xaf4FJ9mQIWitth2FAQDuXQ6STotBb6B7mKtfz2FHjEwPKkfevZfzc9Wn2ecTHXb+4gt95t6fOdjmWHS1XQ5uD4/EsYBakbdPANBP5d7PiIS0DjizTez+c2uvQUw5mRGpmRC+uahBqgFaiJfPU5o6dOQNVmRpeK7/yl35qj+DdQAtUBNNKuHKCTe248fElgAtaoNzw==
