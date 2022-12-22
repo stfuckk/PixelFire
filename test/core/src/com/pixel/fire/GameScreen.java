@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -102,7 +103,7 @@ public class GameScreen extends ScreenAdapter {
 
              */
         }
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused)
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead)
         {
             SoundManager.get("shot").play(SoundManager.soundVolume);
             bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch));
@@ -147,16 +148,19 @@ public class GameScreen extends ScreenAdapter {
         {
             if (fullscreenMode.isChecked())
             {
-                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                game.setFullScreen();
+                //Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
             }
             else
             {
-                Gdx.graphics.setWindowedMode(1280,720);
+                game.setWindowed();
+                //Gdx.graphics.setWindowedMode(1280,720);
             }
         }
     }
 
-    private void cameraUpdate() {
+    private void cameraUpdate()
+    {
         Vector3 position = camera.position;
         position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
         position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
@@ -170,7 +174,10 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         orthogonalTiledMapRenderer.render(new int[]{4,5});
-        player.render(batch);
+        if (!player.isDead)
+        {
+            player.render(batch);
+        }
         //orthogonalTiledMapRenderer.render();
         enemy.render(batch);
         batch.begin();
@@ -183,7 +190,7 @@ public class GameScreen extends ScreenAdapter {
 
         //render objects
         //player.render(batch);
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
 
         if (paused)
         {
@@ -209,6 +216,9 @@ public class GameScreen extends ScreenAdapter {
         settingsTable.setFillParent(true);
         settingsTable.setVisible(false);
 
+        stage.addActor(mainTable);
+        stage.addActor(settingsTable);
+
         Label musicVolume = new Label("Music volume", skin);
         settingsTable.add(musicVolume);
         settingsTable.row();
@@ -224,13 +234,6 @@ public class GameScreen extends ScreenAdapter {
         soundSlider = (Slider) menuScreen.getSettingsTable().getChild(2);
         settingsTable.add(soundSlider).width(700).height(120).padBottom(60);
         settingsTable.row();
-
-        fullscreenMode = new CheckBox("Fullscreen mode", skin);
-        settingsTable.add(fullscreenMode).width(700).height(120).padBottom(60);
-        settingsTable.row();
-
-        stage.addActor(mainTable);
-        stage.addActor(settingsTable);
 
         menuScreen.addButton("Resume", mainTable).addListener(new ClickListener()
         {
@@ -261,6 +264,8 @@ public class GameScreen extends ScreenAdapter {
                 client.ShutDown();
                 menuScreen.isServerStarted = false;
                 game.setScreen(menuScreen);
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+                Gdx.input.setCursorCatched(false);
             }
         });
         menuScreen.addButton("Quit", mainTable).addListener(new ClickListener()
@@ -287,6 +292,7 @@ public class GameScreen extends ScreenAdapter {
                 }.show(stage);
             }
         });
+
         menuScreen.addButton("Return", settingsTable).addListener(new ClickListener()
         {
             @Override
@@ -322,13 +328,16 @@ public class GameScreen extends ScreenAdapter {
             mainTable.setVisible(true);
             paused = true;
             player.pause(true);
-            return;
+            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            Gdx.input.setCursorCatched(false);
         }
         else
         {
             mainTable.setVisible(false);
             paused = false;
             player.pause(false);
+            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.None);
+            Gdx.input.setCursorCatched(true);
         }
     }
 

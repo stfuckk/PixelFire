@@ -45,4 +45,14 @@ public class MyGame extends Game {
 	{
 		return orthographicCamera;
 	}
+
+	public void setFullScreen()
+	{
+		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+	}
+
+	public void setWindowed()
+	{
+		Gdx.graphics.setWindowedMode(1280,720);
+	}
 }

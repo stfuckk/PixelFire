@@ -60,23 +60,20 @@
    <polygon points="0,0 128,0 128,128 0,128"/>
   </object>
   <object id="42" name="player" x="256" y="768" width="16" height="32"/>
-  <object id="79" x="-1920" y="1216">
-   <polygon points="0,0 0,64 5760,64 5760,0"/>
-  </object>
  </objectgroup>
- <layer id="7" name="lava" width="30" height="20">
+ <layer id="7" name="lava" width="30" height="20" offsetx="0" offsety="128">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwUgB2gOEdQcIDxQAALt3ClE=
+   eJxjYBgFo2AUjIJRMApGLtAexXTBuiMMAwD9Pxmr
   </data>
  </layer>
- <layer id="8" name="lava2" width="30" height="20" offsetx="-1920" offsety="0">
+ <layer id="8" name="lava2" width="30" height="20" offsetx="-1920" offsety="128">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwUgB2gOEdQcIDxQAALt3ClE=
+   eJxjYBgFo2AUjIJRMApGLtAexXTBuiMMAwD9Pxmr
   </data>
  </layer>
- <layer id="9" name="lava3" width="30" height="20" offsetx="1920" offsety="0">
+ <layer id="9" name="lava3" width="30" height="20" offsetx="1920" offsety="128">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwUgB2gOEdQcIDxQAALt3ClE=
+   eJxjYBgFo2AUjIJRMApGLtAexXTBuiMMAwD9Pxmr
   </data>
  </layer>
  <layer id="6" name="Objects" width="30" height="20">
