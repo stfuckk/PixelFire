@@ -140,6 +140,9 @@ public class Player extends GameEntity
                 (y >= 1168  && y <= 1168.5) && (x >= 1071 && x <= 1424) )
 
             isGrounded = true;
+        if(body.getLinearVelocity().x != 0 || body.getLinearVelocity().y != 0 || isIdle)
+            isStateChanged = true;
+
     }
 
     @Override
@@ -180,22 +183,18 @@ public class Player extends GameEntity
             isJumping = false;
             isFalling = false;
             counter = 0;
-            isStateChanged = true;
         }
 
         if(isGrounded && body.getLinearVelocity().y < 0) {
             isFalling = true;
-            isStateChanged = true;
         }
 
         if(isGrounded && body.getLinearVelocity().x == 0) {
             isIdle = true;
-            isStateChanged = true;
         }
 
         if(isGrounded && body.getLinearVelocity().y > 0) {
             isGrounded = false;
-            isStateChanged = true;
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.D) && paused == false)
@@ -203,7 +202,6 @@ public class Player extends GameEntity
             velX = 1;
             left = false;
             isIdle = false;
-            isStateChanged = true;
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.A) && paused == false)
@@ -211,7 +209,6 @@ public class Player extends GameEntity
             velX = -1;
             left = true;
             isIdle = false;
-            isStateChanged = true;
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.W) && counter <= 1 && paused == false)
@@ -224,7 +221,6 @@ public class Player extends GameEntity
             isIdle = false;
             isJumping = true;
             counter++;
-            isStateChanged = true;
         }
 
         body.setLinearVelocity(velX * speed, body.getLinearVelocity().y < 25 ?
