@@ -42,7 +42,7 @@ public class Client extends Thread
     public void run() {
         try
         {
-            socket = new Socket("127.0.0.1", 2828);
+            socket = new Socket(ip, 2828);
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             DataInputStream in = new DataInputStream(socket.getInputStream());
             Log("Client connected to socket!\nClient writing-reading channels initialized.");
@@ -54,22 +54,24 @@ public class Client extends Thread
                 dos.writeUTF("00");
                 dos.flush();
 
-                ID = dis.read();
-                System.out.println(ID);
+                ID = Integer.parseInt(dis.readUTF());
+
+                //System.out.println(ID);
                 //dos.writeUTF("01"); dos.flush();
 
-            while(!socket.isOutputShutdown()) {
-                System.out.println("socket is working");
+            while(!socket.isOutputShutdown())
+            {
                 String entry = dis.readUTF();
-                System.out.println("ENTRY: " + entry);
-                if(entry.equals("11")) {
+
+                if(entry.equals("11"))
+                {
                     enemyState = dis.readUTF();
-                    System.out.println(enemyState);
                 }
 
-                else if(entry.equals("Suicide connections")) {
+                else if(entry.equals("Suicide connections"))
+                {
                     EchoReply("Client killed connection");
-                    //dos.writeUTF("10"); dos.flush();
+                    //dos.writeUTF("10"); dos.flush();**********************************
                     break;
                 }
             }
@@ -99,7 +101,7 @@ public class Client extends Thread
         try {
             dos.writeUTF("01");
             dos.flush();
-            try {this.sleep(10);} catch(InterruptedException e) {System.out.println("sleep interrupted");}
+            //try {this.sleep(10);} catch(InterruptedException e) {System.out.println("sleep interrupted");}
             dos.writeUTF(x + " " + y + " " + left + " " + isGrounded + " " + isIdle + " " + isJumping + " " + isFalling + " ");
             dos.flush();
         } catch(SocketException e) {

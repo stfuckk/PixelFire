@@ -7,22 +7,18 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ServerHandler implements  Runnable {
-
-
-
+public class ServerHandler implements  Runnable
+{
     private final Socket clientDialog;
-
     private ServerHandler[] allHandlers;
     private DataInputStream dis;
     private DataOutputStream dos;
     private final int ID;
     private int clientsCount = 1;
-
     protected final Logger log = Logger.getLogger("log");
 
-
-    public ServerHandler(int queuePosition, Socket client) throws IOException {
+    public ServerHandler(int queuePosition, Socket client) throws IOException
+    {
         ID = queuePosition;
         clientDialog = client;
     }
@@ -34,15 +30,18 @@ public class ServerHandler implements  Runnable {
 
             dos = new DataOutputStream(clientDialog.getOutputStream());
             Log("DOS created");
-             dis = new DataInputStream(clientDialog.getInputStream());
+
+            dis = new DataInputStream(clientDialog.getInputStream());
             Log("DIS created");
 
-            while(!clientDialog.isClosed() && Server.CheckServerState()) {
+            while(!clientDialog.isClosed() && Server.CheckServerState())
+            {
                 Log("Reading...\n");
                 String entry = dis.readUTF();
                 Log("Client command: " + entry);
 
-                if(entry.equals("00")) {
+                if(entry.equals("00"))
+                {
                     dos.writeUTF(String.valueOf(ID)); dos.flush(); Log("ID:" + ID);
                 }
                 else if(entry.equals("01")) {
@@ -55,7 +54,7 @@ public class ServerHandler implements  Runnable {
                     dos.writeUTF("Suicide connections"); dos.flush();
                     Server.RefreshData("Quit");
                     clientsCount--;
-                    Thread.sleep(10);
+                    //Thread.sleep(10);
                     break;
                 }
                 dos.flush();
@@ -77,6 +76,7 @@ public class ServerHandler implements  Runnable {
             else if(ID == 1)
                 allHandlers[0].UpdateEnemies(entryText);
         }
+
         else if(clientsCount == 1) allHandlers[0].UpdateEnemies(entryText);
     }
 
@@ -84,7 +84,7 @@ public class ServerHandler implements  Runnable {
     public void UpdateEnemies(String info) throws InterruptedException{
         try {
             dos.writeUTF("11"); dos.flush();
-            Thread.sleep(1);
+            //Thread.sleep(1);
             dos.writeUTF(info); dos.flush();
         } catch (IOException e) {throw new RuntimeException(e);}
     }

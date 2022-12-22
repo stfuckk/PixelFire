@@ -62,12 +62,12 @@ public class Enemy
         jumpingAnimation = new Animation<TextureRegion>(0.064f, FramesCycle(tmp, jumpFrames));
 
         //RUNNING//
-        FRAME_COLS = 8;
+        FRAME_COLS = 6;
         tmp = TextureRegion.split(runSheet,
                 runSheet.getWidth() / FRAME_COLS,
                 runSheet.getHeight() / FRAME_ROWS);
         TextureRegion[] runFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-        runningAnimation = new Animation<TextureRegion>(0.064f, FramesCycle(tmp, runFrames));
+        runningAnimation = new Animation<TextureRegion>(0.1f, FramesCycle(tmp, runFrames));
 
         stateTime = 0f;
         currentFrame = idleAnimation.getKeyFrame(stateTime, true);
@@ -135,6 +135,8 @@ public class Enemy
     }
 
     public void setState(String info) {
+        System.out.println(info);
+        // isGrounded && isIdle && !isJumping
         String[] parameters = info.split(" ");
         x = Float.parseFloat(parameters[0]);
         y = Float.parseFloat(parameters[1]);
@@ -143,6 +145,7 @@ public class Enemy
         isIdle = Boolean.parseBoolean(parameters[4]);
         isJumping = Boolean.parseBoolean(parameters[5]);
         isFalling = Boolean.parseBoolean(parameters[6]);
+        System.out.println("isGrounded: " + isGrounded + " isIdle: " + isIdle + " isJumping: " + isJumping);
         update();
     }
 }
