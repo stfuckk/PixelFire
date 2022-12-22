@@ -21,6 +21,15 @@
     <frame tileid="11" duration="200"/>
    </animation>
   </tile>
+  <tile id="14">
+   <animation>
+    <frame tileid="14" duration="100"/>
+    <frame tileid="15" duration="100"/>
+    <frame tileid="16" duration="100"/>
+    <frame tileid="17" duration="100"/>
+    <frame tileid="18" duration="100"/>
+   </animation>
+  </tile>
  </tileset>
  <objectgroup id="2" name="objects">
   <object id="13" x="128" y="896">
@@ -90,7 +99,7 @@
  </layer>
  <layer id="6" name="Objects" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztVEkKgDAQywO8qwc3cDt78zc+xaf4FJ9mQIWitth2FAQDuXQ6STotBb6B7mKtfz2FHjEwPKkfevZfzc9Wn2ecTHXb+4gt95t6fOdjmWHS1XQ5uD4/EsYBakbdPANBP5d7PiIS0DjizTez+c2uvQUw5mRGpmRC+uahBqgFaiJfPU5o6dOQNVmRpeK7/yl35qj+DdQAtUBNNKuHKCTe248fElgAtaoNzw==
+   eJxjYMAPHAjIU0sPOnBH4xthUWNJQA89gSQDQwItzRenUD+28CPVfKAfF+CTR48PIswjGeDSQ2r4OFCgBl844HIHUPwAiCYmjdI6HSO7EVd48lDRPnLiGR1IUMEMdEBpniLDvgPk6lVkYGhQAGJ5IJYDYlkgBok7kGEWTA/QDAagWQxAMxkUIHZgAA2gPepArAbEqkCsArUXlEZhZQox4WjJgEjXQDMYgGYxAM1kUIfYQVVAjfQ2CkYBNQAA+zMQ+Q==
   </data>
  </layer>
  <layer id="1" name="Platforms" width="30" height="20">
