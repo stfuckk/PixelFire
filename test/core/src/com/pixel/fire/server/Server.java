@@ -19,7 +19,7 @@ public class Server {
 
     protected static int clientsCount = 0;
 
-    protected static Socket[] clients;
+    protected static Socket[] clientSockets;
     protected static ServerHandler[] clientHandlers;
     private static ServerSocket serverSocket;
     private static boolean isActive = false;
@@ -32,43 +32,45 @@ public class Server {
 
             //clients = new Client[4];
             clientHandlers = new ServerHandler[4];
-            clients = new Socket[4];
+            clientSockets = new Socket[4];
 
             //Works with client until socket is closed
             while(!serverSocket.isClosed())
             {
                 Log("Main server found messages");
 
-                    if(serverCommand.equalsIgnoreCase("quit")) {
-                        Log("Main server initiate exit...");
-                        break;
-                    }
-                try {clients[clientsCount] = serverSocket.accept();} catch (IOException e) {
+                if (serverCommand.equalsIgnoreCase("quit")) {
+                    Log("Main server initiate exit...");
+                    break;
+                }
+                try {
+                    clientSockets[clientsCount] = serverSocket.accept();
+                } catch (IOException e) {
                     Log("serverSocket.accept() interrupted. Irrelevant! Continue...");
                     return;
                 }
                 Log("Connection accepted1...");
-                new Thread(new Runnable()
-                {
-                    @Override public void run()
-                    {
-                        try
-                        {
-                            clientHandlers[clientsCount] = new ServerHandler(clientsCount, clients);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            clientHandlers[clientsCount] = new ServerHandler(clientsCount, clientSockets[clientsCount]);
+                            //clientHandlers[clientsCount].UpdateHandlersMassive(clientHandlers);
                             isActive = true;
                             clientHandlers[clientsCount].run();
-                        }
-                        catch (IOException e) {
+                        } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
                 }).start();
                 Thread.sleep(100);
-                Log("Connection accepted2...");
-                Log("CC1: " + clientsCount);
+                Log("Connection accepted...");
                 clientsCount++;
-                Log("CC2: " + clientsCount);
-
+                for (int i = 0; i < clientsCount; i++) {
+                    clientHandlers[i].UpdateClientsCount(clientsCount);
+                    clientHandlers[i].UpdateHandlersMassive(clientHandlers);
+                    Log("Clients on handler[" + (i) + "]: " +clientHandlers[i].returnClientsCount());
+            }
             }
             serverSocket.close();
         }
@@ -77,7 +79,7 @@ public class Server {
             e.printStackTrace();
         }
     }
-    public static void UpdateClientsData(String newData, int clientID) throws InterruptedException {
+    /*public static void UpdateClientsData(String newData, int clientID) throws InterruptedException {
         if(clientID == 1 && clientHandlers[1] != null) {
             Log("Server.UpdateClientsData(clientID = 1): " + newData);
             clientHandlers[2].UpdateEnemies(newData);
@@ -86,7 +88,7 @@ public class Server {
             Log("Server.UpdateClientsData(clientID = 2): " + newData);
             clientHandlers[0].UpdateEnemies(newData);
         }
-    }
+    } */
 //==================================METHODS USED BY OTHER CLASSES (I.E. SERVER HANDLER)
     public static void KillServer() {
         try {
@@ -107,6 +109,7 @@ public class Server {
         Log("RefreshData: " + clientsCount);
         for(int i = 0; i < clientsCount; i++) {
             clientHandlers[i].UpdateClientsCount(clientsCount);
+            clientHandlers[i].UpdateHandlersMassive(clientHandlers);
             Log("Server.RefreshData():clientHanlders[" + i + "] CC:" + clientsCount);
         }
 

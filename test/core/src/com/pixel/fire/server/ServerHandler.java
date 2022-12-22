@@ -9,33 +9,22 @@ import java.util.logging.Logger;
 
 public class ServerHandler implements  Runnable {
 
-    static class clients {
-        public Socket clientSocket;
-        public DataOutputStream dos;
-        public DataInputStream dis;
 
-        public clients(Socket socket) throws IOException {
-            clientSocket = socket;
-            dos = new DataOutputStream(clientSocket.getOutputStream());
-            dis = new DataInputStream(clientSocket.getInputStream());
-        }
-    }
 
     private final Socket clientDialog;
 
-    private static clients[] allClients = new clients[4];
+    private ServerHandler[] allHandlers;
     private DataInputStream dis;
     private DataOutputStream dos;
     private final int ID;
     private int clientsCount = 1;
 
-    protected static final Logger log = Logger.getLogger("log");
+    protected final Logger log = Logger.getLogger("log");
 
 
-    public ServerHandler(int queuePosition, Socket[] socketMassive) throws IOException {
+    public ServerHandler(int queuePosition, Socket client) throws IOException {
         ID = queuePosition;
-        allClients[ID] = new clients(socketMassive[queuePosition]);
-        clientDialog = socketMassive[ID];
+        clientDialog = client;
     }
 
     @Override
@@ -58,6 +47,7 @@ public class ServerHandler implements  Runnable {
                 }
                 else if(entry.equals("01")) {
                     String playerInfo = dis.readUTF();
+                    Log("Player info: " + playerInfo);
                     SendPlayerDataToServer(playerInfo);
                 }
                 else if(entry.equals("10")) {
@@ -81,12 +71,16 @@ public class ServerHandler implements  Runnable {
         }
     }
     private void SendPlayerDataToServer(String entryText) throws InterruptedException {
-        Log("Sending player's info to other clients...");
-        Server.UpdateClientsData(entryText, ID);
-        Log("Updated info: " + entryText);
+        if(clientsCount == 2) {
+            if(ID == 0)
+                allHandlers[1].UpdateEnemies(entryText);
+            else if(ID == 1)
+                allHandlers[0].UpdateEnemies(entryText);
+        }
+        else if(clientsCount == 1) allHandlers[0].UpdateEnemies(entryText);
     }
 
-//==================================METHODS NOT USED BY THIS CLASS (I.E. USED BY SERVER)
+//==================================METHODS NOT USED BY THIS CLASS (I.E. USED BY SERVER/OTHER HANDLERS)
     public void UpdateEnemies(String info) throws InterruptedException{
         try {
             dos.writeUTF("11"); dos.flush();
@@ -94,12 +88,12 @@ public class ServerHandler implements  Runnable {
             dos.writeUTF(info); dos.flush();
         } catch (IOException e) {throw new RuntimeException(e);}
     }
-    public void UpdateClientsCount(int clientsCount) {
-        this.clientsCount = clientsCount;
-    }
+    public void UpdateClientsCount(int inputCounter) {this.clientsCount = inputCounter;}
+    public void UpdateHandlersMassive(ServerHandler[] handlers) {this.allHandlers = handlers;}
+    public int returnClientsCount() {return clientsCount;}
 
 //==================================SERVICE METHODS
     private void Log(String text) {
-        //log.log(Level.INFO, text);
+        log.log(Level.INFO, text);
     }
 }

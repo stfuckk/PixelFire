@@ -157,6 +157,8 @@ public class GameScreen extends ScreenAdapter {
                 //Gdx.graphics.setWindowedMode(1280,720);
             }
         }
+
+        UpdateEnemy();
     }
 
     private void cameraUpdate()
@@ -346,6 +348,10 @@ public class GameScreen extends ScreenAdapter {
         this.player = player;
     }
 
+    public void UpdateEnemy() {
+        enemy.setState(client.GetInfo());
+        //System.out.println("GAMESCREEN.UPDATEENEMY()" + client.GetInfo());
+    }
     public void setObjects(PolygonMapObject polygon)
     {
         objects.add(polygon);
