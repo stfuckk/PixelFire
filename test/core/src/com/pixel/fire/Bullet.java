@@ -20,7 +20,7 @@ public class Bullet
 
     // BULLET PROPERTIES
     private static final Texture texture = new Texture("Sprites/bullet.png");
-    private static final int SPEED = 900;
+    private static final int SPEED = 300;
     private float x;
     private final float y;
     public boolean remove = false; // Bullet will be removed in gameScreen update() method
@@ -81,10 +81,10 @@ public class Bullet
         int index = 0;
         for (int j = 0; j < 5; j++){
             bulletFrames[index++] = tmp[0][j];
-            bulletAnimation = new Animation<>(0.03f, bulletFrames);
+            bulletAnimation = new Animation<>(0.1f, bulletFrames);
         }
         stateTime = 0f;
-        currentFrame = bulletAnimation.getKeyFrame(stateTime, false);
+        currentFrame = bulletAnimation.getKeyFrame(stateTime, true);
         batch = spriteBatch;
 
         destroyParticle = new Particles(batch, "Sprites/bullet.p", "Sprites/images");
@@ -108,11 +108,16 @@ public class Bullet
 
     public void render(float delta)
     {
+        if(isLeft && !currentFrame.isFlipX())
+            currentFrame.flip(true, false);
+        else if(currentFrame.isFlipX())
+            currentFrame.flip(false, false);
+
         if (!invisible)
         {
             stateTime += delta;
-            currentFrame = bulletAnimation.getKeyFrame(stateTime, false);
-            batch.draw(currentFrame, x, y-10);
+            currentFrame = bulletAnimation.getKeyFrame(stateTime, true);
+            batch.draw(currentFrame, x, y-5, 20, 10);
         }
         else
         {

@@ -3,22 +3,13 @@
  <tileset firstgid="1" source="tiles.tsx"/>
  <tileset firstgid="50" name="atiles" tilewidth="64" tileheight="64" tilecount="49" columns="7">
   <image source="animatedTiles/atiles.png" width="448" height="448"/>
-  <tile id="0">
+  <tile id="14">
    <animation>
-    <frame tileid="0" duration="200"/>
-    <frame tileid="1" duration="200"/>
-    <frame tileid="2" duration="200"/>
-    <frame tileid="3" duration="200"/>
-    <frame tileid="4" duration="200"/>
-   </animation>
-  </tile>
-  <tile id="7">
-   <animation>
-    <frame tileid="7" duration="200"/>
-    <frame tileid="8" duration="200"/>
-    <frame tileid="9" duration="200"/>
-    <frame tileid="10" duration="200"/>
-    <frame tileid="11" duration="200"/>
+    <frame tileid="14" duration="100"/>
+    <frame tileid="15" duration="100"/>
+    <frame tileid="16" duration="100"/>
+    <frame tileid="17" duration="100"/>
+    <frame tileid="18" duration="100"/>
    </animation>
   </tile>
  </tileset>
@@ -90,7 +81,7 @@
  </layer>
  <layer id="6" name="Objects" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJztVEkKgDAQywO8qwc3cDt78zc+xaf4FJ9mQIWitth2FAQDuXQ6STotBb6B7mKtfz2FHjEwPKkfevZfzc9Wn2ecTHXb+4gt95t6fOdjmWHS1XQ5uD4/EsYBakbdPANBP5d7PiIS0DjizTez+c2uvQUw5mRGpmRC+uahBqgFaiJfPU5o6dOQNVmRpeK7/yl35qj+DdQAtUBNNKuHKCTe248fElgAtaoNzw==
+   eJztVEEOgjAQnAd4BjkokKjIL/o0n8JTfIpPcapsJNhCSxe9MMkkpN2d2SwDwDTMzL1Wzxjtj3q0kAH3lfUfa+rlAT0F0GnOUCj2hMw/hEmomdqDnYO7vY3PJR++jPK+kuf2c/Y1QuYzjsDw3fv2uVPwmfOIwT6gJnY3sZlJRZ7wj6iZqYosySN56DNmFmhJDzVALVDzFb7aUXulT0NeyDN56n1tRiWfIXu0tZJraoBaoCaat8diuN656/vbsOEfeAJ29hSh
   </data>
  </layer>
  <layer id="1" name="Platforms" width="30" height="20">
