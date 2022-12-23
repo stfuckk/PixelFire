@@ -2,7 +2,6 @@ package com.pixel.fire.Objects.Player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -44,10 +43,11 @@ public class Player extends GameEntity
     public Player(float width, float height, Body body)
     {
         super(width, height, body); //super - parent class
-        this.speed = 20f;
+        this.speed = 15f;
         Texture runSheet = new Texture("Sprites/run.png");
         Texture jumpTexture = new Texture("Sprites/jump.png");
         Texture idleSheet = new Texture("Sprites/idle.png");
+
         //
         TextureRegion[][] tmp;
         //IDLE//

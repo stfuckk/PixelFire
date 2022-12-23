@@ -7,6 +7,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -59,11 +61,15 @@ public class GameScreen extends ScreenAdapter {
     private Enemy enemy;
     private ArrayList<Bullet> bullets;
     private Array<PolygonMapObject> objects = new Array<PolygonMapObject>();
+
+    private Background bg;
     // SERVER-CLIENT OBJECTS
     private Client client;
 
+
     public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client)
     {
+
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
@@ -80,28 +86,17 @@ public class GameScreen extends ScreenAdapter {
 
         bullets = new ArrayList<Bullet>();
         Bullet.setObjects(objects);
-
+        this.bg = new Background();
         this.enemy = new Enemy();
     }
 
     private void update(float delta)
     {
+        bgMove();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             pause();
             settingsTable.setVisible(false);
-            /*
-            if (mainTable.isVisible())
-            {
-                pause();
-            }
-            else if (settingsTable.isVisible())
-            {
-                settingsTable.setVisible(false);
-                pause();
-            }
-
-             */
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead)
         {
@@ -118,8 +113,6 @@ public class GameScreen extends ScreenAdapter {
             {
                 bulletsToRemove.add(bullet);
             }
-            //System.out.println("bullet x: " + bullet.getX()+ " player x: " + enemy.collider.x);
-            //System.out.println("bullet y: " + bullet.getY() + " player y: " + enemy.collider.y);
             if (Enemy.collider.contains(bullet.getX(), bullet.getY()))
             {
                 enemy.isDead = true;
@@ -170,28 +163,30 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
     }
 
+    private void bgMove(){
+        bg.bg_main.setPosition(player.getBody().getPosition().x * PPM / 2f, player.getBody().getPosition().y * PPM / 2f);
+    }
+
     @Override
     public void render(float delta)
     {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        orthogonalTiledMapRenderer.render(new int[]{4,5});
+
+        bg.render(batch);
         if (!player.isDead)
         {
             player.render(batch);
         }
-        //orthogonalTiledMapRenderer.render();
         enemy.render(batch);
         batch.begin();
+        orthogonalTiledMapRenderer.render(new int[]{4,5});
         orthogonalTiledMapRenderer.render(new int[]{1, 2, 3});
         for (Bullet bullet : bullets)
         {
             bullet.render(delta);
         }
         batch.end();
-
-        //render objects
-        //player.render(batch);
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
 
         if (paused)
@@ -199,7 +194,6 @@ public class GameScreen extends ScreenAdapter {
             stage.act();
             stage.draw();
         }
-
         this.update(delta);
     }
 
