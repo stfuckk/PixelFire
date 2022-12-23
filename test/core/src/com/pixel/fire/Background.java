@@ -20,7 +20,8 @@ public class Background {
 
     public void render(SpriteBatch batch) {
         batch.begin();
-        batch.draw(bg_main, bg_main.getX() - 600, bg_main.getY() - 100, 2304, 1296);
+        batch.draw(bg_main, bg_main.getX() - 500f, bg_main.getY() - 100f);
+        batch.draw(bg_jijka, bg_jijka.getX() - 500f, bg_jijka.getY() - 50f, 2304, 600);
         batch.end();
     }
 }

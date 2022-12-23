@@ -63,6 +63,7 @@ public class GameScreen extends ScreenAdapter {
     private Array<PolygonMapObject> objects = new Array<PolygonMapObject>();
 
     private Background bg;
+    private float bg_x, bg2_x;
     // SERVER-CLIENT OBJECTS
     private Client client;
 
@@ -156,15 +157,32 @@ public class GameScreen extends ScreenAdapter {
 
     private void cameraUpdate()
     {
+        System.out.println(player.getBody().getPosition().x * PPM);
         Vector3 position = camera.position;
-        position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
+        if(player.getBody().getPosition().x * PPM >= 135 && player.getBody().getPosition().x * PPM <= 1800) {
+            position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
+        }
+        else
+        {
+            position.x = camera.position.x;
+        }
         position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
+
         camera.position.set(position);
         camera.update();
     }
 
     private void bgMove(){
-        bg.bg_main.setPosition(player.getBody().getPosition().x * PPM / 2f, player.getBody().getPosition().y * PPM / 2f);
+        if(player.getBody().getPosition().x * PPM >= 135 && player.getBody().getPosition().x * PPM <= 1800) {
+            bg_x = bg.bg_main.getX();
+            bg2_x = bg.bg_jijka.getX();
+            bg.bg_main.setPosition(player.getBody().getPosition().x * PPM / 2f, player.getBody().getPosition().y * PPM / 2f);
+            bg.bg_jijka.setPosition(player.getBody().getPosition().x * PPM / 3f, player.getBody().getPosition().y * PPM / 3f);
+        }
+        else{
+            bg.bg_main.setPosition(bg_x, player.getBody().getPosition().y * PPM / 2f);
+            bg.bg_jijka.setPosition(bg2_x, player.getBody().getPosition().y * PPM / 3f);
+        }
     }
 
     @Override
@@ -174,13 +192,13 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         bg.render(batch);
+        orthogonalTiledMapRenderer.render(new int[]{4,5});
         if (!player.isDead)
         {
             player.render(batch);
         }
         enemy.render(batch);
         batch.begin();
-        orthogonalTiledMapRenderer.render(new int[]{4,5});
         orthogonalTiledMapRenderer.render(new int[]{1, 2, 3});
         for (Bullet bullet : bullets)
         {
