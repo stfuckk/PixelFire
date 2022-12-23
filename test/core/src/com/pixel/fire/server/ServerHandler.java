@@ -77,7 +77,7 @@ public class ServerHandler implements  Runnable
                 allHandlers[0].UpdateEnemies(entryText);
         }
 
-        else if(clientsCount == 1) allHandlers[0].UpdateEnemies(entryText);
+        //else if(clientsCount == 1) allHandlers[0].UpdateEnemies(entryText);
     }
 
 //==================================METHODS NOT USED BY THIS CLASS (I.E. USED BY SERVER/OTHER HANDLERS)

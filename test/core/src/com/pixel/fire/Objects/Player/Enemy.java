@@ -134,9 +134,8 @@ public class Enemy
         collider = new Rectangle(x, y, width, height);
     }
 
-    public void setState(String info) {
-        System.out.println(info);
-        // isGrounded && isIdle && !isJumping
+    public void setState(String info)
+    {
         String[] parameters = info.split(" ");
         x = Float.parseFloat(parameters[0]);
         y = Float.parseFloat(parameters[1]);
@@ -145,7 +144,6 @@ public class Enemy
         isIdle = Boolean.parseBoolean(parameters[4]);
         isJumping = Boolean.parseBoolean(parameters[5]);
         isFalling = Boolean.parseBoolean(parameters[6]);
-        System.out.println("isGrounded: " + isGrounded + " isIdle: " + isIdle + " isJumping: " + isJumping);
         update();
     }
 }
