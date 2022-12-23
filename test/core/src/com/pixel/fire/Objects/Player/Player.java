@@ -140,7 +140,7 @@ public class Player extends GameEntity
                 (y >= 1168  && y <= 1168.5) && (x >= 1071 && x <= 1424) )
 
             isGrounded = true;
-
+            
         if (body.getLinearVelocity().x != 0 || body.getLinearVelocity().y != 0 || isIdle)
         {
             isStateChanged = true;
