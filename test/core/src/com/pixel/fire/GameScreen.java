@@ -75,6 +75,7 @@ public class GameScreen extends ScreenAdapter {
 
     // SERVER-CLIENT OBJECTS
     private Client client;
+    private int timer;
 
 
     public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client)
@@ -114,6 +115,7 @@ public class GameScreen extends ScreenAdapter {
 
     private void update(float delta)
     {
+        timer += delta * 1000;
         bgMove();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
@@ -128,10 +130,10 @@ public class GameScreen extends ScreenAdapter {
                 SoundManager.get("shot").play(SoundManager.soundVolume);
                 bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch, false));
                 timer = 0;
+                player.JustShot();
+                player.SendPlayerInfo();
             }
 
-            player.JustShot();
-            player.SendPlayerInfo();
         }
 
         if(enemy.GetJustShot())

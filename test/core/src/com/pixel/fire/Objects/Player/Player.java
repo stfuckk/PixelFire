@@ -121,7 +121,8 @@ public class Player extends GameEntity
         if (y <= 192 && !isDead)
         {
             SoundManager.get("death").play(SoundManager.soundVolume);
-            isDead = true;
+            GetShot();
+            setRandomPosition();
         }
         //System.out.println(isDead);
 
