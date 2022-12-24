@@ -26,6 +26,7 @@ public class Bullet
     public boolean remove = false; // Bullet will be removed in gameScreen update() method
     public boolean invisible = false; // Bullet will be made invisible
     private final boolean isLeft; // Bullet flies to the left
+    public final boolean isEnemy;
 
     // COLLISION CHECK
     private static final Array<Rectangle> objects = new Array<>(); // Array of all map objects
@@ -36,8 +37,9 @@ public class Bullet
     private final Particles destroyParticle; // Particle of bullet collision
     private final SpriteBatch batch; // Sprite batch that render sprites
 
-    public Bullet (Vector2 position, boolean isLeft, SpriteBatch spriteBatch)
+    public Bullet (Vector2 position, boolean isLeft, SpriteBatch spriteBatch, boolean isEnemy)
     {
+        this.isEnemy = isEnemy;
         this.isLeft = isLeft;
         if (isLeft) this.x = position.x * PPM - 35;
         else this.x = position.x * PPM + 5;

@@ -135,7 +135,6 @@ public class Enemy
     {
         collider = new Rectangle(x, y, width, height);
     }
-
     public void setState(String info) {
         System.out.println(info);
         String[] parameters = info.split(" ");
@@ -150,7 +149,6 @@ public class Enemy
         isDead = Boolean.parseBoolean(parameters[8]);
         justShot = Boolean.parseBoolean(parameters[9]);
 
-        //System.out.println("isGrounded: " + isGrounded + " isIdle: " + isIdle + " isJumping: " + isJumping);
         update();
     }
 

@@ -59,7 +59,7 @@ public class TileMapHelper {
                             gameScreen.getWorld()
                     );
                     Enemy.setRectangle(rectangle.getX() + rectangle.getWidth() / 2,rectangle.getY() + rectangle.getHeight() / 2, rectangle.getWidth(), rectangle.getHeight());
-                    gameScreen.setPlayer(new Player(rectangle.getWidth(), rectangle.getHeight(),body));
+                    gameScreen.setPlayer(new Player(rectangle.getWidth(), rectangle.getHeight(),body), new Rectangle(rectangle.getX() + rectangle.getWidth() / 2,rectangle.getY() + rectangle.getHeight() / 2, rectangle.getWidth(), rectangle.getHeight()));
                 }
                 /*
                 if(rectangleName.equals("enemy")){

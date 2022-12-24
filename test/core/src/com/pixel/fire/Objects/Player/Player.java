@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
@@ -20,6 +21,8 @@ public class Player extends GameEntity
     private static int FRAME_COLS = 8, FRAME_ROWS = 1;
     //
     private boolean left = false;
+
+    public Rectangle collider;
     private boolean isGrounded = false;
     private boolean isIdle = true;
     private boolean isJumping = false;
@@ -101,6 +104,9 @@ public class Player extends GameEntity
     @Override
     public void update()
     {
+        collider.x = x - collider.width + 16;
+        collider.y = y - collider.height + 14;
+
         if (!isDead)
         {
             x = body.getPosition().x * PPM;
@@ -142,8 +148,11 @@ public class Player extends GameEntity
                 (y >= 1168  && y <= 1168.5) && (x >= 1071 && x <= 1424) )
 
             isGrounded = true;
-        if(body.getLinearVelocity().x != 0 || body.getLinearVelocity().y != 0 || isIdle)
+            
+        if (body.getLinearVelocity().x != 0 || body.getLinearVelocity().y != 0 || isIdle)
+        {
             isStateChanged = true;
+        }
 
     }
 
@@ -230,7 +239,7 @@ public class Player extends GameEntity
 
         SendPlayerInfo();
     }
-    private void SendPlayerInfo() {
+    public void SendPlayerInfo() {
         if(isStateChanged) {
             client.SendPlayerInfo(x, y, playerLives, left, isGrounded, isIdle, isJumping, isFalling, isDead, justShot);
             justShot = false;
