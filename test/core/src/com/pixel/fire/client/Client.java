@@ -18,7 +18,7 @@ public class Client extends Thread
 
     private Enemy enemy;
 
-    private String enemyState = "100 400 false false false false false";
+    private String enemyState = "100 400 false false false false false false false";
     
     public void StartClient(String ip) 
     {
@@ -102,7 +102,7 @@ public class Client extends Thread
             dos.writeUTF("01");
             dos.flush();
             //try {this.sleep(10);} catch(InterruptedException e) {System.out.println("sleep interrupted");}
-            dos.writeUTF(x+" "+y+" "+left+" "+isGrounded+" "+isIdle+" "+isJumping+" "+isFalling+" "+isDead+" "+justShot+" ");
+            dos.writeUTF(x+" "+y+" "+left+" "+isGrounded+" "+isIdle+" "+isJumping+" "+isFalling+" "+isDead+" "+justShot);
             dos.flush();
         } catch(SocketException e) {
             System.out.println("HOY!");
