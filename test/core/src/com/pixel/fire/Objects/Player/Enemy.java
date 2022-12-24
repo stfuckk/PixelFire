@@ -28,6 +28,7 @@ public class Enemy
     private boolean isJumping = false;
     private boolean isFalling = false;
     public boolean isDead = false;
+    private boolean justShot = false;
     private static Array<Vector2> spawnpoints = new Array<Vector2>();
 
     //
@@ -145,7 +146,9 @@ public class Enemy
         isJumping = Boolean.parseBoolean(parameters[5]);
         isFalling = Boolean.parseBoolean(parameters[6]);
         isDead = Boolean.parseBoolean(parameters[7]);
-        System.out.println("isGrounded: " + isGrounded + " isIdle: " + isIdle + " isJumping: " + isJumping);
+        justShot = Boolean.parseBoolean(parameters[8]);
+
+        //System.out.println("isGrounded: " + isGrounded + " isIdle: " + isIdle + " isJumping: " + isJumping);
         update();
     }
 }
