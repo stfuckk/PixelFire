@@ -28,6 +28,8 @@ public class Bullet
     private final boolean isLeft; // Bullet flies to the left
     public final boolean isEnemy;
 
+    public boolean hasHit = true;
+
     // COLLISION CHECK
     private static final Array<Rectangle> objects = new Array<>(); // Array of all map objects
     private Rectangle object = null; // Object that the bullet will collide with
