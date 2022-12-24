@@ -103,7 +103,13 @@ public class GameScreen extends ScreenAdapter {
         {
             SoundManager.get("shot").play(SoundManager.soundVolume);
             bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch));
+            player.JustShot();
         }
+        if(enemy.GetJustShot()) {
+            SoundManager.get("shot").play(SoundManager.soundVolume);
+            bullets.add(new Bullet(enemy.GetVector(), enemy.IsLeft(), batch));
+        }
+
         world.step(1 / 60f, 6, 2);
         cameraUpdate();
         ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();

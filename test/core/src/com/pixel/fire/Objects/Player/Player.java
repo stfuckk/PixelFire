@@ -266,4 +266,6 @@ public class Player extends GameEntity
     }
 
     public void SetClient(Client client) {this.client = client;}
+
+    public void JustShot() {justShot = true;}
 }

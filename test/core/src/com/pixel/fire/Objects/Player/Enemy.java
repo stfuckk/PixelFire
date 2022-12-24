@@ -148,4 +148,11 @@ public class Enemy
         justShot = Boolean.parseBoolean(parameters[8]);
         update();
     }
+
+    public boolean GetJustShot() {return justShot;}
+    public Vector2 GetVector() {
+        if(left) return new Vector2(x / PPM, y / PPM);
+        else return new Vector2((x / PPM) + 0.25f, y / PPM);
+    }
+    public boolean IsLeft() {return left;}
 }
