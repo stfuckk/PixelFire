@@ -41,9 +41,9 @@ public class Enemy
 
     public Enemy()
     {
-        Texture runSheet = new Texture("Sprites/run.png");
-        Texture jumpTexture = new Texture("Sprites/jump.png");
-        Texture idleSheet = new Texture("Sprites/idle.png");
+        Texture runSheet = new Texture("Sprites/run_enemy.png");
+        Texture jumpTexture = new Texture("Sprites/jump_enemy.png");
+        Texture idleSheet = new Texture("Sprites/idle_enemy.png");
         //
         TextureRegion[][] tmp;
         //IDLE//
