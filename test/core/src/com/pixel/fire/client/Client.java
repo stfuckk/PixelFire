@@ -18,7 +18,7 @@ public class Client extends Thread
 
     private Enemy enemy;
 
-    private String enemyState = "100 400 false false false false false false false";
+    private String enemyState = "100 400 3 false false false false false false false";
     
     public void StartClient(String ip) 
     {
@@ -96,13 +96,13 @@ public class Client extends Thread
         }
     }
 //==================================METHODS FOR INTERACTING WITH THE GAME
-    public void SendPlayerInfo(float x, float y, boolean left, boolean isGrounded, boolean isIdle,
+    public void SendPlayerInfo(float x, float y,int playerLives, boolean left, boolean isGrounded, boolean isIdle,
                                boolean isJumping, boolean isFalling, boolean isDead, boolean justShot){
         try {
             dos.writeUTF("01");
             dos.flush();
             //try {this.sleep(10);} catch(InterruptedException e) {System.out.println("sleep interrupted");}
-            dos.writeUTF(x+" "+y+" "+left+" "+isGrounded+" "+isIdle+" "+isJumping+" "+isFalling+" "+isDead+" "+justShot);
+            dos.writeUTF(x+" "+y+" "+playerLives+" "+left+" "+isGrounded+" "+isIdle+" "+isJumping+" "+isFalling+" "+isDead+" "+justShot);
             dos.flush();
         } catch(SocketException e) {
             System.out.println("HOY!");

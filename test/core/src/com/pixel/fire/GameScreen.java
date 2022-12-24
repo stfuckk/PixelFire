@@ -64,6 +64,12 @@ public class GameScreen extends ScreenAdapter {
 
     private Background bg;
     private float bg_x, bg2_x;
+
+    private Texture player_hearts_0, player_hearts_1, player_hearts_2, player_hearts_3;
+    private Texture enemy_hearts_0, enemy_hearts_1, enemy_hearts_2, enemy_hearts_3;
+    private Sprite playerHearts;
+    private Sprite enemyHearts;
+
     // SERVER-CLIENT OBJECTS
     private Client client;
 
@@ -89,6 +95,18 @@ public class GameScreen extends ScreenAdapter {
         Bullet.setObjects(objects);
         this.bg = new Background();
         this.enemy = new Enemy();
+
+        player_hearts_0 = new Texture("Sprites/Player_hearts/0.png");
+        player_hearts_1 = new Texture("Sprites/Player_hearts/1.png");
+        player_hearts_2 = new Texture("Sprites/Player_hearts/2.png");
+        player_hearts_3 = new Texture("Sprites/Player_hearts/3.png");
+        playerHearts = new Sprite(player_hearts_3);
+
+        enemy_hearts_0 = new Texture("Sprites/Player_hearts/e0.png");
+        enemy_hearts_1 = new Texture("Sprites/Player_hearts/e1.png");
+        enemy_hearts_2 = new Texture("Sprites/Player_hearts/e2.png");
+        enemy_hearts_3 = new Texture("Sprites/Player_hearts/e3.png");
+        enemyHearts = new Sprite(enemy_hearts_3);
     }
 
     private void update(float delta)
@@ -131,6 +149,15 @@ public class GameScreen extends ScreenAdapter {
         enemy.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
+        if(player.GetPlayerLives() == 3) playerHearts.setTexture(player_hearts_3);
+        else if(player.GetPlayerLives() == 2) playerHearts.setTexture(player_hearts_2);
+        else if(player.GetPlayerLives() == 1) playerHearts.setTexture(player_hearts_1);
+        else if(player.GetPlayerLives() == 0) playerHearts.setTexture(player_hearts_0);
+
+        if(enemy.GetEnemyLives() == 3) enemyHearts.setTexture(enemy_hearts_3);
+        else if(enemy.GetEnemyLives() == 2) enemyHearts.setTexture(enemy_hearts_2);
+        else if(enemy.GetEnemyLives() == 1) enemyHearts.setTexture(enemy_hearts_1);
+        else if(enemy.GetEnemyLives() == 0) enemyHearts.setTexture(enemy_hearts_0);
 
         if (musicSlider != null && musicSlider.isDragging())
         {
@@ -197,6 +224,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
         bg.render(batch);
         orthogonalTiledMapRenderer.render(new int[]{4,5});
         if (!player.isDead)
@@ -206,6 +234,8 @@ public class GameScreen extends ScreenAdapter {
         enemy.render(batch);
         batch.begin();
         orthogonalTiledMapRenderer.render(new int[]{1, 2, 3});
+        batch.draw(playerHearts, camera.position.x - 450, camera.position.y - 250);
+        batch.draw(enemyHearts, camera.position.x + 190, camera.position.y - 250);
         for (Bullet bullet : bullets)
         {
             bullet.render(delta);
