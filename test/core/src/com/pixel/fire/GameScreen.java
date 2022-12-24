@@ -122,8 +122,14 @@ public class GameScreen extends ScreenAdapter {
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead)
         {
-            SoundManager.get("shot").play(SoundManager.soundVolume);
-            bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch, false));
+            if (timer <= 700) {}
+            else
+            {
+                SoundManager.get("shot").play(SoundManager.soundVolume);
+                bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch, false));
+                timer = 0;
+            }
+
             player.JustShot();
             player.SendPlayerInfo();
         }
