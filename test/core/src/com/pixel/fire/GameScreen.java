@@ -120,10 +120,7 @@ public class GameScreen extends ScreenAdapter {
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead)
         {
-            if (timer <= 700)
-            {
-
-            }
+            if (timer <= 700) {}
             else
             {
                 SoundManager.get("shot").play(SoundManager.soundVolume);
