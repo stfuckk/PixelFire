@@ -29,6 +29,7 @@ public class Enemy
     private boolean isFalling = false;
     public boolean isDead = false;
     private boolean justShot = false;
+    private int enemyLives = 3;
     private static Array<Vector2> spawnpoints = new Array<Vector2>();
 
     //
@@ -139,20 +140,23 @@ public class Enemy
         String[] parameters = info.split(" ");
         x = Float.parseFloat(parameters[0]);
         y = Float.parseFloat(parameters[1]);
-        left = Boolean.parseBoolean(parameters[2]);
-        isGrounded = Boolean.parseBoolean(parameters[3]);
-        isIdle = Boolean.parseBoolean(parameters[4]);
-        isJumping = Boolean.parseBoolean(parameters[5]);
-        isFalling = Boolean.parseBoolean(parameters[6]);
-        isDead = Boolean.parseBoolean(parameters[7]);
-        justShot = Boolean.parseBoolean(parameters[8]);
+        enemyLives = Integer.parseInt(parameters[2]);
+        left = Boolean.parseBoolean(parameters[3]);
+        isGrounded = Boolean.parseBoolean(parameters[4]);
+        isIdle = Boolean.parseBoolean(parameters[5]);
+        isJumping = Boolean.parseBoolean(parameters[6]);
+        isFalling = Boolean.parseBoolean(parameters[7]);
+        isDead = Boolean.parseBoolean(parameters[8]);
+        justShot = Boolean.parseBoolean(parameters[9]);
         update();
     }
 
+    //GETTERS
     public boolean GetJustShot() {return justShot;}
     public Vector2 GetVector() {
         if(left) return new Vector2(x / PPM, y / PPM);
         else return new Vector2((x / PPM) + 0.25f, y / PPM);
     }
     public boolean IsLeft() {return left;}
+    public int GetEnemyLives() {return enemyLives;}
 }

@@ -30,6 +30,7 @@ public class Player extends GameEntity
     public boolean isDead = false;
     private boolean justShot = false;
     private boolean paused = false;
+    private int playerLives = 3;
 
     private static Array<Vector2> spawnpoints = new Array<Vector2>();
 
@@ -240,7 +241,7 @@ public class Player extends GameEntity
     }
     public void SendPlayerInfo() {
         if(isStateChanged) {
-            client.SendPlayerInfo(x, y, left, isGrounded, isIdle, isJumping, isFalling, isDead, justShot);
+            client.SendPlayerInfo(x, y, playerLives, left, isGrounded, isIdle, isJumping, isFalling, isDead, justShot);
             justShot = false;
             isStateChanged = false;
         }
@@ -274,4 +275,5 @@ public class Player extends GameEntity
     public void SetClient(Client client) {this.client = client;}
 
     public void JustShot() {justShot = true;}
+    public int GetPlayerLives() {return playerLives;}
 }
