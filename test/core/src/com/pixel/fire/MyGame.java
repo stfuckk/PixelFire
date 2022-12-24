@@ -37,6 +37,7 @@ public class MyGame extends Game {
 		SoundManager.add("bulletcollision", "audio/bulletcollision.wav"); //
 		SoundManager.add("footstep", "audio/footstep.wav");
 		SoundManager.add("gamemusic", "audio/gamemusic.wav");
+		SoundManager.add("reload", "audio/reload.wav");
 
 		setScreen(new MenuScreen(assets.getAssetManager(), INSTANCE));
 	}

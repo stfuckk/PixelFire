@@ -37,9 +37,12 @@ public class Player extends GameEntity
     private int counter = 0;
     //
     private TextureRegion currentFrame;
+    public TextureRegion reloadFrame;
     Animation<TextureRegion> runningAnimation;
     Animation<TextureRegion> idleAnimation;
     Animation<TextureRegion> jumpingAnimation;
+
+    Animation<TextureRegion> reloadAnimation;
     float stateTime;
     //
     private Client client;
@@ -52,6 +55,7 @@ public class Player extends GameEntity
         Texture runSheet = new Texture("Sprites/run.png");
         Texture jumpTexture = new Texture("Sprites/jump.png");
         Texture idleSheet = new Texture("Sprites/idle.png");
+        Texture reloadSheet = new Texture("Sprites/reload.png");
 
         //
         TextureRegion[][] tmp;
@@ -79,8 +83,16 @@ public class Player extends GameEntity
         TextureRegion[] runFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         runningAnimation = new Animation<TextureRegion>(0.1f, FramesCycle(tmp, runFrames));
 
+        FRAME_COLS = 6;
+        tmp = TextureRegion.split(reloadSheet,
+                reloadSheet.getWidth() / FRAME_COLS,
+                reloadSheet.getHeight() / FRAME_ROWS);
+        TextureRegion[] reloadFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+        reloadAnimation = new Animation<TextureRegion>(0.1f, FramesCycle(tmp, reloadFrames));
+
         stateTime = 0f;
         currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+        reloadFrame = reloadAnimation.getKeyFrame(stateTime, true);
 
         spawnpoints.add(new Vector2(10,15));
         spawnpoints.add(new Vector2(30,30));
@@ -120,7 +132,10 @@ public class Player extends GameEntity
 
         if (y <= 192 && !isDead)
         {
-            SoundManager.get("death").play(SoundManager.soundVolume);
+            if (playerLives != 1)
+            {
+                SoundManager.get("bulletcollision").play(SoundManager.soundVolume);
+            }
             GetShot();
             setRandomPosition();
         }
@@ -160,6 +175,7 @@ public class Player extends GameEntity
     @Override
     public void render(SpriteBatch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
+        reloadFrame = reloadAnimation.getKeyFrame(stateTime, true);
         //idle
         if (isGrounded && isIdle && !isJumping)
         {

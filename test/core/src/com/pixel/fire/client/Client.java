@@ -98,15 +98,25 @@ public class Client extends Thread
 //==================================METHODS FOR INTERACTING WITH THE GAME
     public void SendPlayerInfo(float x, float y,int playerLives, boolean left, boolean isGrounded, boolean isIdle,
                                boolean isJumping, boolean isFalling, boolean isDead, boolean justShot){
-        try {
+        try
+        {
             dos.writeUTF("01");
             dos.flush();
             //try {this.sleep(10);} catch(InterruptedException e) {System.out.println("sleep interrupted");}
             dos.writeUTF(x+" "+y+" "+playerLives+" "+left+" "+isGrounded+" "+isIdle+" "+isJumping+" "+isFalling+" "+isDead+" "+justShot);
             dos.flush();
-        } catch(SocketException e) {
+        }
+        catch(SocketException e)
+        {
             System.out.println("HOY!");
-        } catch(IOException e) {Log("IOException:"); e.printStackTrace();}
+        }
+        catch(IOException e) {Log("IOException:"); e.printStackTrace();}
+
+        catch(NullPointerException e)
+        {
+            System.out.println("BABY");
+        }
+
     }
 
     public String GetInfo() {return enemyState;}

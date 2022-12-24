@@ -12,8 +12,8 @@ public class Assets
 {
     private AssetManager assetManager = new AssetManager();
     public static final AssetDescriptor<Skin> SKIN = new AssetDescriptor<>("skin/neon-ui.json", Skin.class, new SkinLoader.SkinParameter("skin/neon-ui.atlas"));
-    public static final Texture texture_pause = new Texture(Gdx.files.internal("Sprites/background.png"));
-    public static final Sprite pause = new Sprite(texture_pause);
+    public static final Texture texture_background = new Texture(Gdx.files.internal("Sprites/background.png"));
+    public static final Sprite background = new Sprite(texture_background);
     public static final Texture texture_gray = new Texture(Gdx.files.internal("Sprites/background1.png"));
     public static final Sprite gray = new Sprite(texture_gray);
 

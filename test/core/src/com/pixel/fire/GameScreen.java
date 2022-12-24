@@ -5,13 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -76,6 +74,7 @@ public class GameScreen extends ScreenAdapter {
     // SERVER-CLIENT OBJECTS
     private Client client;
     private int timer;
+    private boolean isReloading;
 
 
     public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client)
@@ -116,6 +115,14 @@ public class GameScreen extends ScreenAdapter {
     private void update(float delta)
     {
         timer += delta * 1000;
+        if (timer >= 700)
+        {
+            isReloading = false;
+        }
+        else
+        {
+            isReloading = true;
+        }
         bgMove();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
@@ -124,7 +131,10 @@ public class GameScreen extends ScreenAdapter {
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead)
         {
-            if (timer <= 700) {}
+            if (isReloading)
+            {
+
+            }
             else
             {
                 SoundManager.get("shot").play(SoundManager.soundVolume);
@@ -250,6 +260,7 @@ public class GameScreen extends ScreenAdapter {
         orthogonalTiledMapRenderer.render(new int[]{1, 2, 3});
         batch.draw(playerHearts, camera.position.x - 450, camera.position.y - 250);
         batch.draw(enemyHearts, camera.position.x + 190, camera.position.y - 250);
+        if (isReloading) batch.draw(player.reloadFrame, player.getBody().getPosition().x * PPM - 12, player.getBody().getPosition().y * PPM + 15, 25, 25);
         for (Bullet bullet : bullets)
         {
             bullet.render(delta);
@@ -436,10 +447,12 @@ public class GameScreen extends ScreenAdapter {
 
     private void CheckForRoundWin() {
         if(player.GetPlayerLives() == 0) {
+            SoundManager.get("death").play(SoundManager.soundVolume);
             enemyVictories++;
             ResetRound();
         }
         else if(enemy.GetEnemyLives() == 0) {
+            SoundManager.get("death").play(SoundManager.soundVolume);
             playerVictories++;
             ResetRound();
         }
@@ -453,6 +466,5 @@ public class GameScreen extends ScreenAdapter {
 
         player.isDead = false; enemy.isDead = false;
     }
-
 
 }
