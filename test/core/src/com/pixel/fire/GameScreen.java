@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -102,12 +103,15 @@ public class GameScreen extends ScreenAdapter {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead)
         {
             SoundManager.get("shot").play(SoundManager.soundVolume);
-            bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch));
+            bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch, false));
             player.JustShot();
+            player.SendPlayerInfo();
         }
-        if(enemy.GetJustShot()) {
+
+        if(enemy.GetJustShot())
+        {
             SoundManager.get("shot").play(SoundManager.soundVolume);
-            bullets.add(new Bullet(enemy.GetVector(), enemy.IsLeft(), batch));
+            bullets.add(new Bullet(enemy.GetVector(), enemy.IsLeft(), batch, true));
         }
 
         world.step(1 / 60f, 6, 2);
@@ -120,9 +124,15 @@ public class GameScreen extends ScreenAdapter {
             {
                 bulletsToRemove.add(bullet);
             }
-            if (Enemy.collider.contains(bullet.getX(), bullet.getY()))
+
+            if (Enemy.collider.contains(bullet.getX(), bullet.getY()) && !bullet.isEnemy)
             {
                 enemy.isDead = true;
+                bullet.killPlayer();
+            }
+
+            if (player.collider.contains(bullet.getX(), bullet.getY()) && bullet.isEnemy)
+            {
                 bullet.killPlayer();
             }
         }
@@ -194,10 +204,8 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta)
     {
-        Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         bg.render(batch);
+
         orthogonalTiledMapRenderer.render(new int[]{4,5});
         if (!player.isDead)
         {
@@ -210,6 +218,7 @@ public class GameScreen extends ScreenAdapter {
         {
             bullet.render(delta);
         }
+
         batch.end();
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
 
@@ -218,6 +227,7 @@ public class GameScreen extends ScreenAdapter {
             stage.act();
             stage.draw();
         }
+
         this.update(delta);
     }
 
@@ -361,9 +371,10 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    public void setPlayer(Player player)
+    public void setPlayer(Player player, Rectangle collider)
     {
         this.player = player;
+        player.collider = collider;
     }
 
     public void UpdateEnemy() {
