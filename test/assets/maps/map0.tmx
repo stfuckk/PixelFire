@@ -79,17 +79,17 @@
  </objectgroup>
  <layer id="7" name="lava" width="30" height="20" offsetx="0" offsety="128">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGLjACYssBoLVHGNYdYRgAl4Qa5g==
+   eJxjYBgFo2AUjIJRMApGLjACYssBoLVH8bDGAF5UGm4=
   </data>
  </layer>
  <layer id="8" name="lava2" width="30" height="20" offsetx="-1920" offsety="128">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGAbWAERBbEkFTG2gTiQeLvbok2KGLxiYFEzKLkL3kYgBOUgrn
+   eJxjYBgFo2AUjIJRMApGAbWAERBbEkFTG2gTiQeLvbok2KGLxtalkr2E3KCLBRNrLwBBggq/
   </data>
  </layer>
  <layer id="9" name="lava3" width="30" height="20" offsetx="1920" offsety="128">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGLjACYksiaGoDbSLxcLFXlwRMS7NJtVcXB5uQvQBH+wwi
+   eJxjYBgFo2AUjIJRMApGLjACYksiaGoDbSLxSLNXlwyzdfFgSu3VxcEmZC8ALqsL+g==
   </data>
  </layer>
  <layer id="6" name="Objects" width="30" height="20">
