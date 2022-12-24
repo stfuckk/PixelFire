@@ -143,15 +143,19 @@ public class GameScreen extends ScreenAdapter {
                 bulletsToRemove.add(bullet);
             }
 
-            if (Enemy.collider.contains(bullet.getX(), bullet.getY()) && !bullet.isEnemy)
+            if (Enemy.collider.contains(bullet.getX(), bullet.getY()) && !bullet.isEnemy && bullet.hasHit)
             {
-                enemy.isDead = true;
+                //enemy.isDead = true;
+                bullet.hasHit = false;
                 bullet.killPlayer();
+                enemy.GetShot();
             }
 
-            if (player.collider.contains(bullet.getX(), bullet.getY()) && bullet.isEnemy)
+            if (player.collider.contains(bullet.getX(), bullet.getY()) && bullet.isEnemy && bullet.hasHit)
             {
+                bullet.hasHit = false;
                 bullet.killPlayer();
+                player.GetShot();
             }
         }
         bullets.removeAll(bulletsToRemove);
@@ -159,16 +163,7 @@ public class GameScreen extends ScreenAdapter {
         enemy.update();
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
-        if(player.GetPlayerLives() == 3) playerHearts.setTexture(player_hearts_3);
-        else if(player.GetPlayerLives() == 2) playerHearts.setTexture(player_hearts_2);
-        else if(player.GetPlayerLives() == 1) playerHearts.setTexture(player_hearts_1);
-        else if(player.GetPlayerLives() == 0) playerHearts.setTexture(player_hearts_0);
-
-        if(enemy.GetEnemyLives() == 3) enemyHearts.setTexture(enemy_hearts_3);
-        else if(enemy.GetEnemyLives() == 2) enemyHearts.setTexture(enemy_hearts_2);
-        else if(enemy.GetEnemyLives() == 1) enemyHearts.setTexture(enemy_hearts_1);
-        else if(enemy.GetEnemyLives() == 0) enemyHearts.setTexture(enemy_hearts_0);
-
+        UpdateHealthBars();
         if (musicSlider != null && musicSlider.isDragging())
         {
             SoundManager.musicVolume = musicSlider.getValue();
@@ -413,6 +408,18 @@ public class GameScreen extends ScreenAdapter {
     public void setObjects(PolygonMapObject polygon)
     {
         objects.add(polygon);
+    }
+    private void UpdateHealthBars() {
+        if(player.GetPlayerLives() == 3) playerHearts.setTexture(player_hearts_3);
+        else if(player.GetPlayerLives() == 2) playerHearts.setTexture(player_hearts_2);
+        else if(player.GetPlayerLives() == 1) playerHearts.setTexture(player_hearts_1);
+        else if(player.GetPlayerLives() == 0) playerHearts.setTexture(player_hearts_0);
+
+        if(enemy.GetEnemyLives() == 3) enemyHearts.setTexture(enemy_hearts_3);
+        else if(enemy.GetEnemyLives() == 2) enemyHearts.setTexture(enemy_hearts_2);
+        else if(enemy.GetEnemyLives() == 1) enemyHearts.setTexture(enemy_hearts_1);
+        else if(enemy.GetEnemyLives() == 0) enemyHearts.setTexture(enemy_hearts_0);
+
     }
 
 

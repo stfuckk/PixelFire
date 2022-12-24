@@ -118,7 +118,7 @@ public class Client extends Thread
        }catch (IOException e ) {}
     }
     private void Log(String text) {
-        System.out.println(text);
+        //System.out.println(text);
     }
 
     public void test() {

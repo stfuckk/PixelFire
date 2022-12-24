@@ -92,6 +92,6 @@ public class ServerHandler implements  Runnable
 
 //==================================SERVICE METHODS
     private void Log(String text) {
-        log.log(Level.INFO, text);
+        //log.log(Level.INFO, text);
     }
 }

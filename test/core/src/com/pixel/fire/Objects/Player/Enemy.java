@@ -159,4 +159,8 @@ public class Enemy
     }
     public boolean IsLeft() {return left;}
     public int GetEnemyLives() {return enemyLives;}
+    public void GetShot() {
+        enemyLives--;
+        if(enemyLives <= 0) isDead = true;
+    }
 }
