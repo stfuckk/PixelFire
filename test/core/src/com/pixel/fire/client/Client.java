@@ -97,12 +97,13 @@ public class Client extends Thread
     }
 //==================================METHODS FOR INTERACTING WITH THE GAME
     public void SendPlayerInfo(float x, float y, boolean left, boolean isGrounded, boolean isIdle,
-                               boolean isJumping, boolean isFalling){
+                               boolean isJumping, boolean isFalling, boolean isDead){
         try {
             dos.writeUTF("01");
             dos.flush();
             //try {this.sleep(10);} catch(InterruptedException e) {System.out.println("sleep interrupted");}
-            dos.writeUTF(x + " " + y + " " + left + " " + isGrounded + " " + isIdle + " " + isJumping + " " + isFalling + " ");
+            dos.writeUTF(x + " " + y + " "
+                    + left + " " + isGrounded + " " + isIdle + " " + isJumping + " " + isFalling + " " + isDead + " ");
             dos.flush();
         } catch(SocketException e) {
             System.out.println("HOY!");

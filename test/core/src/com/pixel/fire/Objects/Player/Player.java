@@ -230,7 +230,7 @@ public class Player extends GameEntity
     }
     private void SendPlayerInfo() {
         if(isStateChanged) {
-            client.SendPlayerInfo(x, y, left, isGrounded, isIdle, isJumping, isFalling);
+            client.SendPlayerInfo(x, y, left, isGrounded, isIdle, isJumping, isFalling, isDead);
             isStateChanged = false;
         }
     }

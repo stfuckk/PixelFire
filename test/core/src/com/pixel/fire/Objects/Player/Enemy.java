@@ -136,7 +136,6 @@ public class Enemy
 
     public void setState(String info) {
         System.out.println(info);
-        // isGrounded && isIdle && !isJumping
         String[] parameters = info.split(" ");
         x = Float.parseFloat(parameters[0]);
         y = Float.parseFloat(parameters[1]);
@@ -145,6 +144,7 @@ public class Enemy
         isIdle = Boolean.parseBoolean(parameters[4]);
         isJumping = Boolean.parseBoolean(parameters[5]);
         isFalling = Boolean.parseBoolean(parameters[6]);
+        isDead = Boolean.parseBoolean(parameters[7]);
         System.out.println("isGrounded: " + isGrounded + " isIdle: " + isIdle + " isJumping: " + isJumping);
         update();
     }

@@ -15,7 +15,6 @@ public class Server
 {
     protected static final Logger logger = Logger.getLogger("log");
 
-    //protected static ExecutorService executeIt = Executors.newFixedThreadPool(2);
 
     protected static int clientsCount = 0;
 
@@ -30,7 +29,6 @@ public class Server
             serverSocket = servSock;
             Log("Server socket created, command console reader created");
 
-            //clients = new Client[4];
             clientHandlers = new ServerHandler[2];
             clientSockets = new Socket[2];
 
@@ -58,7 +56,6 @@ public class Server
                     public void run() {
                         try {
                             clientHandlers[clientsCount] = new ServerHandler(clientsCount, clientSockets[clientsCount]);
-                            //clientHandlers[clientsCount].UpdateHandlersMassive(clientHandlers);******************************************
                             isActive = true;
                             clientHandlers[clientsCount].run();
                         } catch (IOException e) {
@@ -85,17 +82,6 @@ public class Server
         }
     }
 
-    /*public static void UpdateClientsData(String newData, int clientID) throws InterruptedException {
-        if(clientID == 1 && clientHandlers[1] != null) {
-            Log("Server.UpdateClientsData(clientID = 1): " + newData);
-            clientHandlers[2].UpdateEnemies(newData);
-        }
-        else if(clientID == 2) {
-            Log("Server.UpdateClientsData(clientID = 2): " + newData);
-            clientHandlers[0].UpdateEnemies(newData);
-        }
-    } */
-
 //==================================METHODS USED BY OTHER CLASSES (I.E. SERVER HANDLER)
     public static void KillServer() {
         try {
@@ -112,7 +98,6 @@ public class Server
 
     public static void RefreshData(String action) throws IOException {
         if(action.equals("Quit")) clientsCount--;
-        //else clientsCount++; <--- have an increment in Server.start();
         Log("RefreshData: " + clientsCount);
         for(int i = 0; i < clientsCount; i++) {
             clientHandlers[i].UpdateClientsCount(clientsCount);

@@ -54,7 +54,6 @@ public class ServerHandler implements  Runnable
                     dos.writeUTF("Suicide connections"); dos.flush();
                     Server.RefreshData("Quit");
                     clientsCount--;
-                    //Thread.sleep(10);
                     break;
                 }
                 dos.flush();
@@ -77,7 +76,6 @@ public class ServerHandler implements  Runnable
                 allHandlers[0].UpdateEnemies(entryText);
         }
 
-        //else if(clientsCount == 1) allHandlers[0].UpdateEnemies(entryText);
     }
 
 //==================================METHODS NOT USED BY THIS CLASS (I.E. USED BY SERVER/OTHER HANDLERS)
