@@ -130,12 +130,22 @@ public class Enemy
         batch.end();
         //
     }
+    public void setRandomPosition()
+    {
+        int random = 8;
+        while (random >= 7)
+        {
+            random = (int) (Math.random() * 10);
+        }
+        x = spawnpoints.get(random).x; y = spawnpoints.get(random).y;
+    }
 
     public static void setRectangle(float x, float y, float width, float height)
     {
         collider = new Rectangle(x, y, width, height);
     }
     public void setState(String info) {
+        System.out.println(info);
         String[] parameters = info.split(" ");
         x = Float.parseFloat(parameters[0]);
         y = Float.parseFloat(parameters[1]);
@@ -147,6 +157,7 @@ public class Enemy
         isFalling = Boolean.parseBoolean(parameters[7]);
         isDead = Boolean.parseBoolean(parameters[8]);
         justShot = Boolean.parseBoolean(parameters[9]);
+
         update();
     }
 
@@ -158,6 +169,7 @@ public class Enemy
     }
     public boolean IsLeft() {return left;}
     public int GetEnemyLives() {return enemyLives;}
+    public void SetEnemyLives() {enemyLives = 3;}
     public void GetShot() {
         enemyLives--;
         if(enemyLives <= 0) isDead = true;

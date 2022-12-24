@@ -276,6 +276,7 @@ public class Player extends GameEntity
 
     public void JustShot() {justShot = true;}
     public int GetPlayerLives() {return playerLives;}
+    public void SetPlayerLives() {playerLives = 3;}
     public void GetShot() {
         playerLives--;
         if(playerLives <= 0) isDead = true;

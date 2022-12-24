@@ -5,11 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -42,6 +44,8 @@ public class GameScreen extends ScreenAdapter {
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer; // arena renderer
     private TileMapHelper tileMapHelper; // class to initalize arena and background
     private AssetManager assetManager; // class to initialize assets and work with them
+    private int playerVictories = 0;
+    private int enemyVictories = 0;
 
     // PAUSE AND MENU
     private Skin skin; // Style for buttons in pause
@@ -72,11 +76,10 @@ public class GameScreen extends ScreenAdapter {
     // SERVER-CLIENT OBJECTS
     private Client client;
 
-    private int timer = 700;
-
 
     public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client)
     {
+
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
@@ -111,7 +114,6 @@ public class GameScreen extends ScreenAdapter {
 
     private void update(float delta)
     {
-        timer += delta * 1000;
         bgMove();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
@@ -120,17 +122,8 @@ public class GameScreen extends ScreenAdapter {
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead)
         {
-            if (timer <= 700)
-            {
-
-            }
-            else
-            {
-                SoundManager.get("shot").play(SoundManager.soundVolume);
-                bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch, false));
-                timer = 0;
-            }
-
+            SoundManager.get("shot").play(SoundManager.soundVolume);
+            bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch, false));
             player.JustShot();
             player.SendPlayerInfo();
         }
@@ -139,6 +132,7 @@ public class GameScreen extends ScreenAdapter {
         {
             SoundManager.get("shot").play(SoundManager.soundVolume);
             bullets.add(new Bullet(enemy.GetVector(), enemy.IsLeft(), batch, true));
+            CheckForRoundWin();
         }
 
         world.step(1 / 60f, 6, 2);
@@ -173,7 +167,6 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
         UpdateHealthBars();
-
         if (musicSlider != null && musicSlider.isDragging())
         {
             SoundManager.musicVolume = musicSlider.getValue();
@@ -201,10 +194,12 @@ public class GameScreen extends ScreenAdapter {
         }
 
         UpdateEnemy();
+        CheckForRoundWin();
     }
 
-    private void cameraUpdate()
+    private void cameraUpdate() 
     {
+        System.out.println(player.getBody().getPosition().x * PPM);
         Vector3 position = camera.position;
         if(player.getBody().getPosition().x * PPM >= 135 && player.getBody().getPosition().x * PPM <= 1800) {
             position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
@@ -242,12 +237,7 @@ public class GameScreen extends ScreenAdapter {
         {
             player.render(batch);
         }
-
-        if (!enemy.isDead)
-        {
-            enemy.render(batch);
-        }
-
+        enemy.render(batch);
         batch.begin();
         orthogonalTiledMapRenderer.render(new int[]{1, 2, 3});
         batch.draw(playerHearts, camera.position.x - 450, camera.position.y - 250);
@@ -434,6 +424,26 @@ public class GameScreen extends ScreenAdapter {
         else if(enemy.GetEnemyLives() == 1) enemyHearts.setTexture(enemy_hearts_1);
         else if(enemy.GetEnemyLives() == 0) enemyHearts.setTexture(enemy_hearts_0);
 
+    }
+
+    private void CheckForRoundWin() {
+        if(player.GetPlayerLives() == 0) {
+            enemyVictories++;
+            ResetRound();
+        }
+        else if(enemy.GetEnemyLives() == 0) {
+            playerVictories++;
+            ResetRound();
+        }
+    }
+    private void ResetRound() {
+        player.SetPlayerLives();
+        enemy.SetEnemyLives();
+
+        player.setRandomPosition();
+        enemy.setRandomPosition();
+
+        player.isDead = false; enemy.isDead = false;
     }
 
 

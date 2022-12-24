@@ -20,7 +20,7 @@ public class Bullet
 
     // BULLET PROPERTIES
     private static final Texture texture = new Texture("Sprites/bullet.png");
-    private static final int SPEED = 900;
+    private static final int SPEED = 300;
     private float x;
     private final float y;
     public boolean remove = false; // Bullet will be removed in gameScreen update() method
