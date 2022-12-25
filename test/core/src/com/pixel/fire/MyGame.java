@@ -38,6 +38,7 @@ public class MyGame extends Game {
 		SoundManager.add("footstep", "audio/footstep.wav");
 		SoundManager.add("gamemusic", "audio/gamemusic.wav");
 		SoundManager.add("reload", "audio/reload.wav");
+		SoundManager.add("waitmusic", "audio/waitmusic.wav");
 
 		setScreen(new MenuScreen(assets.getAssetManager(), INSTANCE));
 	}

@@ -24,7 +24,7 @@ public class Enemy
     public static Rectangle collider;
     private boolean left = false;
     private boolean isGrounded = false;
-    private boolean isIdle = true;
+    public boolean isIdle = true;
     private boolean isJumping = false;
     private boolean isFalling = false;
     public boolean isDead = false;

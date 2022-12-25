@@ -56,6 +56,7 @@ public class GameScreen extends ScreenAdapter {
     private Slider soundSlider = null;
     private CheckBox fullscreenMode = null;
     private boolean paused = false; // Pause boolean
+    private boolean isStarted = false;
 
     // GAME OBJECTS
     private Player player;
@@ -115,6 +116,12 @@ public class GameScreen extends ScreenAdapter {
     private void update(float delta)
     {
         timer += delta * 1000;
+
+        if (timer >= 200 && timer <= 215)
+        {
+            SoundManager.get("reload").play(SoundManager.soundVolume);
+        }
+
         if (timer >= 700)
         {
             isReloading = false;
@@ -211,6 +218,12 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
+        if (!enemy.isIdle)
+        {
+            resetMusic();
+            isStarted = true;
+        }
+
         UpdateEnemy();
         CheckForRoundWin();
     }
@@ -281,7 +294,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show()
     {
-        SoundManager.get("gamemusic").play(SoundManager.musicVolume).loop(true);
+        SoundManager.get("waitmusic").play(SoundManager.musicVolume).loop(true);
         viewport = new ExtendViewport(700,800);
         stage = new Stage(viewport);
 
@@ -465,6 +478,15 @@ public class GameScreen extends ScreenAdapter {
         enemy.setRandomPosition();
 
         player.isDead = false; enemy.isDead = false;
+    }
+
+    private void resetMusic()
+    {
+        if (!isStarted)
+        {
+            SoundManager.get("waitmusic").loop(false).stop();
+            SoundManager.get("gamemusic").play(SoundManager.musicVolume).loop(true);
+        }
     }
 
 }
