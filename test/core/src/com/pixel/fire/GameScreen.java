@@ -242,8 +242,8 @@ public class GameScreen extends ScreenAdapter
             player.pause(true);
         }
 
-        CheckForRoundWin();
         UpdateEnemy();
+        CheckForRoundWin();
     }
 
     private void cameraUpdate() 
