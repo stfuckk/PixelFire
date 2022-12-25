@@ -1,7 +1,5 @@
 package com.pixel.fire.client;
 
-import com.pixel.fire.Objects.Player.Enemy;
-
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -66,6 +64,11 @@ public class Client extends Thread
                 if(entry.equals("11"))
                 {
                     enemyState = dis.readUTF();
+                }
+
+                else if (entry.equals("000"))
+                {
+                    clientsCount = Integer.parseInt(dis.readUTF());
                 }
 
                 else if(entry.equals("Suicide connections"))

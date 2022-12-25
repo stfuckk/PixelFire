@@ -91,7 +91,14 @@ public class ServerHandler implements  Runnable
             dos.writeUTF(info); dos.flush();
         } catch (IOException e) {throw new RuntimeException(e);}
     }
-    public void UpdateClientsCount(int inputCounter) {this.clientsCount = inputCounter;}
+    public void UpdateClientsCount(int inputCounter) throws IOException
+    {
+        this.clientsCount = inputCounter;
+        dos.writeUTF("000");
+        dos.flush();
+        dos.writeUTF(String.valueOf(clientsCount));
+        dos.flush();
+    }
     public void UpdateHandlersMassive(ServerHandler[] handlers) {this.allHandlers = handlers;}
     public int returnClientsCount() {return clientsCount;}
 
