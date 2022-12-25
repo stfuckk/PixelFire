@@ -230,14 +230,14 @@ public class GameScreen extends ScreenAdapter
             SoundManager.updateVolume();
         }
 
-        if (client.clientsCount() > 1 && !isStarted)
+        if (enemy.isIdle)
         {
             resetMusic();
             isStarted = true;
             player.pause(false);
             player.setRandomPosition();
         }
-        else if (client.clientsCount() == 1)
+        else
         {
             player.pause(true);
         }

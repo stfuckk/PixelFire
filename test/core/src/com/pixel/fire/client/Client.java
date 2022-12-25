@@ -60,7 +60,6 @@ public class Client extends Thread
 
             while(!socket.isOutputShutdown())
             {
-                getClientsCount();
                 String entry = dis.readUTF();
 
 

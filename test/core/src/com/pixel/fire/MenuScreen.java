@@ -126,7 +126,7 @@ public class MenuScreen extends ScreenAdapter
                 Dialog d = new Dialog("Credits", skin)
                 {
                     {
-                        text("This beatiful game was created by these dudes:\nKolmogorov Danil Pavlovich aka Denio1337\nKozlov Denis Valeryevich aka stfuckk\nStepanyuk Dmitriy Aleksandrovich aka X3");
+                        text("This beatiful game was created by these dudes:\nKolmogorov Danil Pavlovich aka Denio1337\nKozlov Denis Valeryevich aka stfuckk\nStepanyuk Dmitriy Aleksandrovich aka AlanWalknot");
                         button("OK");
                     }
                 };
