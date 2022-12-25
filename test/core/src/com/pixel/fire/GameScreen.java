@@ -242,8 +242,8 @@ public class GameScreen extends ScreenAdapter
             player.pause(true);
         }
 
-        UpdateEnemy();
         CheckForRoundWin();
+        UpdateEnemy();
     }
 
     private void cameraUpdate() 
@@ -556,7 +556,6 @@ public class GameScreen extends ScreenAdapter
 
     private void resetGame()
     {
-        System.out.println("Timer: " + timer);
         if (!wait)
         {
             timer = 0;

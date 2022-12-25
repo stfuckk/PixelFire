@@ -115,7 +115,7 @@ public class Server
 
 //==================================SERVICE METHODS
     private static void Log(String logText) {
-        logger.log(Level.INFO, logText);
+        //logger.log(Level.INFO, logText);
     }
 
 }

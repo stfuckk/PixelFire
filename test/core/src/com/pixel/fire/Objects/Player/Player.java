@@ -130,7 +130,7 @@ public class Player extends GameEntity
             this.setPosition(x, y, 0);
         }
 
-        if (y <= 192 && !isDead)
+        if (y <= 192)
         {
             if (playerLives != 1)
             {
@@ -297,6 +297,7 @@ public class Player extends GameEntity
     public void GetShot() {
         playerLives--;
         if(playerLives <= 0) isDead = true;
+        isStateChanged = true;
         SendPlayerInfo();
     }
 }
