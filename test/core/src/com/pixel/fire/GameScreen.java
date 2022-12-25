@@ -72,8 +72,12 @@ public class GameScreen extends ScreenAdapter
     // HP RENDER
     private Texture player_hearts_0, player_hearts_1, player_hearts_2, player_hearts_3;
     private Texture enemy_hearts_0, enemy_hearts_1, enemy_hearts_2, enemy_hearts_3;
+    private Texture[] player_wins;
+    private Texture[] enemy_wins;
     private Sprite playerHearts;
     private Sprite enemyHearts;
+    private Sprite playerWinsSprite;
+    private Sprite enemyWinsSprite;
 
     // SERVER-CLIENT OBJECTS
     private Client client;
@@ -113,6 +117,14 @@ public class GameScreen extends ScreenAdapter
         enemy_hearts_2 = new Texture("Sprites/Player_hearts/e2.png");
         enemy_hearts_3 = new Texture("Sprites/Player_hearts/e3.png");
         enemyHearts = new Sprite(enemy_hearts_3);
+
+        player_wins[0] = new Texture("Sprites"); player_wins[1] = new Texture("Sprites");
+        player_wins[2] = new Texture("Sprites"); player_wins[3] = new Texture("Sprites");
+        playerWinsSprite = new Sprite(player_wins[0]);
+
+        enemy_wins[0] = new Texture("Sprites"); enemy_wins[1] = new Texture("Sprites");
+        enemy_wins[2] = new Texture("Sprites"); enemy_wins[3] = new Texture("Sprites");
+        enemyWinsSprite = new Sprite(enemy_wins[0]);
     }
 
     private void update(float delta)
@@ -264,6 +276,7 @@ public class GameScreen extends ScreenAdapter
         orthogonalTiledMapRenderer.render(new int[]{1, 2, 3});
         batch.draw(playerHearts, camera.position.x - 450, camera.position.y - 250);
         batch.draw(enemyHearts, camera.position.x + 190, camera.position.y - 250);
+
         if (isReloading) batch.draw(player.reloadFrame, player.getBody().getPosition().x * PPM - 12, player.getBody().getPosition().y * PPM + 15, 25, 25);
         for (Bullet bullet : bullets)
         {
@@ -278,7 +291,6 @@ public class GameScreen extends ScreenAdapter
             stage.act();
             stage.draw();
         }
-
         this.update(delta);
     }
 
@@ -453,11 +465,13 @@ public class GameScreen extends ScreenAdapter
         if(player.GetPlayerLives() == 0) {
             SoundManager.get("death").play(SoundManager.soundVolume);
             enemyVictories++;
+            enemyWinsSprite.setTexture(enemy_wins[enemyVictories]);
             ResetRound();
         }
         else if(enemy.GetEnemyLives() == 0) {
             SoundManager.get("death").play(SoundManager.soundVolume);
             playerVictories++;
+            playerWinsSprite.setTexture(player_wins[playerVictories]);
             ResetRound();
         }
     }
