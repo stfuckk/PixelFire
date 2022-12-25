@@ -98,7 +98,7 @@ public class Enemy
     }
 
     public void update() {
-        collider.x = x - collider.width + 16;
+        collider.x = x - collider.width + 10;
         collider.y = y - collider.height + 14;
         //x = body.getPosition().x * PPM;
         //y = body.getPosition().y * PPM;
@@ -142,7 +142,7 @@ public class Enemy
 
     public static void setRectangle(float x, float y, float width, float height)
     {
-        collider = new Rectangle(x, y, width, height);
+        collider = new Rectangle(x, y, width + 7, height);
     }
     public void setState(String info) {
         System.out.println(info);
