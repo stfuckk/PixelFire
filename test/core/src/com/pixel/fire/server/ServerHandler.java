@@ -56,6 +56,11 @@ public class ServerHandler implements  Runnable
                     clientsCount--;
                     break;
                 }
+                else if(entry.equals("000"))
+                {
+                    dos.writeUTF(String.valueOf(clientsCount));
+                    dos.flush();
+                }
                 dos.flush();
             }
             Log("Client disconnected. \nClosing connections and channels");

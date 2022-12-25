@@ -50,6 +50,11 @@ public class GameScreen extends ScreenAdapter
     private Table mainTable; // Pause
     private Stage stage; // Stage for pause
     private Viewport viewport; // Viewport for pause
+    private Stage stage1; // Stage for pause
+    private Viewport viewport1; // Viewport for pause
+
+    private Stage stage2; // Stage for pause
+    private Viewport viewport2; // Viewport for pause
     private final MenuScreen menuScreen; // Main menu
     private Table settingsTable; // Settings
     private Slider musicSlider = null; // Music slider in settings
@@ -81,6 +86,7 @@ public class GameScreen extends ScreenAdapter
 
     // SERVER-CLIENT OBJECTS
     private Client client;
+    private boolean wait = false;
 
 
     public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client)
@@ -159,7 +165,7 @@ public class GameScreen extends ScreenAdapter
             settingsTable.setVisible(false);
         }
 
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead && !isReloading)
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead && !isReloading && isStarted)
         {
             SoundManager.get("shot").play(SoundManager.soundVolume);
             bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch, false));
@@ -224,10 +230,16 @@ public class GameScreen extends ScreenAdapter
             SoundManager.updateVolume();
         }
 
-        if (!enemy.isIdle)
+        if (client.clientsCount() > 1 && !isStarted)
         {
             resetMusic();
             isStarted = true;
+            player.pause(false);
+            player.setRandomPosition();
+        }
+        else if (client.clientsCount() == 1)
+        {
+            player.pause(true);
         }
 
         UpdateEnemy();
@@ -299,6 +311,19 @@ public class GameScreen extends ScreenAdapter
             stage.act();
             stage.draw();
         }
+
+        if (wait)
+        {
+            stage1.act();
+            stage1.draw();
+        }
+
+        if (!isStarted)
+        {
+            stage2.act();
+            stage2.draw();
+        }
+
         this.update(delta);
     }
 
@@ -335,6 +360,26 @@ public class GameScreen extends ScreenAdapter
         soundSlider = (Slider) menuScreen.getSettingsTable().getChild(2);
         settingsTable.add(soundSlider).width(700).height(120).padBottom(60);
         settingsTable.row();
+
+        viewport1 = new ExtendViewport(700, 800);
+        stage1 = new Stage(viewport1);
+
+        stage1.addActor(new Dialog("", skin)
+        {
+            {
+                text("Waiting for the next round...");
+            }
+        }.show(stage));
+
+        viewport2 = new ExtendViewport(700, 800);
+        stage2 = new Stage(viewport2);
+
+        stage2.addActor(new Dialog("", skin)
+        {
+            {
+                text("Waiting for the second player...");
+            }
+        }.show(stage));
 
         menuScreen.addButton("Resume", mainTable).addListener(new ClickListener()
         {
@@ -470,7 +515,8 @@ public class GameScreen extends ScreenAdapter
     }
 
     private void CheckForRoundWin() {
-       if(playerVictories < 4 && enemyVictories < 4) {
+       if(playerVictories < 4 && enemyVictories < 4)
+       {
            if(player.GetPlayerLives() == 0) {
                SoundManager.get("death").play(SoundManager.soundVolume);
                enemyVictories++;
@@ -483,6 +529,10 @@ public class GameScreen extends ScreenAdapter
                CheckRound();
                ResetRound();
            }
+       }
+       else
+       {
+           resetGame();
        }
     }
     private void ResetRound() {
@@ -501,6 +551,30 @@ public class GameScreen extends ScreenAdapter
         {
             SoundManager.get("waitmusic").loop(false).stop();
             SoundManager.get("gamemusic").play(SoundManager.musicVolume).loop(true);
+        }
+    }
+
+    private void resetGame()
+    {
+        System.out.println("Timer: " + timer);
+        if (!wait)
+        {
+            timer = 0;
+        }
+
+        if (timer <= 5000)
+        {
+            wait = true;
+            player.pause(true);
+        }
+        else
+        {
+            wait = false;
+            player.pause(false);
+            playerVictories = 0;
+            enemyVictories = 0;
+            playerWinsSprite.setTexture(player_wins_0);
+            enemyWinsSprite.setTexture(enemy_wins_0);
         }
     }
     private void CheckRound() {

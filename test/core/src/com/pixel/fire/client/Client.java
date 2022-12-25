@@ -15,8 +15,7 @@ public class Client extends Thread
     private DataOutputStream dos;
     private DataInputStream dis;
     private static String ip;
-
-    private Enemy enemy;
+    private int clientsCount = 1;
 
     private String enemyState = "-400 0 3 false false true false false false false";
     
@@ -61,7 +60,9 @@ public class Client extends Thread
 
             while(!socket.isOutputShutdown())
             {
+                getClientsCount();
                 String entry = dis.readUTF();
+
 
                 if(entry.equals("11"))
                 {
@@ -94,6 +95,25 @@ public class Client extends Thread
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void getClientsCount()
+    {
+        try
+        {
+            dos.writeUTF("000");
+            dos.flush();
+            clientsCount = Integer.parseInt(dis.readUTF());
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int clientsCount()
+    {
+        return clientsCount;
     }
 //==================================METHODS FOR INTERACTING WITH THE GAME
     public void SendPlayerInfo(float x, float y,int playerLives, boolean left, boolean isGrounded, boolean isIdle,
