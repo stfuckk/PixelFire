@@ -18,7 +18,7 @@ public class Client extends Thread
 
     private Enemy enemy;
 
-    private String enemyState = "100 400 3 false false true false false false false";
+    private String enemyState = "-400 0 3 false false true false false false false";
     
     public void StartClient(String ip) 
     {

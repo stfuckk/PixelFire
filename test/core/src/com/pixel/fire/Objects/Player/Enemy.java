@@ -145,7 +145,6 @@ public class Enemy
         collider = new Rectangle(x, y, width, height);
     }
     public void setState(String info) {
-        System.out.println(info);
         String[] parameters = info.split(" ");
         x = Float.parseFloat(parameters[0]);
         y = Float.parseFloat(parameters[1]);

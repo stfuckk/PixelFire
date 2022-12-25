@@ -27,11 +27,11 @@ import com.pixel.fire.Helper.TileMapHelper;
 import com.pixel.fire.Objects.Player.Enemy;
 import com.pixel.fire.Objects.Player.Player;
 import com.pixel.fire.client.Client;
-
 import java.util.ArrayList;
 import static com.pixel.fire.Helper.Constants.PPM;
 
-public class GameScreen extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter
+{
 
     // GAME LOGIC
     private MyGame game; // game object
@@ -40,10 +40,10 @@ public class GameScreen extends ScreenAdapter {
     private World world; //store box2d bodies
     private Box2DDebugRenderer box2DDebugRenderer; //see box2d without using textures
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer; // arena renderer
-    private TileMapHelper tileMapHelper; // class to initalize arena and background
+    private TileMapHelper tileMapHelper; // class to initialize arena and background
     private AssetManager assetManager; // class to initialize assets and work with them
-    private int playerVictories = 0;
-    private int enemyVictories = 0;
+    private int playerVictories = 0; // Counter of player's victories
+    private int enemyVictories = 0; // Counter of enemy's victories
 
     // PAUSE AND MENU
     private Skin skin; // Style for buttons in pause
@@ -51,22 +51,25 @@ public class GameScreen extends ScreenAdapter {
     private Stage stage; // Stage for pause
     private Viewport viewport; // Viewport for pause
     private final MenuScreen menuScreen; // Main menu
-    private Table settingsTable;
-    private Slider musicSlider = null;
-    private Slider soundSlider = null;
-    private CheckBox fullscreenMode = null;
+    private Table settingsTable; // Settings
+    private Slider musicSlider = null; // Music slider in settings
+    private Slider soundSlider = null; // Sound slider in settings
     private boolean paused = false; // Pause boolean
-    private boolean isStarted = false;
+    private boolean isStarted = false; // Is game started
+    private int timer; // Bullet timer
+    private boolean isReloading; // Is player reloading
 
     // GAME OBJECTS
     private Player player;
     private Enemy enemy;
     private ArrayList<Bullet> bullets;
-    private Array<PolygonMapObject> objects = new Array<PolygonMapObject>();
+    private Array<PolygonMapObject> objects = new Array<PolygonMapObject>(); // All game objects (platforms and decorations)
 
-    private Background bg;
-    private float bg_x, bg2_x;
+    // BACKGROUND RENDER
+    private Background bg; // Background sprite
+    private float bg_x, bg2_x; // Coordinates to render background
 
+    // HP RENDER
     private Texture player_hearts_0, player_hearts_1, player_hearts_2, player_hearts_3;
     private Texture enemy_hearts_0, enemy_hearts_1, enemy_hearts_2, enemy_hearts_3;
     private Sprite playerHearts;
@@ -74,13 +77,10 @@ public class GameScreen extends ScreenAdapter {
 
     // SERVER-CLIENT OBJECTS
     private Client client;
-    private int timer;
-    private boolean isReloading;
 
 
     public GameScreen(MyGame game, AssetManager assetManager, MenuScreen menuScreen, Client client)
     {
-
         this.game = game;
         this.camera = game.getCamera();
         this.batch = new SpriteBatch();
@@ -91,13 +91,15 @@ public class GameScreen extends ScreenAdapter {
 
         this.assetManager = assetManager;
         this.menuScreen = menuScreen;
-
         this.skin = assetManager.get(Assets.SKIN);
+
         this.client = client;
 
         bullets = new ArrayList<Bullet>();
         Bullet.setObjects(objects);
+
         this.bg = new Background();
+
         this.enemy = new Enemy();
 
         player_hearts_0 = new Texture("Sprites/Player_hearts/0.png");
@@ -130,26 +132,22 @@ public class GameScreen extends ScreenAdapter {
         {
             isReloading = true;
         }
+
         bgMove();
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             pause();
             settingsTable.setVisible(false);
         }
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead)
-        {
-            if (isReloading)
-            {
 
-            }
-            else
-            {
-                SoundManager.get("shot").play(SoundManager.soundVolume);
-                bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch, false));
-                timer = 0;
-                player.JustShot();
-                player.SendPlayerInfo();
-            }
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && !paused && !player.isDead && !isReloading)
+        {
+            SoundManager.get("shot").play(SoundManager.soundVolume);
+            bullets.add(new Bullet(player.getBody().getPosition(), player.isLeft(), batch, false));
+            timer = 0;
+            player.JustShot();
+            player.SendPlayerInfo();
 
         }
 
@@ -162,6 +160,7 @@ public class GameScreen extends ScreenAdapter {
 
         world.step(1 / 60f, 6, 2);
         cameraUpdate();
+
         ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
         for (Bullet bullet : bullets)
         {
@@ -187,11 +186,14 @@ public class GameScreen extends ScreenAdapter {
             }
         }
         bullets.removeAll(bulletsToRemove);
+
         player.update();
         enemy.update();
+
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
         UpdateHealthBars();
+
         if (musicSlider != null && musicSlider.isDragging())
         {
             SoundManager.musicVolume = musicSlider.getValue();
@@ -202,20 +204,6 @@ public class GameScreen extends ScreenAdapter {
         {
             SoundManager.soundVolume = soundSlider.getValue();
             SoundManager.updateVolume();
-        }
-
-        if (fullscreenMode != null)
-        {
-            if (fullscreenMode.isChecked())
-            {
-                game.setFullScreen();
-                //Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-            }
-            else
-            {
-                game.setWindowed();
-                //Gdx.graphics.setWindowedMode(1280,720);
-            }
         }
 
         if (!enemy.isIdle)
@@ -230,8 +218,8 @@ public class GameScreen extends ScreenAdapter {
 
     private void cameraUpdate() 
     {
-        System.out.println(player.getBody().getPosition().x * PPM);
         Vector3 position = camera.position;
+
         if(player.getBody().getPosition().x * PPM >= 135 && player.getBody().getPosition().x * PPM <= 1800) {
             position.x = Math.round(player.getBody().getPosition().x * PPM * 10) / 10f;
         }
@@ -239,6 +227,7 @@ public class GameScreen extends ScreenAdapter {
         {
             position.x = camera.position.x;
         }
+
         position.y = Math.round(player.getBody().getPosition().y * PPM * 10) / 10f;
 
         camera.position.set(position);
@@ -264,10 +253,12 @@ public class GameScreen extends ScreenAdapter {
         bg.render(batch);
 
         orthogonalTiledMapRenderer.render(new int[]{4,5});
+
         if (!player.isDead)
         {
             player.render(batch);
         }
+
         enemy.render(batch);
         batch.begin();
         orthogonalTiledMapRenderer.render(new int[]{1, 2, 3});
