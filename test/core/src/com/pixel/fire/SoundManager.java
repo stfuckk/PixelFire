@@ -30,7 +30,10 @@ public class SoundManager
     {
         for (MySound s : sounds)
         {
-            if (s.getName().equals("mainmenumusic") || s.getName().equals("gamemusic")) s.setVolume(SoundManager.musicVolume);
+            if (s.getName().equals("mainmenumusic") || s.getName().equals("gamemusic") || s.getName().equals("waitmusic"))
+            {
+                s.setVolume(SoundManager.musicVolume);
+            }
             else s.setVolume(SoundManager.soundVolume);
         }
     }
